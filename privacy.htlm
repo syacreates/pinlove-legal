@@ -1,0 +1,35 @@
+← Retour
+🔒 Politique de confidentialité
+Dernière mise à jour : mars 2026
+📱
+À propos de Pinlove
+Pinlove est une application mobile qui te permet de sauvegarder et organiser tes lieux favoris découverts sur TikTok et d'autres sources, directement sur une carte interactive.
+Cette politique décrit comment nous collectons, utilisons et protégeons tes informations personnelles.
+📦
+Données collectées
+Nous collectons uniquement les données nécessaires au fonctionnement de l'application :
+	•	Compte : adresse e-mail, prénom, pseudo choisi à l'inscription
+	•	Lieux : nom, adresse, catégorie, note personnelle, photo (optionnelle)
+	•	Amis : liste de tes amis et demandes d'amis
+	•	Localisation : uniquement pour afficher ta position sur la carte (jamais stockée)
+☁️
+Stockage des données
+Tes données sont stockées de manière sécurisée sur Firebase (Google Cloud), hébergé en Europe (région europe-west3).
+Seul toi et tes amis confirmés peuvent accéder à tes lieux. Nous n'avons pas accès à tes données personnelles.
+🔐 Nous ne vendons jamais tes données à des tiers.
+🤖
+Intelligence artificielle
+Pinlove utilise l'API Claude (Anthropic) pour analyser les liens TikTok et extraire automatiquement le nom et l'adresse d'un lieu.
+Seul le lien TikTok est transmis à l'API — aucune donnée personnelle n'est partagée avec Anthropic.
+👤
+Tes droits
+Conformément au RGPD, tu as le droit de :
+	•	Accéder à toutes tes données depuis l'application
+	•	Modifier ou supprimer tes lieux à tout moment
+	•	Supprimer ton compte et toutes tes données
+	•	Nous contacter pour toute demande relative à tes données
+✉️
+Contact
+Pour toute question concernant cette politique de confidentialité :
+contact@pinlove.app
+© 2026 Pinlove · Tous droits réservés
