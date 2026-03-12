@@ -1,2 +1,2 @@
-# tiktokmap-legal
-TikTokMap legal pages
+# pinlove-legal
+Pinlove legal pages
