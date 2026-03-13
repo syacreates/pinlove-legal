@@ -1,43 +1,276 @@
-← Retour
-📋 Conditions d'utilisation
-Dernière mise à jour : mars 2026
-👋
-Acceptation des conditions
-En téléchargeant et utilisant l'application Pinlove, tu acceptes les présentes conditions d'utilisation. Si tu n'acceptes pas ces conditions, merci de ne pas utiliser l'application.
-📱
-Description du service
-Pinlove est une application mobile qui permet de :
-	•	Sauvegarder des adresses et lieux favoris sur une carte
-	•	Organiser ses lieux par catégories
-	•	Partager ses lieux avec des amis
-	•	Analyser des liens TikTok pour en extraire des adresses
-✅
-Utilisation autorisée
-Tu t'engages à utiliser Pinlove de manière responsable et légale :
-	•	Ne partager que des contenus dont tu as les droits
-	•	Respecter la vie privée des autres utilisateurs
-	•	Ne pas utiliser l'application à des fins commerciales sans autorisation
-	•	Ne pas tenter de pirater ou perturber le service
-🤝
-Système d'amis
-Le système de partage entre amis fonctionne sur la base du consentement mutuel. Tu ne peux voir les lieux d'un autre utilisateur que s'il a accepté ta demande d'ami.
-💡 Tu peux supprimer un ami à tout moment depuis l'application.
-⚠️
-Limitation de responsabilité
-Pinlove ne peut être tenu responsable :
-	•	De l'exactitude des adresses extraites automatiquement depuis TikTok
-	•	Des interruptions de service liées à des problèmes techniques
-	•	Des contenus partagés entre utilisateurs
-	•	Des dommages indirects liés à l'utilisation de l'application
-🔄
-Modifications
-Nous nous réservons le droit de modifier ces conditions à tout moment. Les utilisateurs seront informés des changements importants via l'application.
-L'utilisation continue de Pinlove après modification vaut acceptation des nouvelles conditions.
-⚖️
-Droit applicable
-Ces conditions sont régies par le droit français. Tout litige sera soumis à la juridiction des tribunaux français compétents.
-✉️
-Contact
-Pour toute question concernant ces conditions :
-contact@pinlove.app
-© 2026 Pinlove · Tous droits réservés
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conditions d'utilisation – Pinlove</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+      padding: 0 0 48px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(15, 15, 15, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1e1e1e;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    header a {
+      color: #ff3b6b;
+      text-decoration: none;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    header a:hover { color: #ff6b35; }
+
+    header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f0f0f0;
+    }
+
+    .content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .updated {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 36px;
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .section-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #f0f0f0;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: #aaa;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    ul li {
+      font-size: 15px;
+      line-height: 1.55;
+      color: #aaa;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    ul li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      color: #ff3b6b;
+      font-weight: 700;
+    }
+
+    .callout {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-left: 3px solid #ff3b6b;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #999;
+      line-height: 1.55;
+    }
+
+    .callout strong {
+      color: #f0f0f0;
+    }
+
+    .divider {
+      height: 1px;
+      background: #1e1e1e;
+      margin: 32px 0;
+    }
+
+    footer {
+      text-align: center;
+      color: #444;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 48px;
+    }
+
+    footer a {
+      color: #555;
+      text-decoration: none;
+    }
+
+    footer a:hover { color: #777; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← Retour</a>
+    <h1>Conditions d'utilisation</h1>
+  </header>
+
+  <div class="content">
+    <h1 class="page-title">📋 Conditions d'utilisation</h1>
+    <p class="updated">Dernière mise à jour : mars 2026</p>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">👋</span>
+        <h2>Acceptation des conditions</h2>
+      </div>
+      <p>En téléchargeant et utilisant l'application Pinlove, tu acceptes les présentes conditions d'utilisation. Si tu n'acceptes pas ces conditions, merci de ne pas utiliser l'application.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">📱</span>
+        <h2>Description du service</h2>
+      </div>
+      <p>Pinlove est une application mobile qui permet de :</p>
+      <ul>
+        <li>Sauvegarder des adresses et lieux favoris sur une carte</li>
+        <li>Organiser ses lieux par catégories</li>
+        <li>Partager ses lieux avec des amis</li>
+        <li>Analyser des liens TikTok pour en extraire des adresses</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">✅</span>
+        <h2>Utilisation autorisée</h2>
+      </div>
+      <p>Tu t'engages à utiliser Pinlove de manière responsable et légale :</p>
+      <ul>
+        <li>Ne partager que des contenus dont tu as les droits</li>
+        <li>Respecter la vie privée des autres utilisateurs</li>
+        <li>Ne pas utiliser l'application à des fins commerciales sans autorisation</li>
+        <li>Ne pas tenter de pirater ou perturber le service</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🤝</span>
+        <h2>Système d'amis</h2>
+      </div>
+      <p>Le système de partage entre amis fonctionne sur la base du consentement mutuel. Tu ne peux voir les lieux d'un autre utilisateur que s'il a accepté ta demande d'ami.</p>
+      <div class="callout">
+        💡 Tu peux <strong>supprimer un ami à tout moment</strong> depuis l'application.
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚠️</span>
+        <h2>Limitation de responsabilité</h2>
+      </div>
+      <p>Pinlove ne peut être tenu responsable :</p>
+      <ul>
+        <li>De l'exactitude des adresses extraites automatiquement depuis TikTok</li>
+        <li>Des interruptions de service liées à des problèmes techniques</li>
+        <li>Des contenus partagés entre utilisateurs</li>
+        <li>Des dommages indirects liés à l'utilisation de l'application</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🔄</span>
+        <h2>Modifications</h2>
+      </div>
+      <p>Nous nous réservons le droit de modifier ces conditions à tout moment. Les utilisateurs seront informés des changements importants via l'application.</p>
+      <p style="margin-top: 10px;">L'utilisation continue de Pinlove après modification vaut acceptation des nouvelles conditions.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚖️</span>
+        <h2>Droit applicable</h2>
+      </div>
+      <p>Ces conditions sont régies par le droit français. Tout litige sera soumis à la juridiction des tribunaux français compétents.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">✉️</span>
+        <h2>Contact</h2>
+      </div>
+      <p>Pour toute question concernant ces conditions :</p>
+      <div class="callout" style="margin-top: 12px;">
+        <a href="mailto:contact@pinlove.app" style="color: #ff3b6b; text-decoration: none;">contact@pinlove.app</a>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 Pinlove · Tous droits réservés</p>
+    </footer>
+  </div>
+</body>
+</html>

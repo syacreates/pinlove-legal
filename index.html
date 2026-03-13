@@ -1,13 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinlove – Épingle les lieux que tu aimes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-Pinlove
-Épingle les lieux que tu aimes ❤️
-🔒
-Politique de confidentialité
-Comment nous collectons et utilisons tes données
-›
-📋
-Conditions d'utilisation
-Les règles d'utilisation de l'application Pinlove
-›
-© 2026 Pinlove · Tous droits réservés
-contact@pinlove.app
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ff3b6b, #ff6b35);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 32px rgba(255, 59, 107, 0.35);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      color: #888;
+      font-size: 15px;
+      margin-bottom: 48px;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .link-card:hover {
+      background: #222;
+      border-color: #3a3a3a;
+    }
+
+    .link-card:active {
+      background: #1e1e1e;
+    }
+
+    .link-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .link-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .link-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .link-text span {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .link-arrow {
+      color: #444;
+      font-size: 16px;
+    }
+
+    footer {
+      color: #444;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">📍</div>
+    <h1>Pinlove</h1>
+    <p class="tagline">Épingle les lieux que tu aimes ❤️</p>
+
+    <div class="links">
+      <a href="privacy.html" class="link-card">
+        <span class="link-icon">🔒</span>
+        <div class="link-text">
+          <strong>Politique de confidentialité</strong>
+          <span>Comment nous collectons et utilisons tes données</span>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+
+      <a href="terms.html" class="link-card">
+        <span class="link-icon">📋</span>
+        <div class="link-text">
+          <strong>Conditions d'utilisation</strong>
+          <span>Les règles d'utilisation de l'application Pinlove</span>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+    </div>
+
+    <footer>
+      <p>© 2026 Pinlove · Tous droits réservés</p>
+      <p><a href="mailto:contact@pinlove.app">contact@pinlove.app</a></p>
+    </footer>
+  </div>
+</body>
+</html>
