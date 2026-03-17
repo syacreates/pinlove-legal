@@ -26,6 +26,7 @@ interface PlacesState {
     userId: string,
     visibility: PlaceVisibility,
   ) => Promise<void>
+  toggleFavorite: (id: string, userId: string) => Promise<void>
   refreshCount: (userId: string, plan: 'free' | 'premium') => Promise<void>
 }
 
@@ -71,6 +72,15 @@ export const usePlacesStore = create<PlacesState>((set, get) => ({
 
   updateVisibility: async (id, userId, visibility) => {
     const { place } = await placesService.updatePlace(id, userId, { visibility })
+    if (place) {
+      set(s => ({
+        places: s.places.map(p => (p.id === id ? place : p)),
+      }))
+    }
+  },
+
+  toggleFavorite: async (id, userId) => {
+    const { place } = await placesService.toggleFavorite(id, userId)
     if (place) {
       set(s => ({
         places: s.places.map(p => (p.id === id ? place : p)),

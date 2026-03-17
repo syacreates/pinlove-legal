@@ -16,6 +16,7 @@ import Link from 'next/link'
 type FormData = {
   name: string
   address: string
+  postal_code: string
   city: string
   category: PlaceCategory
   description: string
@@ -32,7 +33,7 @@ export default function AddPlacePage() {
   const openPaywall = useAppStore(s => s.openPaywall)
 
   const [form, setForm] = useState<FormData>({
-    name: '', address: '', city: '', category: 'restaurant',
+    name: '', address: '', postal_code: '', city: '', category: 'restaurant',
     description: '', note: '', visibility: 'private',
   })
   const [loading,  setLoading]  = useState(false)
@@ -44,8 +45,7 @@ export default function AddPlacePage() {
     setForm(f => ({ ...f, [field]: value }))
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  async function savePlace() {
     setError(null)
 
     if (isAtLimit) {
@@ -60,7 +60,6 @@ export default function AddPlacePage() {
 
     setLoading(true)
 
-    // Geocode address for coordinates
     const coords = await mapService.geocodeAddress(`${form.address}, ${form.city}`)
 
     const { error: err } = await createPlace(
@@ -83,6 +82,11 @@ export default function AddPlacePage() {
     }
   }
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    savePlace()
+  }
+
   if (isAtLimit) {
     return (
       <div className="screen-scroll flex flex-col items-center justify-center px-6 text-center">
@@ -102,7 +106,7 @@ export default function AddPlacePage() {
   }
 
   return (
-    <div className="screen-scroll px-4 pt-6 pb-8">
+    <div className="screen-scroll px-4 pt-6 pb-28">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button
@@ -173,14 +177,22 @@ export default function AddPlacePage() {
           required
         />
 
-        {/* City */}
-        <Input
-          label="Ville *"
-          value={form.city}
-          onChange={e => updateForm('city', e.target.value)}
-          placeholder="Ex : Paris"
-          required
-        />
+        {/* Postal code + City row */}
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="Code postal"
+            value={form.postal_code}
+            onChange={e => updateForm('postal_code', e.target.value)}
+            placeholder="Ex : 75006"
+          />
+          <Input
+            label="Ville *"
+            value={form.city}
+            onChange={e => updateForm('city', e.target.value)}
+            placeholder="Ex : Paris"
+            required
+          />
+        </div>
 
         {/* Description */}
         <Textarea
@@ -232,11 +244,22 @@ export default function AddPlacePage() {
         </div>
 
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+      </form>
 
-        <Button type="submit" loading={loading} fullWidth size="lg">
+      {/* Sticky save button */}
+      {/* Sticky save button */}
+      <div className="fixed bottom-0 left-0 right-0 px-4 pb-6 pt-3 bg-gradient-to-t from-white via-white to-transparent pointer-events-none">
+        <Button
+          type="button"
+          onClick={() => savePlace()}
+          loading={loading}
+          fullWidth
+          size="lg"
+          className="pointer-events-auto shadow-lg"
+        >
           Enregistrer ce lieu
         </Button>
-      </form>
+      </div>
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, Navigation, Clock } from 'lucide-react'
+import { MapPin, Navigation, Clock, Heart } from 'lucide-react'
 import { cn, getCategoryMeta, timeAgo } from '@/lib/utils'
 import { VisibilityBadge, CategoryBadge, PlatformBadge } from './Badge'
 import type { Place } from '@/lib/types'
@@ -15,6 +15,7 @@ interface PlaceCardProps {
   distanceKm?: number
   className?: string
   compact?: boolean
+  onToggleFavorite?: (id: string) => void
 }
 
 export function PlaceCard({
@@ -24,6 +25,7 @@ export function PlaceCard({
   distanceKm,
   className,
   compact = false,
+  onToggleFavorite,
 }: PlaceCardProps) {
   const meta = getCategoryMeta(place.category)
 
@@ -71,13 +73,35 @@ export function PlaceCard({
               {place.name}
             </h3>
           </div>
-          {compact && <VisibilityBadge visibility={place.visibility} />}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {compact && <VisibilityBadge visibility={place.visibility} />}
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={e => { e.preventDefault(); e.stopPropagation(); onToggleFavorite(place.id) }}
+                className="p-1 -m-1 rounded-full transition-transform active:scale-90"
+                aria-label={place.is_favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+              >
+                <Heart
+                  className={cn(
+                    'w-4 h-4 transition-colors',
+                    place.is_favorite ? 'fill-brand-500 text-brand-500' : 'text-neutral-300',
+                  )}
+                />
+              </button>
+            )}
+            {!onToggleFavorite && place.is_favorite && (
+              <Heart className="w-4 h-4 fill-brand-500 text-brand-500 flex-shrink-0" />
+            )}
+          </div>
         </div>
 
         {/* Address */}
         <div className="flex items-center gap-1.5 text-sm text-neutral-500 mb-3">
           <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-brand-400" />
-          <span className="truncate">{place.address}, {place.city}</span>
+          <span className="truncate">
+            {place.address}{place.postal_code ? `, ${place.postal_code}` : ''} {place.city}
+          </span>
         </div>
 
         {/* Footer row */}

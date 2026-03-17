@@ -52,6 +52,7 @@ export interface Place {
   user_id: string
   name: string
   address: string
+  postal_code: string | null
   city: string
   country: string
   category: PlaceCategory
@@ -61,6 +62,7 @@ export interface Place {
   latitude: number
   longitude: number
   visibility: PlaceVisibility
+  is_favorite: boolean
   /** Array of friend user IDs this place is explicitly shared with */
   shared_with_friend_ids: string[]
   source: ImportSource | null

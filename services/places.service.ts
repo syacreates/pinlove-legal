@@ -17,6 +17,7 @@ let _places: Place[] = [...DEMO_PLACES]
 export interface CreatePlaceInput {
   name: string
   address: string
+  postal_code?: string
   city: string
   country?: string
   category: PlaceCategory
@@ -107,6 +108,7 @@ export const placesService = {
       user_id: userId,
       name: input.name,
       address: input.address,
+      postal_code: input.postal_code ?? null,
       city: input.city,
       country: input.country ?? 'France',
       category: input.category,
@@ -116,6 +118,7 @@ export const placesService = {
       latitude: input.latitude,
       longitude: input.longitude,
       visibility: input.visibility,
+      is_favorite: false,
       shared_with_friend_ids: [],
       source: input.source ?? null,
       created_at: now,
@@ -169,6 +172,23 @@ export const placesService = {
         (p.visibility === 'friends' && p.shared_with_friend_ids.includes(currentUserId))
       )
     })
+  },
+
+  /** Toggle the favorite status of a place. */
+  async toggleFavorite(
+    id: string,
+    userId: string,
+  ): Promise<{ place: Place | null; error: string | null }> {
+    await delay(200)
+    const idx = _places.findIndex(p => p.id === id && p.user_id === userId)
+    if (idx === -1) return { place: null, error: 'Lieu introuvable.' }
+
+    _places[idx] = {
+      ..._places[idx],
+      is_favorite: !_places[idx].is_favorite,
+      updated_at: new Date().toISOString(),
+    }
+    return { place: _places[idx], error: null }
   },
 
   /** Share a place with specific friends. */

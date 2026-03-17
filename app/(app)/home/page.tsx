@@ -13,6 +13,7 @@ import { CardSkeleton } from '@/components/ui/Card'
 import { Avatar } from '@/components/ui/Avatar'
 import { ROUTES, FREE_PLAN_LIMIT } from '@/lib/constants'
 import { useRouter } from 'next/navigation'
+import { Heart } from 'lucide-react'
 
 export default function HomePage() {
   const router    = useRouter()
@@ -21,15 +22,17 @@ export default function HomePage() {
   const loading   = usePlacesStore(s => s.loading)
   const count     = usePlacesStore(s => s.placesCount)
   const loadPlaces = usePlacesStore(s => s.loadPlaces)
+  const toggleFavorite = usePlacesStore(s => s.toggleFavorite)
   const [search, setSearch] = useState('')
 
   useEffect(() => {
     loadPlaces(user.id)
   }, [user.id, loadPlaces])
 
-  const recentPlaces = places.slice(0, 4)
-  const isPremium    = user.plan === 'premium'
-  const isAtLimit    = !isPremium && count >= FREE_PLAN_LIMIT
+  const recentPlaces   = places.slice(0, 4)
+  const favoritePlaces = places.filter(p => p.is_favorite)
+  const isPremium      = user.plan === 'premium'
+  const isAtLimit      = !isPremium && count >= FREE_PLAN_LIMIT
 
   return (
     <div className="screen-scroll px-4 pt-6 space-y-5">
@@ -105,10 +108,34 @@ export default function HomePage() {
         <div className="absolute top-6 right-8 w-3 h-3 bg-brand-400 rounded-full" />
       </Link>
 
+      {/* Favorites section */}
+      {!loading && favoritePlaces.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Heart className="w-4 h-4 fill-brand-500 text-brand-500" />
+              <h2 className="font-semibold text-neutral-900">Mes favoris</h2>
+            </div>
+            <Link href={ROUTES.PLACES} className="flex items-center text-sm text-brand-500 font-medium">
+              Voir tout <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {favoritePlaces.slice(0, 3).map(p => (
+              <PlaceCard
+                key={p.id}
+                place={p}
+                onToggleFavorite={id => toggleFavorite(id, user.id)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Recent places */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-neutral-900">Derniers lieux</h2>
+          <h2 className="font-semibold text-neutral-900">Dernières adresses</h2>
           <Link href={ROUTES.PLACES} className="flex items-center text-sm text-brand-500 font-medium">
             Voir tout <ChevronRight className="w-4 h-4" />
           </Link>
@@ -130,7 +157,11 @@ export default function HomePage() {
         ) : (
           <div className="space-y-3">
             {recentPlaces.map(p => (
-              <PlaceCard key={p.id} place={p} />
+              <PlaceCard
+                key={p.id}
+                place={p}
+                onToggleFavorite={id => toggleFavorite(id, user.id)}
+              />
             ))}
             {places.length > 4 && (
               <Link
