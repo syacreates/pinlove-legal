@@ -247,8 +247,7 @@ export default function AddPlacePage() {
       </form>
 
       {/* Sticky save button */}
-      {/* Sticky save button */}
-      <div className="fixed bottom-0 left-0 right-0 px-4 pb-6 pt-3 bg-gradient-to-t from-white via-white to-transparent pointer-events-none">
+      <div className="fixed bottom-[72px] left-0 right-0 z-50 px-4 pb-3 pt-4 bg-gradient-to-t from-white via-white to-transparent pointer-events-none">
         <Button
           type="button"
           onClick={() => savePlace()}
