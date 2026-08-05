@@ -1,0 +1,14 @@
+.vercel
+
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+tsconfig.tsbuildinfo
+
+# environment variables
+.env*.local
+
+# macOS
+.DS_Store
