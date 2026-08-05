@@ -1,4 +1,5 @@
 .vercel
+.claude/
 
 # dependencies
 node_modules/

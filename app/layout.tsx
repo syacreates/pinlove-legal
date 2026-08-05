@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from 'next'
+import { Poppins } from 'next/font/google'
 import './globals.css'
 import { ToastContainer } from '@/components/ui/Toast'
 import { AppInitializer } from '@/components/AppInitializer'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  variable: '--font-poppins',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning className={poppins.variable}>
       <head />
       <body>
         <AppInitializer />

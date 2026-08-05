@@ -48,6 +48,11 @@ const config: Config = {
           '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"',
           '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif',
         ],
+        display: [
+          'var(--font-poppins)',
+          '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"',
+          '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif',
+        ],
       },
       borderRadius: {
         '2xl': '1rem',
