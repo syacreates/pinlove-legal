@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { useAuthStore } from '@/stores/auth.store'
 import { ROUTES } from '@/lib/constants'
 
@@ -34,9 +35,14 @@ export default function SplashPage() {
     <div className="fixed inset-0 premium-gradient flex flex-col items-center justify-center">
       {/* Logo */}
       <div className="flex flex-col items-center gap-4 animate-scale-in">
-        <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-modal">
-          <span className="text-5xl">📍</span>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="PinLove"
+          width={96}
+          height={96}
+          className="rounded-3xl shadow-modal"
+          priority
+        />
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white tracking-tight">PinLove</h1>
           <p className="text-white/80 text-base mt-1">

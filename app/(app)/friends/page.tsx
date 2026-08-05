@@ -33,8 +33,8 @@ export default function FriendsPage() {
   const isPremium = user.plan === 'premium'
 
   useEffect(() => {
-    // Load demo friends for display
-    friendsService.getDemoFriends().then(setFriends)
+    // Load real friends
+    friendsService.getFriends(user.id).then(setFriends)
   }, [user.id])
 
   async function handleGenerateInvite() {

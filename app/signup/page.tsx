@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
+import Image from 'next/image'
 import { ROUTES } from '@/lib/constants'
 
 export default function SignupPage() {
@@ -45,7 +46,14 @@ export default function SignupPage() {
     <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Hero */}
       <div className="premium-gradient px-6 pt-16 pb-12 flex flex-col items-center text-center">
-        <span className="text-4xl mb-3">✨</span>
+        <Image
+          src="/logo.png"
+          alt="PinLove"
+          width={72}
+          height={72}
+          className="rounded-2xl shadow-modal mb-4"
+          priority
+        />
         <h1 className="text-2xl font-bold text-white">Créer un compte</h1>
         <p className="text-white/80 text-sm mt-1">Gratuit pour commencer</p>
       </div>

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
+import Image from 'next/image'
 import { ROUTES } from '@/lib/constants'
 
 export default function LoginPage() {
@@ -37,7 +38,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Hero top */}
       <div className="premium-gradient px-6 pt-16 pb-12 flex flex-col items-center text-center">
-        <span className="text-4xl mb-3">📍</span>
+        <Image
+          src="/logo.png"
+          alt="PinLove"
+          width={72}
+          height={72}
+          className="rounded-2xl shadow-modal mb-4"
+          priority
+        />
         <h1 className="text-2xl font-bold text-white">Connexion</h1>
         <p className="text-white/80 text-sm mt-1">
           Retrouve tous tes spots favoris
@@ -95,10 +103,6 @@ export default function LoginPage() {
             </Link>
           </form>
 
-          {/* Demo mode hint */}
-          <div className="mt-5 p-3 bg-neutral-50 rounded-2xl text-xs text-neutral-500 text-center">
-            <strong className="text-neutral-700">Mode démo</strong> — entre n'importe quel email pour te connecter.
-          </div>
         </div>
 
         <p className="text-center text-sm text-neutral-500 mt-6">

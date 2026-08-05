@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Edit3, LogOut, ChevronRight, Shield, CreditCard, Bell, HelpCircle } from 'lucide-react'
@@ -13,6 +13,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
 import { usePlacesStore } from '@/stores/places.store'
 import { authService } from '@/services/auth.service'
+import { friendsService } from '@/services/friends.service'
 import { ROUTES } from '@/lib/constants'
 import { formatDate } from '@/lib/utils'
 
@@ -23,6 +24,12 @@ export default function ProfilePage() {
   const setUser   = useAuthStore(s => s.setUser)
   const addToast  = useAppStore(s => s.addToast)
   const count     = usePlacesStore(s => s.placesCount)
+
+  const [friendsCount, setFriendsCount] = useState(0)
+
+  useEffect(() => {
+    friendsService.getFriendIds(user.id).then(ids => setFriendsCount(ids.length))
+  }, [user.id])
 
   const [editModal,  setEditModal]  = useState(false)
   const [logoutModal, setLogoutModal] = useState(false)
@@ -73,7 +80,7 @@ export default function ProfilePage() {
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-neutral-50">
           <Stat label="Lieux" value={count} />
-          <Stat label="Plan" value={user.plan === 'premium' ? 'Premium' : 'Gratuit'} />
+          <Stat label="Amis" value={friendsCount} />
           <Stat label="Depuis" value={new Date(user.created_at).getFullYear().toString()} />
         </div>
       </div>

@@ -1,34 +1,46 @@
 /**
  * Auth Store — current user, auth state.
+ * Uses Supabase session + real-time auth state listener.
  */
 
 import { create } from 'zustand'
 import type { User } from '@/lib/types'
 import { authService } from '@/services/auth.service'
+import { supabase } from '@/lib/supabase'
 
 interface AuthState {
   user: User | null
   loading: boolean
   initialized: boolean
   setUser: (user: User | null) => void
-  init: () => void
+  init: () => Promise<void>
   signIn: (email: string, password: string) => Promise<string | null>
   signUp: (email: string, password: string, fullName: string) => Promise<string | null>
   signOut: () => Promise<void>
   upgradeToPremium: () => Promise<void>
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   loading: false,
   initialized: false,
 
   setUser: (user) => set({ user }),
 
-  /** Call once on app mount to rehydrate from mock storage. */
-  init: () => {
-    const user = authService.getCurrentUser()
+  /** Call once on app mount — loads session and sets up auth state listener. */
+  init: async () => {
+    const user = await authService.getCurrentUser()
     set({ user, initialized: true })
+
+    // Keep in sync across tabs and on token refresh
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        set({ user: null })
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        const updatedUser = await authService.getCurrentUser()
+        set({ user: updatedUser })
+      }
+    })
   },
 
   signIn: async (email, password) => {

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { ROUTES } from '@/lib/constants'
 
@@ -54,8 +55,15 @@ export default function OnboardingPage() {
     <div
       className={`min-h-screen bg-gradient-to-br ${slide.bg} flex flex-col items-center justify-between px-6 py-16 transition-all duration-500`}
     >
-      {/* Skip */}
-      <div className="w-full flex justify-end">
+      {/* Top bar: logo + skip */}
+      <div className="w-full flex items-center justify-between">
+        <Image
+          src="/logo.png"
+          alt="PinLove"
+          width={40}
+          height={40}
+          className="rounded-xl"
+        />
         <button
           onClick={finish}
           className="text-white/70 text-sm font-medium hover:text-white transition-colors"
