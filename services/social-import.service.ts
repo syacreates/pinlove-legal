@@ -88,8 +88,8 @@ const MOCK_PLACES_POOL = [
   },
 ]
 
-// ── Mock TikTok adapter ───────────────────────────────────────────────────────
-class TikTokMockAdapter implements SocialImportAdapter {
+// ── Real TikTok adapter (oEmbed API) ─────────────────────────────────────────
+class TikTokAdapter implements SocialImportAdapter {
   platform: SourcePlatform = 'tiktok'
 
   canHandle(url: string): boolean {
@@ -97,53 +97,82 @@ class TikTokMockAdapter implements SocialImportAdapter {
   }
 
   async extract(url: string): Promise<ImportResult> {
-    await delay(1200) // Simulate network + AI extraction
-
     const postId = extractPostIdFromUrl(url)
 
-    // Simulate ~75% success rate for location detection
-    const hasLocation = Math.random() > 0.25
+    try {
+      const res = await fetch(
+        `/api/tiktok/oembed?url=${encodeURIComponent(url)}`,
+      )
 
-    if (!hasLocation) {
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        return {
+          status: 'error',
+          platform: 'tiktok',
+          post_id: postId,
+          place_suggestion: null,
+          confidence: 0,
+          error_message: err.error ?? 'Vidéo TikTok introuvable ou privée.',
+          raw_url: url,
+        }
+      }
+
+      const data = await res.json()
+
+      // title = légende complète de la vidéo (inclut les #hashtags)
+      const title: string = data.title ?? ''
+      const author: string = data.author_name ?? ''
+      const thumbnail: string = data.thumbnail_url ?? null
+
+      // Extraire les hashtags depuis la légende
+      const hashtags = (title.match(/#[\w\u00C0-\u024F]+/g) ?? []).join(' ')
+      // Description = légende sans les hashtags (texte pur)
+      const descriptionRaw = title.replace(/#[\w\u00C0-\u024F]+/g, '').trim()
+      const description = [descriptionRaw, hashtags].filter(Boolean).join('\n')
+
       return {
-        status: 'not_found',
+        status: 'found',
+        platform: 'tiktok',
+        post_id: postId,
+        place_suggestion: {
+          name: '',           // L'utilisateur complète
+          address: '',        // L'utilisateur complète
+          city: '',           // L'utilisateur complète
+          country: 'France',
+          category: 'other',
+          description,
+          note: `Via @${author} sur TikTok`,
+          photo_url: thumbnail || undefined,
+          latitude: 48.8566,
+          longitude: 2.3522,
+          source: {
+            platform: 'tiktok',
+            url,
+            post_id: postId,
+            parsed_at: new Date().toISOString(),
+            confidence: 0.6,
+          },
+        },
+        confidence: 0.6,
+        error_message: null,
+        raw_url: url,
+      }
+    } catch {
+      return {
+        status: 'error',
         platform: 'tiktok',
         post_id: postId,
         place_suggestion: null,
         confidence: 0,
-        error_message: null,
+        error_message: 'Impossible d\'analyser cette vidéo TikTok.',
         raw_url: url,
       }
-    }
-
-    const mockPlace = MOCK_PLACES_POOL[
-      Math.floor(Math.random() * MOCK_PLACES_POOL.length)
-    ]
-    const confidence = 0.65 + Math.random() * 0.30 // 0.65–0.95
-
-    return {
-      status: 'found',
-      platform: 'tiktok',
-      post_id: postId,
-      place_suggestion: {
-        ...mockPlace,
-        source: {
-          platform: 'tiktok',
-          url,
-          post_id: postId,
-          parsed_at: new Date().toISOString(),
-          confidence,
-        },
-      },
-      confidence,
-      error_message: null,
-      raw_url: url,
     }
   }
 }
 
-// ── Mock Instagram adapter ────────────────────────────────────────────────────
-class InstagramMockAdapter implements SocialImportAdapter {
+// ── Real Instagram adapter (Meta oEmbed API) ──────────────────────────────────
+class InstagramAdapter implements SocialImportAdapter {
   platform: SourcePlatform = 'instagram'
 
   canHandle(url: string): boolean {
@@ -151,55 +180,81 @@ class InstagramMockAdapter implements SocialImportAdapter {
   }
 
   async extract(url: string): Promise<ImportResult> {
-    await delay(900) // Instagram slightly faster in the mock
-
     const postId = extractPostIdFromUrl(url)
 
-    // Instagram posts often have location tags → higher success rate
-    const hasLocation = Math.random() > 0.15
+    try {
+      const res = await fetch(
+        `/api/instagram/oembed?url=${encodeURIComponent(url)}`,
+      )
 
-    if (!hasLocation) {
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        return {
+          status: 'error',
+          platform: 'instagram',
+          post_id: postId,
+          place_suggestion: null,
+          confidence: 0,
+          error_message: err.error ?? 'Post Instagram introuvable ou privé.',
+          raw_url: url,
+        }
+      }
+
+      const data = await res.json()
+
+      const title: string     = data.title ?? ''
+      const author: string    = data.author_name ?? ''
+      const thumbnail: string = data.thumbnail_url ?? null
+
+      const hashtags      = (title.match(/#[\w\u00C0-\u024F]+/g) ?? []).join(' ')
+      const descriptionRaw = title.replace(/#[\w\u00C0-\u024F]+/g, '').trim()
+      const description   = [descriptionRaw, hashtags].filter(Boolean).join('\n')
+
       return {
-        status: 'not_found',
+        status: 'found',
+        platform: 'instagram',
+        post_id: postId,
+        place_suggestion: {
+          name: '',
+          address: '',
+          city: '',
+          country: 'France',
+          category: 'other',
+          description,
+          note: `Via @${author} sur Instagram`,
+          photo_url: thumbnail || undefined,
+          latitude: 48.8566,
+          longitude: 2.3522,
+          source: {
+            platform: 'instagram',
+            url,
+            post_id: postId,
+            parsed_at: new Date().toISOString(),
+            confidence: 0.6,
+          },
+        },
+        confidence: 0.6,
+        error_message: null,
+        raw_url: url,
+      }
+    } catch {
+      return {
+        status: 'error',
         platform: 'instagram',
         post_id: postId,
         place_suggestion: null,
         confidence: 0,
-        error_message: null,
+        error_message: 'Impossible d\'analyser ce post Instagram.',
         raw_url: url,
       }
-    }
-
-    const mockPlace = MOCK_PLACES_POOL[
-      Math.floor(Math.random() * MOCK_PLACES_POOL.length)
-    ]
-    const confidence = 0.72 + Math.random() * 0.25 // 0.72–0.97
-
-    return {
-      status: 'found',
-      platform: 'instagram',
-      post_id: postId,
-      place_suggestion: {
-        ...mockPlace,
-        source: {
-          platform: 'instagram',
-          url,
-          post_id: postId,
-          parsed_at: new Date().toISOString(),
-          confidence,
-        },
-      },
-      confidence,
-      error_message: null,
-      raw_url: url,
     }
   }
 }
 
 // ── Registry of adapters ──────────────────────────────────────────────────────
 const adapters: SocialImportAdapter[] = [
-  new TikTokMockAdapter(),
-  new InstagramMockAdapter(),
+  new TikTokAdapter(),
+  new InstagramAdapter(),
 ]
 
 // ── Public service ────────────────────────────────────────────────────────────
