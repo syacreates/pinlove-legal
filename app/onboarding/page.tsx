@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
@@ -35,6 +35,10 @@ export default function OnboardingPage() {
   const [current, setCurrent] = useState(0)
 
   const isLast = current === SLIDES.length - 1
+  const isFirst = current === 0
+
+  const touchStartX = useRef<number | null>(null)
+  const SWIPE_THRESHOLD = 50
 
   function next() {
     if (isLast) {
@@ -44,15 +48,39 @@ export default function OnboardingPage() {
     }
   }
 
+  function prev() {
+    if (!isFirst) {
+      setCurrent(c => c - 1)
+    }
+  }
+
   function finish() {
     localStorage.setItem('pinlove_onboarded', '1')
     router.push(ROUTES.SIGNUP)
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current
+    touchStartX.current = null
+
+    if (deltaX <= -SWIPE_THRESHOLD && !isLast) {
+      setCurrent(c => c + 1)
+    } else if (deltaX >= SWIPE_THRESHOLD) {
+      prev()
+    }
   }
 
   const slide = SLIDES[current]
 
   return (
     <div
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className={`min-h-screen bg-gradient-to-br ${slide.bg} flex flex-col items-center justify-between px-6 py-16 transition-all duration-500`}
     >
       {/* Top bar: logo + skip */}
