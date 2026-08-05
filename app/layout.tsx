@@ -12,17 +12,23 @@ export const metadata: Metadata = {
     'Retrouve facilement les adresses que tu as vues sur TikTok et Instagram. Carte interactive, itinéraires, partage avec tes amis.',
   keywords: ['adresses', 'tiktok', 'instagram', 'carte', 'lieux', 'spots'],
   authors: [{ name: 'PinLove' }],
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
     title: 'PinLove',
     description: 'Transforme tes contenus enregistrés en lieux réels.',
     siteName: 'PinLove',
+    images: [{ url: '/logo.png', width: 1024, height: 1024, alt: 'PinLove' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PinLove',
     description: 'Transforme tes contenus enregistrés en lieux réels.',
+    images: ['/logo.png'],
   },
 }
 
