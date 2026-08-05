@@ -1,19 +1,13 @@
 /**
- * Places Service
- *
- * CRUD for places. In V1 uses in-memory store seeded with demo data.
- * Ready for Supabase integration: swap the mock calls for supabase.from('places').
+ * Places Service — Supabase CRUD
  */
 
-import type { Place, PlaceCategory, PlaceVisibility } from '@/lib/types'
-import { DEMO_PLACES } from '@/data/demo'
+import { supabase } from '@/lib/supabase'
+import type { Place, PlaceCategory, PlaceVisibility, SourcePlatform } from '@/lib/types'
 import { FREE_PLAN_LIMIT } from '@/lib/constants'
-import { generateId } from '@/lib/utils'
-
-// ── In-memory store ───────────────────────────────────────────────────────────
-let _places: Place[] = [...DEMO_PLACES]
 
 // ── Types ─────────────────────────────────────────────────────────────────────
+
 export interface CreatePlaceInput {
   name: string
   address: string
@@ -40,43 +34,93 @@ export interface PlacesFilter {
   search?: string
 }
 
+// ── DB ↔ Domain mappers ───────────────────────────────────────────────────────
+
+type DbPlace = Omit<Place, 'source'> & {
+  source_platform: SourcePlatform | null
+  source_url: string | null
+  source_post_id: string | null
+  source_parsed_at: string | null
+  source_confidence: number | null
+}
+
+function dbToPlace(row: DbPlace): Place {
+  const {
+    source_platform, source_url, source_post_id, source_parsed_at, source_confidence,
+    ...rest
+  } = row
+  return {
+    ...rest,
+    source: source_platform ? {
+      platform: source_platform,
+      url: source_url ?? '',
+      post_id: source_post_id,
+      parsed_at: source_parsed_at ?? new Date().toISOString(),
+      confidence: source_confidence ?? 0,
+    } : null,
+  }
+}
+
+function inputToDb(input: CreatePlaceInput, userId: string) {
+  const { source, ...rest } = input
+  return {
+    ...rest,
+    user_id: userId,
+    country: input.country ?? 'France',
+    source_platform: source?.platform ?? null,
+    source_url: source?.url ?? null,
+    source_post_id: source?.post_id ?? null,
+    source_parsed_at: source?.parsed_at ?? null,
+    source_confidence: source?.confidence ?? null,
+  }
+}
+
 // ── Service ───────────────────────────────────────────────────────────────────
+
 export const placesService = {
   /** Returns all places for a user (sorted by most recent). */
   async getPlaces(userId: string, filter?: PlacesFilter): Promise<Place[]> {
-    await delay(300)
-    let results = _places.filter(p => p.user_id === userId)
+    let query = supabase
+      .from('places')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
 
-    if (filter?.category) {
-      results = results.filter(p => p.category === filter.category)
-    }
-    if (filter?.visibility) {
-      results = results.filter(p => p.visibility === filter.visibility)
-    }
+    if (filter?.category) query = query.eq('category', filter.category)
+    if (filter?.visibility) query = query.eq('visibility', filter.visibility)
     if (filter?.search) {
-      const q = filter.search.toLowerCase()
-      results = results.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.city.toLowerCase().includes(q) ||
-        p.address.toLowerCase().includes(q),
-      )
+      const q = filter.search
+      query = query.or(`name.ilike.%${q}%,city.ilike.%${q}%,address.ilike.%${q}%`)
     }
 
-    return results.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-    )
+    const { data, error } = await query
+    if (error) { console.error('[places] getPlaces:', error.message); return [] }
+    return (data as DbPlace[]).map(dbToPlace)
   },
 
   /** Returns a single place by id. */
   async getPlace(id: string): Promise<Place | null> {
-    await delay(200)
-    return _places.find(p => p.id === id) ?? null
+    const { data, error } = await supabase
+      .from('places')
+      .select('*')
+      .eq('id', id)
+      .single()
+    if (error || !data) return null
+    return dbToPlace(data as DbPlace)
   },
 
   /** Count places for a user (used for freemium check). */
   async countPlaces(userId: string): Promise<number> {
-    await delay(100)
-    return _places.filter(p => p.user_id === userId).length
+    try {
+      const { count, error } = await supabase
+        .from('places')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+      if (error) return 0
+      return count ?? 0
+    } catch {
+      return 0
+    }
   },
 
   /** Check if user can add a new place (respects free plan limit). */
@@ -86,14 +130,12 @@ export const placesService = {
     return count < FREE_PLAN_LIMIT
   },
 
-  /** Create a new place. Throws if the free plan limit is reached. */
+  /** Create a new place. Returns error if free plan limit reached. */
   async createPlace(
     userId: string,
     input: CreatePlaceInput,
     userPlan: 'free' | 'premium',
   ): Promise<{ place: Place | null; error: string | null }> {
-    await delay(500)
-
     const canAdd = await placesService.canAddPlace(userId, userPlan)
     if (!canAdd) {
       return {
@@ -102,31 +144,14 @@ export const placesService = {
       }
     }
 
-    const now = new Date().toISOString()
-    const place: Place = {
-      id: generateId(),
-      user_id: userId,
-      name: input.name,
-      address: input.address,
-      postal_code: input.postal_code ?? null,
-      city: input.city,
-      country: input.country ?? 'France',
-      category: input.category,
-      description: input.description ?? null,
-      note: input.note ?? null,
-      photo_url: input.photo_url ?? null,
-      latitude: input.latitude,
-      longitude: input.longitude,
-      visibility: input.visibility,
-      is_favorite: false,
-      shared_with_friend_ids: [],
-      source: input.source ?? null,
-      created_at: now,
-      updated_at: now,
-    }
+    const { data, error } = await supabase
+      .from('places')
+      .insert(inputToDb(input, userId))
+      .select()
+      .single()
 
-    _places = [place, ..._places]
-    return { place, error: null }
+    if (error) return { place: null, error: error.message }
+    return { place: dbToPlace(data as DbPlace), error: null }
   },
 
   /** Update an existing place. */
@@ -135,43 +160,58 @@ export const placesService = {
     userId: string,
     input: UpdatePlaceInput,
   ): Promise<{ place: Place | null; error: string | null }> {
-    await delay(400)
-
-    const idx = _places.findIndex(p => p.id === id && p.user_id === userId)
-    if (idx === -1) return { place: null, error: 'Lieu introuvable.' }
-
-    _places[idx] = {
-      ..._places[idx],
-      ...input,
+    const { source, ...rest } = input
+    const dbUpdate: Record<string, unknown> = {
+      ...rest,
       updated_at: new Date().toISOString(),
     }
-    return { place: _places[idx], error: null }
+    if (source !== undefined) {
+      dbUpdate.source_platform = source?.platform ?? null
+      dbUpdate.source_url = source?.url ?? null
+      dbUpdate.source_post_id = source?.post_id ?? null
+      dbUpdate.source_parsed_at = source?.parsed_at ?? null
+      dbUpdate.source_confidence = source?.confidence ?? null
+    }
+
+    const { data, error } = await supabase
+      .from('places')
+      .update(dbUpdate)
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single()
+
+    if (error) return { place: null, error: error.message }
+    return { place: dbToPlace(data as DbPlace), error: null }
   },
 
   /** Delete a place. */
   async deletePlace(id: string, userId: string): Promise<{ error: string | null }> {
-    await delay(300)
-    const idx = _places.findIndex(p => p.id === id && p.user_id === userId)
-    if (idx === -1) return { error: 'Lieu introuvable.' }
-    _places = _places.filter(p => !(p.id === id && p.user_id === userId))
-    return { error: null }
+    const { error } = await supabase
+      .from('places')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId)
+    return { error: error?.message ?? null }
   },
 
-  /** Returns places shared by friends that are visible to the current user. */
+  /** Returns places shared by friends visible to the current user. */
   async getFriendsPlaces(
     currentUserId: string,
     friendIds: string[],
   ): Promise<Place[]> {
-    await delay(300)
-    return _places.filter(p => {
-      if (p.user_id === currentUserId) return false
-      if (!friendIds.includes(p.user_id)) return false
-      // Must be public or shared with the current user
-      return (
-        p.visibility === 'public' ||
-        (p.visibility === 'friends' && p.shared_with_friend_ids.includes(currentUserId))
-      )
-    })
+    if (!friendIds.length) return []
+
+    const { data, error } = await supabase
+      .from('places')
+      .select('*, user:users!user_id(id, username, full_name, avatar_url)')
+      .in('user_id', friendIds)
+      .neq('user_id', currentUserId)
+      .or(`visibility.eq.public,and(visibility.eq.friends,shared_with_friend_ids.cs.{${currentUserId}})`)
+      .order('created_at', { ascending: false })
+
+    if (error) { console.error('[places] getFriendsPlaces:', error.message); return [] }
+    return (data as DbPlace[]).map(dbToPlace)
   },
 
   /** Toggle the favorite status of a place. */
@@ -179,16 +219,19 @@ export const placesService = {
     id: string,
     userId: string,
   ): Promise<{ place: Place | null; error: string | null }> {
-    await delay(200)
-    const idx = _places.findIndex(p => p.id === id && p.user_id === userId)
-    if (idx === -1) return { place: null, error: 'Lieu introuvable.' }
+    const current = await placesService.getPlace(id)
+    if (!current || current.user_id !== userId) return { place: null, error: 'Lieu introuvable.' }
 
-    _places[idx] = {
-      ..._places[idx],
-      is_favorite: !_places[idx].is_favorite,
-      updated_at: new Date().toISOString(),
-    }
-    return { place: _places[idx], error: null }
+    const { data, error } = await supabase
+      .from('places')
+      .update({ is_favorite: !current.is_favorite, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single()
+
+    if (error) return { place: null, error: error.message }
+    return { place: dbToPlace(data as DbPlace), error: null }
   },
 
   /** Share a place with specific friends. */
@@ -197,20 +240,15 @@ export const placesService = {
     userId: string,
     friendIds: string[],
   ): Promise<{ error: string | null }> {
-    await delay(300)
-    const idx = _places.findIndex(p => p.id === id && p.user_id === userId)
-    if (idx === -1) return { error: 'Lieu introuvable.' }
-
-    _places[idx] = {
-      ..._places[idx],
-      shared_with_friend_ids: friendIds,
-      visibility: friendIds.length > 0 ? 'friends' : _places[idx].visibility,
-      updated_at: new Date().toISOString(),
-    }
-    return { error: null }
+    const { error } = await supabase
+      .from('places')
+      .update({
+        shared_with_friend_ids: friendIds,
+        visibility: friendIds.length > 0 ? 'friends' : 'private',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .eq('user_id', userId)
+    return { error: error?.message ?? null }
   },
-}
-
-function delay(ms: number) {
-  return new Promise<void>(resolve => setTimeout(resolve, ms))
 }

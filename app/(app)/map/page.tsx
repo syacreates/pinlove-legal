@@ -37,7 +37,10 @@ export default function MapPage() {
 
   useEffect(() => {
     loadPlaces(user.id)
-  }, [user.id, loadPlaces])
+    // Auto-request geolocation on map load
+    locateUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.id])
 
   const filteredPlaces = filterCategory
     ? places.filter(p => p.category === filterCategory)
@@ -55,11 +58,24 @@ export default function MapPage() {
     }
   }
 
-  function handleNavigate(place: Place) {
+  async function handleNavigate(place: Place) {
+    let pos = userPosition
+    if (!pos) {
+      setLocating(true)
+      const { coords, error } = await mapService.getCurrentPosition()
+      setLocating(false)
+      if (!error) {
+        setUserPosition(coords)
+        setGeoError(null)
+        pos = coords
+      } else {
+        setGeoError(error)
+      }
+    }
     const url = mapService.buildDirectionsUrl(
       { lat: place.latitude, lng: place.longitude },
       place.name,
-      userPosition ?? undefined,
+      pos ?? undefined,
     )
     window.open(url, '_blank')
   }
@@ -104,8 +120,8 @@ export default function MapPage() {
         className="flex-1"
       />
 
-      {/* Locate me button */}
-      <div className="absolute bottom-6 right-4 z-30">
+      {/* Locate me button — hidden when a place preview is open to avoid overlap */}
+      <div className={`absolute right-4 z-30 transition-all ${selectedPlace ? 'bottom-[220px]' : 'bottom-[88px]'}`}>
         <button
           onClick={locateUser}
           className={`w-12 h-12 bg-white rounded-2xl shadow-card flex items-center justify-center transition-all ${
@@ -124,7 +140,7 @@ export default function MapPage() {
 
       {/* Geo error */}
       {geoError && (
-        <div className="absolute bottom-20 left-4 right-4 z-30 bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-start gap-2">
+        <div className="absolute bottom-[148px] left-4 right-4 z-30 bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-start gap-2">
           <span className="text-amber-500 text-sm flex-shrink-0">⚠️</span>
           <p className="text-xs text-amber-800">{geoError}</p>
           <button onClick={() => setGeoError(null)} className="ml-auto flex-shrink-0">
@@ -133,9 +149,9 @@ export default function MapPage() {
         </div>
       )}
 
-      {/* Selected place preview */}
+      {/* Selected place preview — positioned above the tab bar (72px) */}
       {selectedPlace && (
-        <div className="absolute bottom-4 left-4 right-4 z-30 bg-white rounded-3xl shadow-modal p-4 animate-slide-up">
+        <div className="absolute bottom-[80px] left-4 right-4 z-30 bg-white rounded-3xl shadow-modal p-4 animate-slide-up">
           <button
             onClick={() => setSelectedPlace(null)}
             className="absolute top-3 right-3 w-7 h-7 bg-neutral-100 rounded-full flex items-center justify-center"

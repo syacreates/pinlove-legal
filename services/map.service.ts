@@ -109,23 +109,29 @@ export const mapService = {
   },
 
   /**
-   * Geocode an address string to coordinates.
-   * V1 mock returns a fixed Paris offset based on the address hash.
-   * Production: use Mapbox Geocoding API or Nominatim.
+   * Geocode an address string to coordinates via Nominatim (OpenStreetMap).
+   * Free, no API key required. Rate limit: 1 req/s — fine for user-triggered calls.
    */
   async geocodeAddress(address: string): Promise<Coordinates | null> {
-    await delay(400)
     if (!address.trim()) return null
 
-    // Simple deterministic hash → small offset around Paris centre
-    let hash = 0
-    for (let i = 0; i < address.length; i++) {
-      hash = ((hash << 5) - hash) + address.charCodeAt(i)
-      hash |= 0
-    }
-    return {
-      lat: 48.8566 + (hash % 1000) / 100_000,
-      lng: 2.3522 + ((hash >> 10) % 1000) / 100_000,
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 5000)
+
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=fr`
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'PinLove App (contact@pinlove.app)' },
+        signal: controller.signal,
+      })
+      clearTimeout(timeout)
+
+      if (!res.ok) return null
+      const results: { lat: string; lon: string }[] = await res.json()
+      if (!results.length) return null
+      return { lat: parseFloat(results[0].lat), lng: parseFloat(results[0].lon) }
+    } catch {
+      return null
     }
   },
 }

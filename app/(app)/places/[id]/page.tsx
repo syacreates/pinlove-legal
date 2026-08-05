@@ -126,7 +126,7 @@ export default function PlaceDetailPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
 
-        {/* Share + delete */}
+        {/* Share + edit + delete */}
         <div className="absolute top-4 right-4 flex gap-2">
           <button
             onClick={handleShare}
@@ -135,12 +135,20 @@ export default function PlaceDetailPage() {
             <Share2 className="w-4 h-4" />
           </button>
           {place.user_id === user.id && (
-            <button
-              onClick={() => setDeleteModal(true)}
-              className="w-10 h-10 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <>
+              <Link
+                href={ROUTES.PLACE_EDIT(place.id)}
+                className="w-10 h-10 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white"
+              >
+                <Edit3 className="w-4 h-4" />
+              </Link>
+              <button
+                onClick={() => setDeleteModal(true)}
+                className="w-10 h-10 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </>
           )}
         </div>
 

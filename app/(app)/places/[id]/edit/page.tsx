@@ -1,18 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft, MapPin, Link2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import { ArrowLeft, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
-import { AddressAutocomplete, type AddressResult } from '@/components/ui/AddressAutocomplete'
 import { useAuthStore } from '@/stores/auth.store'
 import { usePlacesStore } from '@/stores/places.store'
 import { useAppStore } from '@/stores/app.store'
+import { placesService } from '@/services/places.service'
 import { mapService } from '@/services/map.service'
 import type { PlaceCategory, PlaceVisibility } from '@/lib/types'
-import { PLACE_CATEGORIES, ROUTES, FREE_PLAN_LIMIT, VISIBILITY_OPTIONS } from '@/lib/constants'
-import Link from 'next/link'
+import { PLACE_CATEGORIES, ROUTES, VISIBILITY_OPTIONS } from '@/lib/constants'
 
 type FormData = {
   name: string
@@ -25,35 +24,40 @@ type FormData = {
   visibility: PlaceVisibility
 }
 
-export default function AddPlacePage() {
-  const router    = useRouter()
-  const user      = useAuthStore(s => s.user)!
-  const createPlace = usePlacesStore(s => s.createPlace)
-  const count     = usePlacesStore(s => s.placesCount)
-  const addToast  = useAppStore(s => s.addToast)
-  const openPaywall = useAppStore(s => s.openPaywall)
+export default function EditPlacePage() {
+  const { id }      = useParams<{ id: string }>()
+  const router      = useRouter()
+  const user        = useAuthStore(s => s.user)!
+  const loadPlaces  = usePlacesStore(s => s.loadPlaces)
+  const addToast    = useAppStore(s => s.addToast)
 
-  const [form, setForm] = useState<FormData>({
-    name: '', address: '', postal_code: '', city: '', category: 'restaurant',
-    description: '', note: '', visibility: 'private',
-  })
-  const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState<string | null>(null)
-  const [autoCoords, setAutoCoords] = useState<{ lat: number; lng: number } | null>(null)
+  const [form,    setForm]    = useState<FormData | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState<string | null>(null)
 
-  const isAtLimit = user.plan === 'free' && count >= FREE_PLAN_LIMIT
+  useEffect(() => {
+    placesService.getPlace(id).then(place => {
+      if (!place) { router.replace(ROUTES.PLACES); return }
+      setForm({
+        name:        place.name,
+        address:     place.address,
+        postal_code: place.postal_code ?? '',
+        city:        place.city,
+        category:    place.category,
+        description: place.description ?? '',
+        note:        place.note ?? '',
+        visibility:  place.visibility,
+      })
+    })
+  }, [id, router])
 
   function updateForm(field: keyof FormData, value: string) {
-    setForm(f => ({ ...f, [field]: value }))
+    setForm(f => f ? { ...f, [field]: value } : f)
   }
 
-  async function savePlace() {
+  async function handleSave() {
+    if (!form) return
     setError(null)
-
-    if (isAtLimit) {
-      openPaywall()
-      return
-    }
 
     if (!form.name.trim() || !form.address.trim() || !form.city.trim()) {
       const msg = 'Nom, adresse et ville sont requis.'
@@ -63,56 +67,34 @@ export default function AddPlacePage() {
     }
 
     setLoading(true)
-
     try {
-      const coords = autoCoords ?? await mapService.geocodeAddress(`${form.address}, ${form.city}`)
-
-      const { error: err } = await createPlace(
-        user.id,
-        {
-          ...form,
-          latitude:  coords?.lat ?? 48.8566,
-          longitude: coords?.lng ?? 2.3522,
-        },
-        user.plan,
-      )
+      const coords = await mapService.geocodeAddress(`${form.address}, ${form.city}`)
+      const { error: err } = await placesService.updatePlace(id, user.id, {
+        ...form,
+        ...(coords ? { latitude: coords.lat, longitude: coords.lng } : {}),
+      })
 
       if (err) {
         setError(err)
         addToast({ type: 'error', message: err })
       } else {
-        addToast({ type: 'success', message: `${form.name} ajouté avec succès !` })
-        router.push(ROUTES.PLACES)
+        await loadPlaces(user.id)
+        addToast({ type: 'success', message: `${form.name} mis à jour !` })
+        router.replace(ROUTES.PLACE(id))
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Erreur inattendue.'
       setError(msg)
       addToast({ type: 'error', message: msg })
-      console.error('[savePlace] exception', e)
     } finally {
       setLoading(false)
     }
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    savePlace()
-  }
-
-  if (isAtLimit) {
+  if (!form) {
     return (
-      <div className="screen-scroll flex flex-col items-center justify-center px-6 text-center">
-        <span className="text-5xl mb-4">🚫</span>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Limite gratuite atteinte</h2>
-        <p className="text-neutral-500 text-sm mb-6">
-          Tu as atteint la limite de {FREE_PLAN_LIMIT} adresses du plan gratuit. Passe en premium pour continuer.
-        </p>
-        <Button variant="primary" size="lg" onClick={() => router.push(ROUTES.PRICING)} fullWidth className="max-w-xs">
-          Voir l'offre Premium
-        </Button>
-        <button onClick={() => router.back()} className="mt-4 text-sm text-neutral-500">
-          Retour
-        </button>
+      <div className="screen-scroll flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -128,26 +110,12 @@ export default function AddPlacePage() {
           <ArrowLeft className="w-5 h-5 text-neutral-600" />
         </button>
         <div>
-          <h1 className="text-xl font-bold text-neutral-900">Ajouter un lieu</h1>
-          <p className="text-sm text-neutral-500">Saisie manuelle</p>
+          <h1 className="text-xl font-bold text-neutral-900">Modifier le lieu</h1>
+          <p className="text-sm text-neutral-500">{form.name}</p>
         </div>
       </div>
 
-      {/* Import link shortcut */}
-      <Link
-        href={ROUTES.IMPORT}
-        className="flex items-center gap-3 bg-brand-50 border border-brand-200 rounded-2xl p-3 mb-6"
-      >
-        <div className="w-8 h-8 bg-brand-500 rounded-xl flex items-center justify-center flex-shrink-0">
-          <Link2 className="w-4 h-4 text-white" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-brand-900">Tu as un lien TikTok ou Instagram ?</p>
-          <p className="text-xs text-brand-600">Importe directement →</p>
-        </div>
-      </Link>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={e => { e.preventDefault(); handleSave() }} className="space-y-4">
         {/* Name */}
         <Input
           label="Nom du lieu *"
@@ -181,19 +149,15 @@ export default function AddPlacePage() {
         </div>
 
         {/* Address */}
-        <AddressAutocomplete
+        <Input
           label="Adresse *"
           value={form.address}
-          onChange={v => updateForm('address', v)}
-          onSelect={(r: AddressResult) => {
-            updateForm('address', r.address)
-            updateForm('city', r.city)
-            updateForm('postal_code', r.postal_code)
-            setAutoCoords({ lat: r.lat, lng: r.lng })
-          }}
+          onChange={e => updateForm('address', e.target.value)}
+          placeholder="Ex : 172 Bd Saint-Germain"
+          required
         />
 
-        {/* Postal code + City row */}
+        {/* Postal code + City */}
         <div className="grid grid-cols-2 gap-3">
           <Input
             label="Code postal"
@@ -223,7 +187,7 @@ export default function AddPlacePage() {
           label="Ma note privée"
           value={form.note}
           onChange={e => updateForm('note', e.target.value)}
-          placeholder="Ton astuce personnelle (commander le chocolat chaud !)"
+          placeholder="Ton astuce personnelle"
         />
 
         {/* Visibility */}
@@ -258,23 +222,20 @@ export default function AddPlacePage() {
             ))}
           </div>
         </div>
-
       </form>
 
-      {error && (
-        <p className="text-sm text-red-500 text-center mt-4 mb-2 px-2">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-500 text-center mt-4 mb-2 px-2">{error}</p>}
 
       {/* Sticky save button */}
       <div className="fixed bottom-[72px] left-0 right-0 z-50 flex justify-center px-4 pb-3 pt-4 bg-gradient-to-t from-white via-white to-transparent pointer-events-none">
         <Button
           type="button"
-          onClick={() => savePlace()}
+          onClick={handleSave}
           loading={loading}
           size="lg"
           className="pointer-events-auto shadow-lg"
         >
-          Enregistrer ce lieu
+          Sauvegarder les modifications
         </Button>
       </div>
     </div>

@@ -57,6 +57,7 @@ export const ROUTES = {
   IMPORT:     '/import',
   PLACES:     '/places',
   PLACE:      (id: string) => `/places/${id}`,
+  PLACE_EDIT: (id: string) => `/places/${id}/edit`,
   FRIENDS:    '/friends',
   PROFILE:    '/profile',
   PRICING:    '/pricing',
