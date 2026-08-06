@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Capacitor } from '@capacitor/core'
+import { App as CapacitorApp } from '@capacitor/app'
 import { useAuthStore } from '@/stores/auth.store'
 
 /**
@@ -9,10 +12,33 @@ import { useAuthStore } from '@/stores/auth.store'
  */
 export function AppInitializer() {
   const init = useAuthStore(s => s.init)
+  const router = useRouter()
 
   useEffect(() => {
     init()
   }, [init])
+
+  // Lien reçu via la Share Extension iOS / Share Intent Android
+  // (pinlove://import?url=<lien TikTok ou Instagram partagé>)
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return
+
+    const listener = CapacitorApp.addListener('appUrlOpen', ({ url }) => {
+      try {
+        const parsed = new URL(url)
+        const sharedUrl = parsed.searchParams.get('url')
+        if (parsed.pathname.includes('import') && sharedUrl) {
+          router.push(`/import?url=${encodeURIComponent(sharedUrl)}`)
+        }
+      } catch {
+        // Lien mal formé — on ignore
+      }
+    })
+
+    return () => {
+      listener.then(l => l.remove())
+    }
+  }, [router])
 
   return null
 }

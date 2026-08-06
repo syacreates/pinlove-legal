@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, Link2, Check, HelpCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
@@ -22,6 +22,7 @@ type Step = 'input' | 'analyzing' | 'preview' | 'success' | 'error' | 'no_locati
 
 export default function ImportPage() {
   const router      = useRouter()
+  const searchParams = useSearchParams()
   const user        = useAuthStore(s => s.user)!
   const createPlace = usePlacesStore(s => s.createPlace)
   const count       = usePlacesStore(s => s.placesCount)
@@ -47,10 +48,21 @@ export default function ImportPage() {
   const isAtLimit = user.plan === 'free' && count >= FREE_PLAN_LIMIT
   const platform  = detectPlatformFromUrl(url)
 
-  async function handleAnalyze() {
-    if (!url.trim()) return
+  // Lien reçu via le partage natif (Share Extension iOS / Share Intent Android)
+  useEffect(() => {
+    const sharedUrl = searchParams.get('url')
+    if (sharedUrl) {
+      setUrl(sharedUrl)
+      handleAnalyze(sharedUrl)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
+
+  async function handleAnalyze(urlOverride?: string) {
+    const targetUrl = urlOverride ?? url
+    if (!targetUrl.trim()) return
     setStep('analyzing')
-    const res = await socialImportService.importFromUrl(url)
+    const res = await socialImportService.importFromUrl(targetUrl)
     setResult(res)
 
     if (res.status === 'found' && res.place_suggestion) {
