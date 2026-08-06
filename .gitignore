@@ -13,3 +13,13 @@ tsconfig.tsbuildinfo
 
 # macOS
 .DS_Store
+
+# Capacitor native builds
+ios/App/Pods/
+ios/App/build/
+ios/App/DerivedData/
+android/.gradle/
+android/local.properties
+android/app/build/
+android/build/
+android/captures/

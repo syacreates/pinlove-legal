@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PinLove</string>
+    <string name="title_activity_main">PinLove</string>
+    <string name="package_name">com.syacreates.pinlove</string>
+    <string name="custom_url_scheme">com.syacreates.pinlove</string>
+</resources>
