@@ -5,6 +5,7 @@
 import { supabase } from '@/lib/supabase'
 import type { Place, PlaceCategory, PlaceVisibility, SourcePlatform } from '@/lib/types'
 import { FREE_PLAN_LIMIT } from '@/lib/constants'
+import { withTimeout } from '@/lib/utils'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -112,10 +113,11 @@ export const placesService = {
   /** Count places for a user (used for freemium check). */
   async countPlaces(userId: string): Promise<number> {
     try {
-      const { count, error } = await supabase
-        .from('places')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
+      const { count, error } = await withTimeout(
+        supabase.from('places').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+        10_000,
+        'Comptage des lieux',
+      )
       if (error) return 0
       return count ?? 0
     } catch {
@@ -144,14 +146,18 @@ export const placesService = {
       }
     }
 
-    const { data, error } = await supabase
-      .from('places')
-      .insert(inputToDb(input, userId))
-      .select()
-      .single()
+    try {
+      const { data, error } = await withTimeout(
+        supabase.from('places').insert(inputToDb(input, userId)).select().single(),
+        10_000,
+        'Enregistrement du lieu',
+      )
 
-    if (error) return { place: null, error: error.message }
-    return { place: dbToPlace(data as DbPlace), error: null }
+      if (error) return { place: null, error: error.message }
+      return { place: dbToPlace(data as DbPlace), error: null }
+    } catch (e) {
+      return { place: null, error: e instanceof Error ? e.message : 'Erreur inattendue.' }
+    }
   },
 
   /** Update an existing place. */

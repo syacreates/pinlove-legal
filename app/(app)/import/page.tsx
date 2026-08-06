@@ -200,7 +200,7 @@ export default function ImportPage() {
             size="lg"
             fullWidth
             disabled={!url.trim() || !platform}
-            onClick={handleAnalyze}
+            onClick={() => handleAnalyze()}
           >
             Analyser le lien
           </Button>

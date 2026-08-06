@@ -10,6 +10,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// ── Timeout helper ────────────────────────────────────────────────────────────
+/** Rejects with a timeout error if `promise` doesn't settle within `ms`. */
+export function withTimeout<T>(promise: PromiseLike<T>, ms: number, label = 'Opération'): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`${label} : délai dépassé (${ms}ms).`)), ms),
+    ),
+  ])
+}
+
 // ── Date helpers ──────────────────────────────────────────────────────────────
 export function timeAgo(date: string | Date): string {
   return formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr })
