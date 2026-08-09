@@ -43,13 +43,17 @@ export default function PlaceDetailPage() {
   async function handleNavigate() {
     if (!place) return
     setNavigating(true)
+    // Ouvre l'onglet immédiatement (dans le même tick que le clic) pour que le
+    // navigateur ne le bloque pas comme popup — l'URL est fixée une fois prête.
+    const tab = window.open('', '_blank')
     const { coords } = await mapService.getCurrentPosition()
     const url = mapService.buildDirectionsUrl(
       { lat: place.latitude, lng: place.longitude },
       place.name,
       coords,
     )
-    window.open(url, '_blank')
+    if (tab) tab.location.href = url
+    else window.open(url, '_blank')
     setNavigating(false)
   }
 
