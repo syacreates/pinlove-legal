@@ -119,7 +119,7 @@ export const mapService = {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 5000)
 
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=fr`
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`
       const res = await fetch(url, {
         headers: { 'User-Agent': 'PinLove App (contact@pinlove.app)' },
         signal: controller.signal,
