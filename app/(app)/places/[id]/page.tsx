@@ -46,7 +46,8 @@ export default function PlaceDetailPage() {
     // Ouvre l'onglet immédiatement (dans le même tick que le clic) pour que le
     // navigateur ne le bloque pas comme popup — l'URL est fixée une fois prête.
     const tab = window.open('', '_blank')
-    const { coords } = await mapService.getCurrentPosition()
+    const { coords, error } = await mapService.getCurrentPosition()
+    if (error) addToast({ type: 'error', message: error })
     const url = mapService.buildDirectionsUrl(
       { lat: place.latitude, lng: place.longitude },
       place.name,
