@@ -59,6 +59,10 @@ export default function MapPage() {
   }
 
   async function handleNavigate(place: Place) {
+    // Ouvre l'onglet immédiatement (dans le même tick que le clic) pour que le
+    // navigateur ne le bloque pas comme popup — l'URL est fixée une fois prête.
+    const tab = window.open('', '_blank')
+
     let pos = userPosition
     if (!pos) {
       setLocating(true)
@@ -77,7 +81,8 @@ export default function MapPage() {
       place.name,
       pos ?? undefined,
     )
-    window.open(url, '_blank')
+    if (tab) tab.location.href = url
+    else window.open(url, '_blank')
   }
 
   return (
