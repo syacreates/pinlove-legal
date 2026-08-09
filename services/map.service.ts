@@ -12,11 +12,13 @@ import { DEFAULT_MAP_CENTER } from '@/lib/constants'
 export const mapService = {
   /**
    * Get the user's current position via the browser Geolocation API.
-   * Falls back to DEFAULT_MAP_CENTER (Paris) if permission is denied.
+   * Falls back to IP-based geolocation (city-level, works worldwide) if the
+   * browser can't resolve a precise position, then to DEFAULT_MAP_CENTER
+   * (Paris) as a last resort.
    */
   async getCurrentPosition(): Promise<{ coords: Coordinates; error: string | null }> {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
-      return { coords: DEFAULT_MAP_CENTER, error: 'Géolocalisation non supportée.' }
+      return mapService.geolocateByIp('Géolocalisation non supportée.')
     }
 
     return new Promise(resolve => {
@@ -27,18 +29,43 @@ export const mapService = {
             error: null,
           })
         },
-        err => {
+        async err => {
           console.warn('[map] Geolocation error:', err.message)
-          resolve({
-            coords: DEFAULT_MAP_CENTER,
-            error: err.code === 1
-              ? 'Accès à ta position refusé. Active la géolocalisation dans tes réglages.'
-              : 'Impossible de récupérer ta position.',
-          })
+          const fallbackNote = err.code === 1
+            ? 'Accès à ta position précise refusé — position approximative utilisée.'
+            : 'Position précise indisponible — position approximative utilisée.'
+          resolve(await mapService.geolocateByIp(fallbackNote))
         },
         { timeout: 8000, maximumAge: 60_000 },
       )
     })
+  },
+
+  /**
+   * Approximate position via IP geolocation (city-level, no permission
+   * needed, works worldwide). Used when the browser Geolocation API is
+   * unavailable or fails. Falls back to DEFAULT_MAP_CENTER (Paris) with an
+   * explicit error if even that fails.
+   */
+  async geolocateByIp(note: string): Promise<{ coords: Coordinates; error: string | null }> {
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 5000)
+      const res = await fetch('https://ipinfo.io/json', { signal: controller.signal })
+      clearTimeout(timeout)
+
+      if (!res.ok) throw new Error(`ipinfo ${res.status}`)
+      const data: { loc?: string } = await res.json()
+      const [lat, lng] = (data.loc ?? '').split(',').map(Number)
+      if (!lat || !lng) throw new Error('no loc in response')
+
+      return { coords: { lat, lng }, error: note }
+    } catch {
+      return {
+        coords: DEFAULT_MAP_CENTER,
+        error: 'Impossible de récupérer ta position, même approximative.',
+      }
+    }
   },
 
   /**
