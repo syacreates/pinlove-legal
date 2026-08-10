@@ -59,7 +59,8 @@ export const mapService = {
       const [lat, lng] = (data.loc ?? '').split(',').map(Number)
       if (!lat || !lng) throw new Error('no loc in response')
 
-      return { coords: { lat, lng }, error: note }
+      console.info('[map]', note)
+      return { coords: { lat, lng }, error: null }
     } catch {
       return {
         coords: DEFAULT_MAP_CENTER,
