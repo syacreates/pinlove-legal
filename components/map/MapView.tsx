@@ -42,12 +42,17 @@ function createEmojiIcon(emoji: string, isSelected = false): L.DivIcon {
 }
 
 // ── Fly-to helper ─────────────────────────────────────────────────────────────
+// map.flyTo() peut lever "Invalid LatLng object: (NaN, NaN)" si le conteneur
+// Leaflet n'est pas encore mesuré (taille 0x0) au moment de l'appel — courant
+// juste après le montage d'un import dynamique. On diffère au prochain repaint.
 function FlyToSelected({ place }: { place: Place | null }) {
   const map = useMap()
   useEffect(() => {
-    if (place) {
+    if (!place) return
+    const frame = requestAnimationFrame(() => {
       map.flyTo([place.latitude, place.longitude], 15, { duration: 0.8 })
-    }
+    })
+    return () => cancelAnimationFrame(frame)
   }, [place, map])
   return null
 }
@@ -55,9 +60,11 @@ function FlyToSelected({ place }: { place: Place | null }) {
 function FlyToUser({ coords }: { coords: Coordinates | null }) {
   const map = useMap()
   useEffect(() => {
-    if (coords) {
+    if (!coords) return
+    const frame = requestAnimationFrame(() => {
       map.flyTo([coords.lat, coords.lng], 14, { duration: 0.8 })
-    }
+    })
+    return () => cancelAnimationFrame(frame)
   }, [coords, map])
   return null
 }
