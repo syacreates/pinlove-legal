@@ -36,7 +36,7 @@ export const mapService = {
             : 'Position précise indisponible — position approximative utilisée.'
           resolve(await mapService.geolocateByIp(fallbackNote))
         },
-        { timeout: 8000, maximumAge: 60_000 },
+        { timeout: 8000, maximumAge: 60_000, enableHighAccuracy: true },
       )
     })
   },
