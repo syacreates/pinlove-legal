@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { Navigation, Filter, X, MapPin } from 'lucide-react'
+import { Capacitor } from '@capacitor/core'
 import { Button } from '@/components/ui/Button'
 import { CategoryBadge } from '@/components/ui/Badge'
 import { useAuthStore } from '@/stores/auth.store'
@@ -59,9 +60,12 @@ export default function MapPage() {
   }
 
   async function handleNavigate(place: Place) {
-    // Ouvre l'onglet immédiatement (dans le même tick que le clic) pour que le
-    // navigateur ne le bloque pas comme popup — l'URL est fixée une fois prête.
-    const tab = window.open('', '_blank')
+    const isNative = Capacitor.isNativePlatform()
+    // Sur web, ouvre l'onglet immédiatement (même tick que le clic) pour éviter
+    // le blocage popup — l'URL est fixée une fois prête. En natif (Capacitor),
+    // la WebView ne supporte pas window.open() : on redirige directement, ce
+    // qui laisse iOS/Android relayer le lien vers l'app Plans via universal link.
+    const tab = isNative ? null : window.open('', '_blank')
 
     let pos = userPosition
     if (!pos) {
@@ -81,7 +85,8 @@ export default function MapPage() {
       place.name,
       pos ?? undefined,
     )
-    if (tab) tab.location.href = url
+    if (isNative) window.location.href = url
+    else if (tab) tab.location.href = url
     else window.open(url, '_blank')
   }
 

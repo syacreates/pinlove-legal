@@ -115,7 +115,7 @@ export const placesService = {
     try {
       const { count, error } = await withTimeout(
         supabase.from('places').select('*', { count: 'exact', head: true }).eq('user_id', userId),
-        10_000,
+        25_000,
         'Comptage des lieux',
       )
       if (error) return 0
@@ -149,7 +149,7 @@ export const placesService = {
     try {
       const { data, error } = await withTimeout(
         supabase.from('places').insert(inputToDb(input, userId)).select().single(),
-        10_000,
+        25_000,
         'Enregistrement du lieu',
       )
 

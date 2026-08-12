@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Capacitor } from '@capacitor/core'
 import {
   ArrowLeft, MapPin, Navigation, Trash2, Edit3,
   Share2, ExternalLink, Clock,
@@ -43,9 +44,12 @@ export default function PlaceDetailPage() {
   async function handleNavigate() {
     if (!place) return
     setNavigating(true)
-    // Ouvre l'onglet immédiatement (dans le même tick que le clic) pour que le
-    // navigateur ne le bloque pas comme popup — l'URL est fixée une fois prête.
-    const tab = window.open('', '_blank')
+    const isNative = Capacitor.isNativePlatform()
+    // Sur web, ouvre l'onglet immédiatement (même tick que le clic) pour éviter
+    // le blocage popup — l'URL est fixée une fois prête. En natif (Capacitor),
+    // la WebView ne supporte pas window.open() : on redirige directement, ce
+    // qui laisse iOS/Android relayer le lien vers l'app Plans via universal link.
+    const tab = isNative ? null : window.open('', '_blank')
     const { coords, error } = await mapService.getCurrentPosition()
     if (error) addToast({ type: 'error', message: error })
     const url = mapService.buildDirectionsUrl(
@@ -53,7 +57,8 @@ export default function PlaceDetailPage() {
       place.name,
       coords,
     )
-    if (tab) tab.location.href = url
+    if (isNative) window.location.href = url
+    else if (tab) tab.location.href = url
     else window.open(url, '_blank')
     setNavigating(false)
   }

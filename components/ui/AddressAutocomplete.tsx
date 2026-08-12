@@ -24,9 +24,12 @@ interface NominatimResult {
     town?: string
     village?: string
     municipality?: string
+    suburb?: string
+    county?: string
+    state_district?: string
+    state?: string
     postcode?: string
     country?: string
-    state?: string
   }
 }
 
@@ -83,7 +86,10 @@ export function AddressAutocomplete({
   function handleSelect(item: NominatimResult) {
     const addr = item.address
     const road = [addr.house_number, addr.road].filter(Boolean).join(' ')
-    const city = addr.city ?? addr.town ?? addr.village ?? addr.municipality ?? ''
+    // Les lieux naturels (plages, parcs...) n'ont souvent pas de tag "city" dans
+    // Nominatim — on retombe sur les découpages administratifs plus larges.
+    const city = addr.city ?? addr.town ?? addr.village ?? addr.municipality
+      ?? addr.suburb ?? addr.county ?? addr.state_district ?? addr.state ?? ''
 
     onSelect({
       address:     road || item.display_name.split(',')[0],
@@ -142,7 +148,8 @@ export function AddressAutocomplete({
           {suggestions.map((item, i) => {
             const addr = item.address
             const road = [addr.house_number, addr.road].filter(Boolean).join(' ')
-            const city = addr.city ?? addr.town ?? addr.village ?? ''
+            const city = addr.city ?? addr.town ?? addr.village ?? addr.municipality
+              ?? addr.suburb ?? addr.county ?? addr.state_district ?? addr.state ?? ''
             const postcode = addr.postcode ?? ''
             return (
               <li
