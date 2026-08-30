@@ -31,7 +31,7 @@ export function StampBadge({
         className={cn('stamp-ring absolute inset-0', !animated && '!animate-none')}
       >
         {size === 'lg' && (
-          <svg viewBox="0 0 100 100" className="absolute -inset-[11px] w-[calc(100%+22px)] h-[calc(100%+22px)]">
+          <svg viewBox="0 0 100 100" className="absolute -inset-[17px] w-[calc(100%+34px)] h-[calc(100%+34px)]">
             <path id={ringId} d="M50,6 a44,44 0 1,1 -0.1,0" fill="none" />
             <text fontSize="8.4" letterSpacing=".18em" fill="#E7B34A">
               <textPath href={`#${ringId}`} startOffset="0%">
