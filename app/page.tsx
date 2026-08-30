@@ -1,22 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuthStore } from '@/stores/auth.store'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { Button } from '@/components/ui/Button'
 import { ROUTES } from '@/lib/constants'
 
 /**
- * Root page: splash screen + redirect logic.
- * Stays put until the user taps "Démarrer" — no auto-redirect.
- * - Authenticated users → Home
- * - Everyone else → Onboarding (l'explication de l'app), à chaque fois.
- *   Un utilisateur qui a déjà un compte peut toujours passer directement à
- *   la connexion via "Passer →" ou "J'ai déjà un compte" sur l'onboarding.
+ * Root page: splash screen. Stays put until the user taps "Démarrer" — no
+ * auto-redirect. Always leads to Onboarding (l'explication de l'app), même
+ * pour un utilisateur déjà connecté — l'onboarding renvoie vers l'Accueil
+ * à la fin dans ce cas (voir app/onboarding/page.tsx).
  */
 export default function SplashPage() {
-  const user = useAuthStore(s => s.user)
-  const initialized = useAuthStore(s => s.initialized)
   const [leaving, setLeaving] = useState(false)
 
   function handleStart() {
@@ -25,8 +20,10 @@ export default function SplashPage() {
     // avec une navigation SPA (router.replace). Un vrai changement de page
     // fonctionne de façon garantie partout, au prix d'un rechargement complet
     // ici — acceptable pour cette transition d'entrée, ponctuelle.
+    // L'onboarding (l'explication de l'app) s'affiche toujours, même pour un
+    // utilisateur déjà connecté — il renvoie vers l'Accueil à la fin dans ce cas.
     setLeaving(true)
-    window.location.href = user ? ROUTES.HOME : ROUTES.ONBOARDING
+    window.location.href = ROUTES.ONBOARDING
   }
 
   return (
@@ -52,27 +49,10 @@ export default function SplashPage() {
           leaving ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
       >
-        {initialized ? (
-          <Button variant="primary" size="xl" fullWidth onClick={handleStart}>
-            Démarrer
-          </Button>
-        ) : (
-          <div className="flex justify-center gap-2 py-3.5">
-            <Dot delay="0ms"   />
-            <Dot delay="150ms" />
-            <Dot delay="300ms" />
-          </div>
-        )}
+        <Button variant="primary" size="xl" fullWidth onClick={handleStart}>
+          Démarrer
+        </Button>
       </div>
     </div>
-  )
-}
-
-function Dot({ delay }: { delay: string }) {
-  return (
-    <div
-      className="w-2 h-2 rounded-full bg-white/60 animate-pulse-soft"
-      style={{ animationDelay: delay }}
-    />
   )
 }

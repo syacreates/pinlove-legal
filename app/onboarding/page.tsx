@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { TicketCard } from '@/components/stamp/TicketCard'
+import { useAuthStore } from '@/stores/auth.store'
 import { ROUTES } from '@/lib/constants'
 
 const SLIDES: {
@@ -101,6 +102,7 @@ const SLIDES: {
 
 export default function OnboardingPage() {
   const router = useRouter()
+  const user = useAuthStore(s => s.user)
   const [current, setCurrent] = useState(0)
 
   const isLast = current === SLIDES.length - 1
@@ -125,7 +127,7 @@ export default function OnboardingPage() {
 
   function finish() {
     localStorage.setItem('pinlove_onboarded', '1')
-    router.push(ROUTES.SIGNUP)
+    router.push(user ? ROUTES.HOME : ROUTES.SIGNUP)
   }
 
   function handleTouchStart(e: React.TouchEvent) {
@@ -192,10 +194,10 @@ export default function OnboardingPage() {
         </div>
 
         <Button variant="primary" size="xl" fullWidth className="max-w-sm" onClick={next}>
-          {isLast ? 'Commencer gratuitement' : 'Suivant'}
+          {isLast ? (user ? 'Retour à mes lieux' : 'Commencer gratuitement') : 'Suivant'}
         </Button>
 
-        {isLast && (
+        {isLast && !user && (
           <button
             onClick={() => router.push(ROUTES.LOGIN)}
             className="text-mist-2 text-sm font-mono hover:text-paper transition-colors"
