@@ -62,6 +62,9 @@ export default function ResetPasswordPage() {
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="toi@exemple.com"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
           leftIcon={<Mail className="w-4 h-4" />}
           required
         />

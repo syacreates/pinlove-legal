@@ -8,6 +8,27 @@ import { withTimeout } from '@/lib/utils'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+/** Traduit les messages d'erreur bruts de Supabase Auth (anglais) en français actionnable. */
+function friendlyAuthError(message: string): string {
+  const m = message.toLowerCase()
+  if (m.includes('invalid login credentials')) {
+    return 'Email ou mot de passe incorrect.'
+  }
+  if (m.includes('email not confirmed')) {
+    return 'Confirme ton adresse email avant de te connecter — vérifie ta boîte mail (et les spams).'
+  }
+  if (m.includes('user already registered') || m.includes('already registered')) {
+    return 'Un compte existe déjà avec cet email.'
+  }
+  if (m.includes('password') && m.includes('at least')) {
+    return 'Le mot de passe doit contenir au moins 6 caractères.'
+  }
+  if (m.includes('rate limit')) {
+    return 'Trop de tentatives. Réessaie dans quelques minutes.'
+  }
+  return message
+}
+
 async function fetchProfile(id: string): Promise<User | null> {
   const { data, error } = await supabase
     .from('users')
@@ -33,8 +54,12 @@ export const authService = {
     email: string,
     password: string,
   ): Promise<{ user: User; error: null } | { user: null; error: string }> {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return { user: null, error: error.message }
+    // L'email tapé/collé/auto-rempli peut porter des espaces ou une majuscule
+    // initiale (clavier mobile) — sans ce nettoyage, des identifiants pourtant
+    // corrects échouent silencieusement avec "Invalid login credentials".
+    const cleanEmail = email.trim().toLowerCase()
+    const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password })
+    if (error) return { user: null, error: friendlyAuthError(error.message) }
 
     // Try fetching the profile from DB
     const user = await fetchProfile(data.user.id)
@@ -62,13 +87,14 @@ export const authService = {
     password: string,
     fullName: string,
   ): Promise<{ user: User; error: null } | { user: null; error: string }> {
-    const username = email.split('@')[0].replace(/[^a-z0-9_]/gi, '_').toLowerCase()
+    const cleanEmail = email.trim().toLowerCase()
+    const username = cleanEmail.split('@')[0].replace(/[^a-z0-9_]/gi, '_').toLowerCase()
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: cleanEmail,
       password,
-      options: { data: { full_name: fullName, username } },
+      options: { data: { full_name: fullName.trim(), username } },
     })
-    if (error) return { user: null, error: error.message }
+    if (error) return { user: null, error: friendlyAuthError(error.message) }
     if (!data.user) return { user: null, error: 'Erreur lors de la création du compte.' }
 
     // If email confirmation is required, inform the user
@@ -96,10 +122,10 @@ export const authService = {
 
   /** Send a password reset email. */
   async resetPassword(email: string): Promise<{ error: string | null }> {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
       redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
     })
-    return { error: error?.message ?? null }
+    return { error: error ? friendlyAuthError(error.message) : null }
   },
 
   /** Update the current user profile. */

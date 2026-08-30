@@ -59,6 +59,9 @@ export default function LoginPage() {
             onChange={e => setEmail(e.target.value)}
             placeholder="toi@exemple.com"
             autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             leftIcon={<Mail className="w-4 h-4" />}
             required
           />
