@@ -1,5 +1,5 @@
 .vercel
-.claude/
+.claude/settings.local.json
 
 # dependencies
 node_modules/
