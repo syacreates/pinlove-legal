@@ -37,6 +37,7 @@ export default function ProfilePage() {
   const [fullName,   setFullName]   = useState(user.full_name)
   const [username,   setUsername]   = useState(user.username)
   const [saving,     setSaving]     = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
 
   async function handleSaveProfile() {
     setSaving(true)
@@ -52,8 +53,16 @@ export default function ProfilePage() {
   }
 
   async function handleLogout() {
-    await signOut()
-    router.replace(ROUTES.LOGIN)
+    if (loggingOut) return
+    setLoggingOut(true)
+    try {
+      await signOut()
+    } catch (e) {
+      addToast({ type: 'error', message: 'La déconnexion a rencontré un problème, mais ta session locale a été effacée.' })
+      console.error('[profile] handleLogout:', e)
+    } finally {
+      router.replace(ROUTES.LOGIN)
+    }
   }
 
   return (
@@ -154,7 +163,7 @@ export default function ProfilePage() {
           Tu seras redirigé vers l'écran de connexion.
         </p>
         <div className="flex flex-col gap-3">
-          <Button variant="danger" fullWidth onClick={handleLogout}>
+          <Button variant="danger" fullWidth loading={loggingOut} onClick={handleLogout}>
             Se déconnecter
           </Button>
           <Button variant="ghost" fullWidth onClick={() => setLogoutModal(false)}>

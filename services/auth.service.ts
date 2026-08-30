@@ -4,6 +4,7 @@
 
 import { supabase } from '@/lib/supabase'
 import type { User } from '@/lib/types'
+import { withTimeout } from '@/lib/utils'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -84,9 +85,13 @@ export const authService = {
     return { user: null, error: 'Profil introuvable. Réessaie dans quelques secondes.' }
   },
 
-  /** Sign out. */
+  /** Sign out. Ne bloque jamais le client même si Supabase est injoignable. */
   async signOut(): Promise<void> {
-    await supabase.auth.signOut()
+    try {
+      await withTimeout(supabase.auth.signOut(), 8_000, 'Déconnexion')
+    } catch (e) {
+      console.error('[auth] signOut:', e)
+    }
   },
 
   /** Send a password reset email. */

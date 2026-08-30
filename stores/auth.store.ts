@@ -58,8 +58,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   signOut: async () => {
-    await authService.signOut()
-    set({ user: null })
+    // Efface toujours la session locale, même si l'appel réseau échoue ou
+    // traîne — rester connecté côté client parce que Supabase ne répond pas
+    // serait pire qu'une session serveur pas parfaitement synchronisée.
+    try {
+      await authService.signOut()
+    } finally {
+      set({ user: null })
+    }
   },
 
   upgradeToPremium: async () => {

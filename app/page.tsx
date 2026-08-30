@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/stores/auth.store'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { Button } from '@/components/ui/Button'
@@ -16,17 +15,18 @@ import { ROUTES } from '@/lib/constants'
  *   la connexion via "Passer →" ou "J'ai déjà un compte" sur l'onboarding.
  */
 export default function SplashPage() {
-  const router = useRouter()
   const user = useAuthStore(s => s.user)
   const initialized = useAuthStore(s => s.initialized)
   const [leaving, setLeaving] = useState(false)
 
   function handleStart() {
-    // Navigue tout de suite — ne fait jamais attendre la navigation derrière
-    // l'animation, qui reste purement visuelle (elle joue pendant que la
-    // page suivante se charge, sans bloquer si un appareil est plus lent).
+    // Navigation "dure" (window.location) plutôt que le routeur client :
+    // certains navigateurs ont laissé cet écran bloqué juste après le clic
+    // avec une navigation SPA (router.replace). Un vrai changement de page
+    // fonctionne de façon garantie partout, au prix d'un rechargement complet
+    // ici — acceptable pour cette transition d'entrée, ponctuelle.
     setLeaving(true)
-    router.replace(user ? ROUTES.HOME : ROUTES.ONBOARDING)
+    window.location.href = user ? ROUTES.HOME : ROUTES.ONBOARDING
   }
 
   return (
