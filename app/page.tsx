@@ -20,10 +20,13 @@ export default function SplashPage() {
     // avec une navigation SPA (router.replace). Un vrai changement de page
     // fonctionne de façon garantie partout, au prix d'un rechargement complet
     // ici — acceptable pour cette transition d'entrée, ponctuelle.
+    // .replace() plutôt que .href= : n'ajoute pas d'entrée d'historique, donc
+    // un retour arrière (bouton ou geste de bord Safari) depuis l'onboarding
+    // ne peut pas ramener ici — il n'y a rien à "revenir" à ce splash.
     // L'onboarding (l'explication de l'app) s'affiche toujours, même pour un
     // utilisateur déjà connecté — il renvoie vers l'Accueil à la fin dans ce cas.
     setLeaving(true)
-    window.location.href = ROUTES.ONBOARDING
+    window.location.replace(ROUTES.ONBOARDING)
   }
 
   return (
