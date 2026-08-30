@@ -98,12 +98,14 @@ export default function MapView({
         zoomControl={false}
         style={{ zIndex: 10 }}
       >
-        {/* Map tiles — CartoDB Dark Matter (free, no API key), teinté pétrole ci-dessous */}
+        {/* Map tiles — OpenStreetMap standard (gratuit, sans clé, sans quota),
+            assombri en CSS (.leaflet-tile-pane, globals.css) + teinté pétrole
+            ci-dessous. CartoDB "dark_nolabels" abandonné : son service anonyme
+            affiche un filigrane "API KEY REQUIRED" une fois le quota dépassé. */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
-          maxZoom={20}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
         />
 
         {/* Fly to selected place */}

@@ -141,6 +141,15 @@
   background: #153C42 !important;
 }
 
+/* Tuiles OpenStreetMap standard (gratuites, sans clé, sans quota) inversées en
+   CSS pour un rendu sombre — plus fiable que les tuiles CartoDB anonymes
+   ("dark_nolabels"), qui se sont mises à afficher un filigrane "API KEY
+   REQUIRED" en production une fois le trafic réel monté (quota anonyme
+   dépassé). Popups/contrôles restent non affectés (hors .leaflet-tile-pane). */
+.leaflet-tile-pane {
+  filter: invert(1) hue-rotate(175deg) brightness(0.94) contrast(0.88) saturate(0.7);
+}
+
 .leaflet-popup-content-wrapper {
   border-radius: 20px !important;
   box-shadow: 0 6px 24px rgba(0,0,0,0.4) !important;
