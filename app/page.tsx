@@ -1,13 +1,15 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/stores/auth.store'
 import { StampBadge } from '@/components/stamp/StampBadge'
+import { Button } from '@/components/ui/Button'
 import { ROUTES } from '@/lib/constants'
 
 /**
  * Root page: splash screen + redirect logic.
+ * Stays put until the user taps "Démarrer" — no auto-redirect.
  * - Authenticated users → Home
  * - New users → Onboarding
  */
@@ -15,26 +17,28 @@ export default function SplashPage() {
   const router = useRouter()
   const user = useAuthStore(s => s.user)
   const initialized = useAuthStore(s => s.initialized)
+  const [leaving, setLeaving] = useState(false)
 
-  useEffect(() => {
-    if (!initialized) return
-
-    const timer = setTimeout(() => {
+  function handleStart() {
+    setLeaving(true)
+    setTimeout(() => {
       if (user) {
         router.replace(ROUTES.HOME)
       } else {
         const seen = localStorage.getItem('pinlove_onboarded')
         router.replace(seen ? ROUTES.LOGIN : ROUTES.ONBOARDING)
       }
-    }, 1800) // Show splash for 1.8s
-
-    return () => clearTimeout(timer)
-  }, [initialized, user, router])
+    }, 320) // Laisse l'animation de sortie du logo se terminer
+  }
 
   return (
-    <div className="fixed inset-0 premium-gradient flex flex-col items-center justify-center">
+    <div className="fixed inset-0 premium-gradient flex flex-col items-center justify-center px-6">
       {/* Logo */}
-      <div className="flex flex-col items-center gap-5 animate-scale-in">
+      <div
+        className={`flex flex-col items-center gap-5 transition-all duration-300 ${
+          leaving ? 'opacity-0 scale-90' : 'opacity-100 scale-100 animate-scale-in'
+        }`}
+      >
         <StampBadge size="lg" />
         <div className="text-center">
           <h1 className="font-display font-extrabold uppercase text-4xl text-paper tracking-wide">PinLove</h1>
@@ -44,11 +48,23 @@ export default function SplashPage() {
         </div>
       </div>
 
-      {/* Loader dots */}
-      <div className="absolute bottom-16 flex gap-2">
-        <Dot delay="0ms"   />
-        <Dot delay="150ms" />
-        <Dot delay="300ms" />
+      {/* CTA */}
+      <div
+        className={`absolute bottom-16 w-full max-w-xs px-6 transition-opacity duration-300 ${
+          leaving ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
+        {initialized ? (
+          <Button variant="primary" size="xl" fullWidth onClick={handleStart}>
+            Démarrer
+          </Button>
+        ) : (
+          <div className="flex justify-center gap-2 py-3.5">
+            <Dot delay="0ms"   />
+            <Dot delay="150ms" />
+            <Dot delay="300ms" />
+          </div>
+        )}
       </div>
     </div>
   )
