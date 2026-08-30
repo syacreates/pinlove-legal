@@ -11,6 +11,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { CardSkeleton } from '@/components/ui/Card'
 import { Avatar } from '@/components/ui/Avatar'
 import { TicketCard } from '@/components/stamp/TicketCard'
+import { StampBadge } from '@/components/stamp/StampBadge'
 import { ROUTES, FREE_PLAN_LIMIT, PLACE_CATEGORIES } from '@/lib/constants'
 import { CATEGORY_ICONS } from '@/lib/category-icons'
 import { useRouter } from 'next/navigation'
@@ -54,9 +55,12 @@ export default function HomePage() {
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-neutral-500">{greeting} 👋</p>
-          <h1 className="text-xl font-bold text-neutral-900">{firstName}</h1>
+        <div className="flex items-center gap-3">
+          <StampBadge size="sm" animated={false} />
+          <div>
+            <p className="text-sm text-mist">{greeting} 👋</p>
+            <h1 className="text-xl font-bold text-paper">{firstName}</h1>
+          </div>
         </div>
         <Link href={ROUTES.PROFILE}>
           <Avatar src={user.avatar_url} alt={user.full_name} size="md" />
