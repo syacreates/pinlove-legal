@@ -272,17 +272,30 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* Step content */}
-      <div className="flex flex-col items-center text-center gap-4 w-full max-w-md mx-auto" key={current}>
-        <div className="animate-fade-in w-full flex flex-col items-center gap-3">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-brass">{step.tag}</p>
-          <h2 className="font-display font-extrabold uppercase text-2xl leading-[0.98] text-paper max-w-xs">
-            {step.title}
-          </h2>
+      {/* Step content — chaque écran s'affiche dans un mini appareil
+          (encoche + barre de statut), comme une vidéo de démo, plutôt qu'en
+          plein écran natif : demandé explicitement, même si l'onboarding
+          tourne déjà plein écran sur le vrai téléphone. Les visuels de
+          STEPS sont réutilisés tels quels (conçus pour ~380px de large),
+          juste réduits via transform:scale pour tenir dans le boîtier. */}
+      <div className="flex flex-col items-center gap-4 w-full max-w-md mx-auto" key={current}>
+        <div className="animate-fade-in w-full max-w-[264px] mx-auto">
+          <div className="relative aspect-[390/844] bg-[#050807] rounded-[42px] p-[10px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.75)]">
+            <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-surface border border-brass/10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[92px] h-[18px] bg-[#050807] rounded-b-[12px] z-30" />
+              <div className="absolute top-0 inset-x-0 h-8 z-20 flex items-center justify-between px-5 font-mono text-[9px] font-semibold text-paper">
+                <span>9:41</span>
+                <span>●●●●</span>
+              </div>
+              <div className="absolute inset-0 pt-8 px-3 pb-3 flex items-center justify-center overflow-hidden">
+                <div style={{ transform: 'scale(0.6)', transformOrigin: 'center', width: '166.7%' }}>
+                  {step.visual}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="w-full bg-surface/40 border border-dashed border-brass/25 rounded-3xl p-4">
-          {step.visual}
-        </div>
+
         <div className="ticket-card w-full !p-4 text-left">
           <p className="font-mono text-[9px] text-mist-2">{step.tag}</p>
           <p className="font-display font-extrabold uppercase text-sm text-ink mt-1">{step.title}</p>
