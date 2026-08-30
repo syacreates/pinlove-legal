@@ -45,7 +45,7 @@ export function StampBadge({
         <svg width={heartBox} height={heartBox} viewBox="0 0 52 52" fill="none">
           <path d={HEART_PATH} fill={`url(#${gradientId})`} />
           <defs>
-            <linearGradient id={gradientId} x1="4" y1="5" x2="48" y2="46">
+            <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="4" y1="5" x2="48" y2="46">
               <stop stopColor="#E7B34A" />
               <stop offset="1" stopColor="#E63B77" />
             </linearGradient>

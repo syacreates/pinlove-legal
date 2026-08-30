@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   keywords: ['adresses', 'tiktok', 'instagram', 'carte', 'lieux', 'spots'],
   authors: [{ name: 'PinLove' }],
   icons: {
-    icon: '/logo.png',
+    icon: '/favicon.png',
     apple: '/logo.png',
   },
   openGraph: {
