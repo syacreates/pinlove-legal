@@ -11,7 +11,9 @@ import { ROUTES } from '@/lib/constants'
  * Root page: splash screen + redirect logic.
  * Stays put until the user taps "Démarrer" — no auto-redirect.
  * - Authenticated users → Home
- * - New users → Onboarding
+ * - Everyone else → Onboarding (l'explication de l'app), à chaque fois.
+ *   Un utilisateur qui a déjà un compte peut toujours passer directement à
+ *   la connexion via "Passer →" ou "J'ai déjà un compte" sur l'onboarding.
  */
 export default function SplashPage() {
   const router = useRouter()
@@ -22,12 +24,7 @@ export default function SplashPage() {
   function handleStart() {
     setLeaving(true)
     setTimeout(() => {
-      if (user) {
-        router.replace(ROUTES.HOME)
-      } else {
-        const seen = localStorage.getItem('pinlove_onboarded')
-        router.replace(seen ? ROUTES.LOGIN : ROUTES.ONBOARDING)
-      }
+      router.replace(user ? ROUTES.HOME : ROUTES.ONBOARDING)
     }, 320) // Laisse l'animation de sortie du logo se terminer
   }
 
