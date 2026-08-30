@@ -104,7 +104,7 @@ export default function PricingPage() {
       </div>
 
       {/* Price card */}
-      <div className="bg-white rounded-3xl shadow-card p-6 mb-5 ring-2 ring-brand-500">
+      <div className="bg-paper rounded-3xl shadow-card p-6 mb-5 ring-2 ring-cerise">
         <div className="flex items-baseline gap-1 mb-1">
           <span className="text-4xl font-bold text-neutral-900">{PREMIUM_PRICE_DISPLAY}</span>
           <span className="text-neutral-500 text-sm">une fois</span>
@@ -147,7 +147,7 @@ export default function PricingPage() {
       </div>
 
       {/* Compare plans */}
-      <div className="bg-white rounded-3xl shadow-card overflow-hidden mb-5">
+      <div className="bg-paper rounded-3xl shadow-card overflow-hidden mb-5">
         <div className="grid grid-cols-3 text-center text-xs font-semibold bg-neutral-50 py-3 px-4">
           <span className="text-left text-neutral-500">Fonctionnalité</span>
           <span className="text-neutral-700">Gratuit</span>

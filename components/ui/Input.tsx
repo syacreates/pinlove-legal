@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-neutral-700"
+            className="text-[10px] font-mono uppercase tracking-wide text-mist-2"
           >
             {label}
           </label>
@@ -36,8 +36,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full rounded-2xl bg-neutral-100 border border-transparent',
               'px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
               'transition-all duration-150',
-              'focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100',
-              error && 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-100',
+              'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
+              error && 'border-red-400 bg-red-950/40 focus:border-red-400 focus:ring-red-900/40',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className,
@@ -72,7 +72,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-neutral-700">
+          <label htmlFor={inputId} className="text-[10px] font-mono uppercase tracking-wide text-mist-2">
             {label}
           </label>
         )}
@@ -83,8 +83,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             'w-full rounded-2xl bg-neutral-100 border border-transparent',
             'px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
             'transition-all duration-150 resize-none',
-            'focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100',
-            error && 'border-red-400 bg-red-50',
+            'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
+            error && 'border-red-400 bg-red-950/40',
             className,
           )}
           rows={3}

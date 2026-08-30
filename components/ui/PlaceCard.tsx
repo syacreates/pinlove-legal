@@ -33,14 +33,14 @@ export function PlaceCard({
     <Link
       href={ROUTES.PLACE(place.id)}
       className={cn(
-        'block bg-white rounded-3xl shadow-card overflow-hidden',
+        'block bg-paper rounded-3xl shadow-card overflow-hidden',
         'transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98]',
         className,
       )}
     >
       {/* Photo */}
       {place.photo_url && !compact && (
-        <div className="relative h-44 bg-neutral-100">
+        <div className="relative h-44 bg-surface-2">
           <Image
             src={place.photo_url}
             alt={place.name}
@@ -69,7 +69,7 @@ export function PlaceCard({
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-xl flex-shrink-0">{meta.emoji}</span>
-            <h3 className="font-semibold text-neutral-900 truncate leading-tight">
+            <h3 className="font-display font-bold uppercase text-ink truncate leading-tight">
               {place.name}
             </h3>
           </div>
@@ -85,20 +85,20 @@ export function PlaceCard({
                 <Heart
                   className={cn(
                     'w-4 h-4 transition-colors',
-                    place.is_favorite ? 'fill-brand-500 text-brand-500' : 'text-neutral-300',
+                    place.is_favorite ? 'fill-cerise text-cerise' : 'text-ink/25',
                   )}
                 />
               </button>
             )}
             {!onToggleFavorite && place.is_favorite && (
-              <Heart className="w-4 h-4 fill-brand-500 text-brand-500 flex-shrink-0" />
+              <Heart className="w-4 h-4 fill-cerise text-cerise flex-shrink-0" />
             )}
           </div>
         </div>
 
         {/* Address */}
-        <div className="flex items-center gap-1.5 text-sm text-neutral-500 mb-3">
-          <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-brand-400" />
+        <div className="flex items-center gap-1.5 text-sm text-ink/60 mb-3">
+          <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-cerise" />
           <span className="truncate">
             {place.address}{place.postal_code ? `, ${place.postal_code}` : ''} {place.city}
           </span>
@@ -106,11 +106,11 @@ export function PlaceCard({
 
         {/* Footer row */}
         <div className="flex items-center justify-between gap-2">
-          <CategoryBadge category={place.category} />
+          <CategoryBadge category={place.category} tone="light" />
 
-          <div className="flex items-center gap-2 text-xs text-neutral-400">
+          <div className="flex items-center gap-2 text-xs text-ink/45">
             {showDistance && distanceKm !== undefined && (
-              <span className="flex items-center gap-1 text-brand-500 font-medium">
+              <span className="flex items-center gap-1 text-cerise font-medium">
                 <Navigation className="w-3 h-3" />
                 {distanceKm < 1
                   ? `${Math.round(distanceKm * 1000)} m`
@@ -126,7 +126,7 @@ export function PlaceCard({
 
         {/* Note preview */}
         {place.note && !compact && (
-          <p className="mt-3 text-xs text-neutral-500 line-clamp-2 italic border-t border-neutral-50 pt-3">
+          <p className="mt-3 text-xs text-ink/60 line-clamp-2 italic border-t border-ink/10 pt-3">
             💬 {place.note}
           </p>
         )}

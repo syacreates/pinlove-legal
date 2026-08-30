@@ -105,7 +105,7 @@ export default function EditPlacePage() {
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => router.back()}
-          className="w-10 h-10 bg-white rounded-2xl shadow-card flex items-center justify-center"
+          className="w-10 h-10 bg-paper rounded-2xl shadow-card flex items-center justify-center"
         >
           <ArrowLeft className="w-5 h-5 text-neutral-600" />
         </button>
@@ -138,7 +138,7 @@ export default function EditPlacePage() {
                 className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
                   form.category === key
                     ? 'border-brand-500 bg-brand-50 text-brand-700'
-                    : 'border-neutral-100 bg-white text-neutral-600 hover:border-neutral-200'
+                    : 'border-brass-dim/30 bg-paper text-ink/70 hover:border-brass-dim/60'
                 }`}
               >
                 <span className="text-xl">{val.emoji}</span>
@@ -208,7 +208,7 @@ export default function EditPlacePage() {
                 className={`w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all ${
                   form.visibility === opt.value
                     ? 'border-brand-500 bg-brand-50'
-                    : 'border-neutral-100 bg-white hover:border-neutral-200'
+                    : 'border-brass-dim/30 bg-paper text-ink hover:border-brass-dim/60'
                 }`}
               >
                 <div className="flex-1">

@@ -1,7 +1,7 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline' | 'dashed'
 export type ButtonSize    = 'sm' | 'md' | 'lg' | 'xl'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -30,19 +30,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const base = [
-      'inline-flex items-center justify-center gap-2 font-semibold',
+      'inline-flex items-center justify-center gap-2 font-semibold font-mono uppercase tracking-wide',
       'rounded-2xl transition-all duration-150 select-none',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-petrol-soft',
       'disabled:opacity-50 disabled:pointer-events-none',
       'active:scale-[0.97]',
     ]
 
     const variants: Record<ButtonVariant, string> = {
-      primary:   'bg-brand-500 text-white hover:bg-brand-600 shadow-floating',
-      secondary: 'bg-neutral-100 text-neutral-900 hover:bg-neutral-200',
-      ghost:     'bg-transparent text-neutral-700 hover:bg-neutral-100',
+      primary:   'bg-brass text-ink hover:bg-brass-dim shadow-floating',
+      secondary: 'bg-surface text-paper hover:bg-surface-2',
+      ghost:     'bg-transparent text-mist hover:bg-surface',
       danger:    'bg-red-500 text-white hover:bg-red-600',
-      outline:   'border-2 border-brand-500 text-brand-500 bg-transparent hover:bg-brand-50',
+      outline:   'border-2 border-brass text-brass bg-transparent hover:bg-brass/10',
+      dashed:    'border-2 border-dashed border-brass text-paper bg-transparent hover:bg-brass/10',
     }
 
     const sizes: Record<ButtonSize, string> = {

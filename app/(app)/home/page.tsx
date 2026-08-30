@@ -65,7 +65,7 @@ export default function HomePage() {
       <button
         type="button"
         onClick={() => router.push(ROUTES.PLACES)}
-        className="w-full flex items-center gap-3 bg-white rounded-2xl shadow-card px-4 py-3 text-sm text-neutral-400 hover:shadow-card-hover transition-shadow"
+        className="w-full flex items-center gap-3 bg-paper rounded-2xl shadow-card px-4 py-3 text-sm text-ink/40 hover:shadow-card-hover transition-shadow"
       >
         <Search className="w-4 h-4 flex-shrink-0" />
         <span>Rechercher un lieu...</span>
@@ -103,7 +103,7 @@ export default function HomePage() {
       <Link href={ROUTES.MAP} className="block relative h-36 rounded-3xl overflow-hidden shadow-card group">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-blue-600" />
         {/* Decorative pin markers */}
-        <div className="absolute top-4 left-8 w-3 h-3 bg-white rounded-full shadow-md" />
+        <div className="absolute top-4 left-8 w-3 h-3 bg-paper rounded-full shadow-md" />
         <div className="absolute top-10 left-24 w-4 h-4 bg-brand-400 rounded-full shadow-md" />
         <div className="absolute bottom-8 right-16 w-3 h-3 bg-white/80 rounded-full shadow-md" />
         <div className="absolute top-5 right-10 w-4 h-4 bg-yellow-300 rounded-full shadow-md" />
@@ -136,7 +136,7 @@ export default function HomePage() {
                 <Link
                   key={cat}
                   href={`${ROUTES.PLACES}?category=${cat}`}
-                  className="flex items-center gap-1.5 bg-white rounded-2xl shadow-card px-3 py-2 text-sm hover:shadow-card-hover transition-shadow"
+                  className="flex items-center gap-1.5 bg-paper text-ink rounded-2xl shadow-card px-3 py-2 text-sm hover:shadow-card-hover transition-shadow"
                 >
                   <span>{meta.emoji}</span>
                   <span className="font-medium text-neutral-800">{meta.label}</span>
@@ -214,7 +214,7 @@ export default function HomePage() {
         >
           <p className="text-white font-bold text-base mb-1">🚀 Passe en Premium</p>
           <p className="text-white/85 text-sm">Adresses illimitées + partage avec tes amis</p>
-          <div className="mt-3 inline-block bg-white text-brand-600 text-sm font-semibold px-4 py-2 rounded-2xl">
+          <div className="mt-3 inline-block bg-paper text-ink text-sm font-semibold px-4 py-2 rounded-2xl">
             Voir l'offre →
           </div>
         </Link>
@@ -234,7 +234,7 @@ function QuickAction({
     <Link
       href={href}
       className={`flex flex-col gap-1.5 p-4 rounded-3xl shadow-card transition-all duration-150 active:scale-95 hover:shadow-card-hover ${
-        accent ? 'bg-brand-500 text-white' : 'bg-white text-neutral-900'
+        accent ? 'bg-cerise text-paper' : 'bg-paper text-ink'
       }`}
     >
       <span className="text-2xl">{emoji}</span>
@@ -248,7 +248,7 @@ function QuickAction({
 
 function StatPill({ label, value, icon }: { label: string; value: number; icon: string }) {
   return (
-    <div className="bg-white rounded-2xl shadow-card px-3 py-2.5 text-center">
+    <div className="bg-paper rounded-2xl shadow-card px-3 py-2.5 text-center">
       <p className="text-lg">{icon}</p>
       <p className="text-base font-bold text-neutral-900 leading-none mt-0.5">{value}</p>
       <p className="text-xs text-neutral-400 mt-0.5">{label}</p>

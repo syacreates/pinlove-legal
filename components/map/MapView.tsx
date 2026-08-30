@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, CircleMarker } from 're
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Place, Coordinates } from '@/lib/types'
-import { getCategoryMeta } from '@/lib/utils'
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
@@ -17,27 +16,32 @@ L.Icon.Default.mergeOptions({
   shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 })
 
-// ── Custom emoji marker ───────────────────────────────────────────────────────
-function createEmojiIcon(emoji: string, isSelected = false): L.DivIcon {
+// ── Postal-stamp pin marker ────────────────────────────────────────────────────
+// Solid dot pin (cerise default, brass + glow when selected), cerclé de "paper" —
+// remplace l'ancien emoji-dans-cercle. La catégorie reste visible dans SpotBottomSheet.
+function createStampPin(isSelected = false): L.DivIcon {
+  const box = isSelected ? 34 : 28
+  const dot = isSelected ? 13 : 11
+  const html = `
+    <div style="width:${box}px;height:${box}px;display:flex;align-items:center;justify-content:center;">
+      <div style="
+        width:${dot}px;height:${dot}px;border-radius:50%;
+        background:${isSelected ? '#E7B34A' : '#E63B77'};
+        border:2px solid #F2ECD9;
+        box-shadow:${
+          isSelected
+            ? '0 0 0 5px rgba(231,179,74,.28), 0 0 14px 2px rgba(231,179,74,.5)'
+            : '0 0 0 3px rgba(230,59,119,.2)'
+        };
+        transition: all .25s;
+      "></div>
+    </div>
+  `
   return L.divIcon({
     className: '',
-    html: `
-      <div style="
-        display: flex; align-items: center; justify-content: center;
-        width: ${isSelected ? 44 : 36}px;
-        height: ${isSelected ? 44 : 36}px;
-        background: ${isSelected ? '#ff3d5a' : '#ffffff'};
-        border: 2px solid ${isSelected ? '#ff3d5a' : '#e5e5ea'};
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        font-size: ${isSelected ? 20 : 16}px;
-        transition: all 0.2s;
-      ">
-        ${emoji}
-      </div>
-    `,
-    iconSize:   [isSelected ? 44 : 36, isSelected ? 44 : 36],
-    iconAnchor: [isSelected ? 22 : 18, isSelected ? 22 : 18],
+    html,
+    iconSize: [box, box],
+    iconAnchor: [box / 2, box / 2],
   })
 }
 
@@ -86,50 +90,59 @@ export default function MapView({
   className,
 }: MapViewProps) {
   return (
-    <MapContainer
-      center={[DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.lng]}
-      zoom={DEFAULT_MAP_ZOOM}
-      className={cn('w-full h-full', className)}
-      zoomControl={false}
-      style={{ zIndex: 10 }}
-    >
-      {/* Map tiles — OpenStreetMap (free, no API key required) */}
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        maxZoom={19}
-      />
-
-      {/* Fly to selected place */}
-      <FlyToSelected place={selectedPlace} />
-      <FlyToUser coords={userPosition} />
-
-      {/* Place markers */}
-      {places.map(place => {
-        const meta       = getCategoryMeta(place.category)
-        const isSelected = selectedPlace?.id === place.id
-        return (
-          <Marker
-            key={place.id}
-            position={[place.latitude, place.longitude]}
-            icon={createEmojiIcon(meta.emoji, isSelected)}
-            eventHandlers={{ click: () => onPlaceClick(place) }}
-            zIndexOffset={isSelected ? 1000 : 0}
-          />
-        )
-      })}
-
-      {/* User position */}
-      {userPosition && (
-        <CircleMarker
-          center={[userPosition.lat, userPosition.lng]}
-          radius={8}
-          fillColor="#3b82f6"
-          fillOpacity={1}
-          color="#ffffff"
-          weight={3}
+    <div className={cn('relative', className)}>
+      <MapContainer
+        center={[DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.lng]}
+        zoom={DEFAULT_MAP_ZOOM}
+        className="w-full h-full"
+        zoomControl={false}
+        style={{ zIndex: 10 }}
+      >
+        {/* Map tiles — CartoDB Dark Matter (free, no API key), teinté pétrole ci-dessous */}
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+          subdomains="abcd"
+          maxZoom={20}
         />
-      )}
-    </MapContainer>
+
+        {/* Fly to selected place */}
+        <FlyToSelected place={selectedPlace} />
+        <FlyToUser coords={userPosition} />
+
+        {/* Place markers */}
+        {places.map(place => {
+          const isSelected = selectedPlace?.id === place.id
+          return (
+            <Marker
+              key={place.id}
+              position={[place.latitude, place.longitude]}
+              icon={createStampPin(isSelected)}
+              eventHandlers={{ click: () => onPlaceClick(place) }}
+              zIndexOffset={isSelected ? 1000 : 0}
+            />
+          )
+        })}
+
+        {/* User position */}
+        {userPosition && (
+          <CircleMarker
+            center={[userPosition.lat, userPosition.lng]}
+            radius={8}
+            fillColor="#5DA9E0"
+            fillOpacity={1}
+            color="#F2ECD9"
+            weight={3}
+          />
+        )}
+      </MapContainer>
+
+      {/* Petrol tint overlay — approxime l'ambiance "carnet de voyage" sur les
+          tuiles CartoDB sans toucher au rendu des marqueurs/popups au-dessus. */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: '#0E2B30', opacity: 0.22, mixBlendMode: 'color', zIndex: 11 }}
+      />
+    </div>
   )
 }

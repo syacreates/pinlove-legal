@@ -19,13 +19,13 @@ export function FreemiumBar({ count, className }: FreemiumBarProps) {
   return (
     <div
       className={cn(
-        'bg-white rounded-3xl shadow-card p-4',
-        isAtLimit && 'ring-2 ring-brand-400',
+        'bg-paper rounded-3xl shadow-card p-4',
+        isAtLimit && 'ring-2 ring-cerise',
         className,
       )}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-neutral-700">
+        <span className="text-sm font-mono font-medium text-ink/80">
           {isAtLimit ? '🚫 Limite gratuite atteinte' : `📍 ${count} / ${FREE_PLAN_LIMIT} adresses`}
         </span>
         <Link
@@ -37,7 +37,7 @@ export function FreemiumBar({ count, className }: FreemiumBarProps) {
       </div>
 
       {/* Progress bar */}
-      <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-ink/10 rounded-full overflow-hidden">
         <div
           className={cn(
             'h-full rounded-full transition-all duration-500',
@@ -50,7 +50,7 @@ export function FreemiumBar({ count, className }: FreemiumBarProps) {
       </div>
 
       {isAtLimit && (
-        <p className="mt-2 text-xs text-neutral-500">
+        <p className="mt-2 text-xs font-mono text-ink/60">
           Passe en premium une fois pour tout débloquer.
         </p>
       )}

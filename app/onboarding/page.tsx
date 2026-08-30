@@ -1,32 +1,101 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
+import { StampBadge } from '@/components/stamp/StampBadge'
+import { TicketCard } from '@/components/stamp/TicketCard'
 import { ROUTES } from '@/lib/constants'
 
-const SLIDES = [
+const SLIDES: {
+  eyebrow: string
+  title: ReactNode
+  description: string
+  visual: ReactNode
+}[] = [
   {
-    emoji: '📸',
-    title: 'Tu sauvegardes, on s\'en souvient',
+    eyebrow: '✦ PinLove — Est. 2026',
+    title: (
+      <>
+        Ne perds plus
+        <br />
+        <span className="font-hand text-cerise normal-case tracking-normal font-semibold text-[0.72em]">
+          jamais
+        </span>{' '}
+        un spot
+      </>
+    ),
     description:
-      'Tu vois un super restaurant sur TikTok ou Instagram ? Colle le lien dans PinLove. On extrait l\'adresse pour toi.',
-    bg: 'from-brand-400 to-brand-600',
+      "Chaque vidéo enregistrée mérite un tampon sur la carte, pas seulement une place dans tes favoris oubliés.",
+    visual: (
+      <div className="flex flex-col items-center gap-6 w-full">
+        <StampBadge size="lg" />
+        <TicketCard
+          eyebrowLeft="N° 004 · PARIS"
+          eyebrowRight="48.859°N 2.351°E"
+          label={<>Carnet de<br />spots</>}
+          sub="3 lieux ajoutés cette semaine"
+        />
+      </div>
+    ),
   },
   {
-    emoji: '🗺️',
-    title: 'Retrouve tout sur une carte',
+    eyebrow: '✦ Depuis tes apps',
+    title: (
+      <>
+        Depuis Tiktok
+        <br />
+        Depuis{' '}
+        <span className="font-hand text-cerise normal-case tracking-normal font-semibold text-[0.72em]">
+          Insta
+        </span>
+      </>
+    ),
     description:
-      'Tous tes lieux favoris sur une carte interactive. Filtre par catégorie, calcule un itinéraire depuis ta position.',
-    bg: 'from-blue-400 to-blue-600',
+      "Partage un post — PinLove récupère l'adresse et tamponne ta carte, direct.",
+    visual: (
+      <div className="flex flex-col items-center gap-6 w-full">
+        <div className="flex items-center gap-2.5">
+          <div className="w-[50px] h-[50px] rounded-xl flex items-center justify-center text-[19px] bg-[#050807] text-paper border border-dashed border-paper/25">
+            ♪
+          </div>
+          <div
+            className="w-[50px] h-[50px] rounded-xl flex items-center justify-center text-[19px] border border-dashed border-paper/25"
+            style={{ background: 'linear-gradient(135deg, #E7B34A, #E63B77)', color: '#1a0d12' }}
+          >
+            ◎
+          </div>
+          <span className="text-mist-2 text-[17px] font-mono">--&gt;</span>
+          <StampBadge size="sm" />
+        </div>
+        <p className="font-mono text-[10px] text-mist-2 text-center max-w-[230px] tracking-wide">
+          AUCUNE ADRESSE À COPIER-COLLER — ON S&apos;EN OCCUPE
+        </p>
+      </div>
+    ),
   },
   {
-    emoji: '👫',
-    title: 'Partage tes spots avec tes amis',
+    eyebrow: '✦ Ta carte',
+    title: (
+      <>
+        Une carte
+        <br />
+        <span className="font-hand text-cerise normal-case tracking-normal font-semibold text-[0.72em]">
+          tous
+        </span>{' '}
+        tes souvenirs
+      </>
+    ),
     description:
-      'Invite tes proches et partage avec eux uniquement les adresses que tu choisis. Tes lieux privés restent privés.',
-    bg: 'from-violet-400 to-violet-600',
+      "Filtre par ville, par ambiance ou par ami·e, et partage tes spots à qui tu veux.",
+    visual: (
+      <TicketCard
+        eyebrowLeft="N° 012 · TES VILLES"
+        eyebrowRight="4 SPOTS"
+        label={<>Album<br />partagé</>}
+        sub="Avec Léa, Sacha +2"
+      />
+    ),
   },
 ]
 
@@ -81,38 +150,29 @@ export default function OnboardingPage() {
     <div
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className={`min-h-screen bg-gradient-to-br ${slide.bg} flex flex-col items-center justify-between px-6 py-16 transition-all duration-500`}
+      className="min-h-screen bg-petrol-soft ambient-bg flex flex-col items-center justify-between px-6 py-16 overflow-x-hidden"
     >
       {/* Top bar: logo + skip */}
       <div className="w-full flex items-center justify-between">
-        <Image
-          src="/logo.png"
-          alt="PinLove"
-          width={40}
-          height={40}
-          className="rounded-xl"
-        />
+        <StampBadge size="sm" animated={false} />
         <button
           onClick={finish}
-          className="text-white/70 text-sm font-medium hover:text-white transition-colors"
+          className="text-mist-2 text-sm font-mono uppercase tracking-wide hover:text-paper transition-colors"
         >
           Passer →
         </button>
       </div>
 
       {/* Slide content */}
-      <div className="flex flex-col items-center text-center gap-6 animate-fade-in" key={current}>
-        <div className="w-28 h-28 bg-white/20 backdrop-blur-sm rounded-4xl flex items-center justify-center shadow-modal">
-          <span className="text-6xl">{slide.emoji}</span>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold text-white leading-tight mb-3">
-            {slide.title}
-          </h2>
-          <p className="text-white/80 text-base leading-relaxed max-w-xs">
-            {slide.description}
-          </p>
-        </div>
+      <div className="flex flex-col items-center text-center gap-6 animate-fade-in w-full" key={current}>
+        <p className="font-mono text-[10.5px] uppercase tracking-widest text-brass">{slide.eyebrow}</p>
+        <h2 className="font-display font-extrabold uppercase text-[33px] leading-[0.98] text-paper">
+          {slide.title}
+        </h2>
+        <p className="font-mono text-mist text-xs leading-relaxed max-w-[270px]">
+          {slide.description}
+        </p>
+        <div className="w-full flex justify-center mt-2">{slide.visual}</div>
       </div>
 
       {/* Controls */}
@@ -123,30 +183,24 @@ export default function OnboardingPage() {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === current ? 'w-6 bg-white' : 'w-2 bg-white/40'
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === current ? 'w-[18px] bg-brass' : 'w-1.5 bg-paper/22'
               }`}
               aria-label={`Diapositive ${i + 1}`}
             />
           ))}
         </div>
 
-        <Button
-          variant="secondary"
-          size="xl"
-          fullWidth
-          className="max-w-sm !bg-white !text-brand-600 hover:!bg-neutral-50"
-          onClick={next}
-        >
+        <Button variant="primary" size="xl" fullWidth className="max-w-sm" onClick={next}>
           {isLast ? 'Commencer gratuitement' : 'Suivant'}
         </Button>
 
         {isLast && (
           <button
             onClick={() => router.push(ROUTES.LOGIN)}
-            className="text-white/70 text-sm hover:text-white transition-colors"
+            className="text-mist-2 text-sm font-mono hover:text-paper transition-colors"
           >
-            J'ai déjà un compte → Connexion
+            J&apos;ai déjà un compte → Connexion
           </button>
         )}
       </div>

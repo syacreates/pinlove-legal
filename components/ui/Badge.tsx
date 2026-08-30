@@ -3,11 +3,16 @@ import type { PlaceCategory, PlaceVisibility, SourcePlatform } from '@/lib/types
 import { PLACE_CATEGORIES, SOURCE_PLATFORMS, VISIBILITY_OPTIONS } from '@/lib/constants'
 
 // ── Category badge ────────────────────────────────────────────────────────────
-export function CategoryBadge({ category }: { category: PlaceCategory }) {
+export function CategoryBadge({ category, tone = 'dark' }: { category: PlaceCategory; tone?: 'dark' | 'light' }) {
   const meta = PLACE_CATEGORIES[category]
   return (
     <span
-      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-700"
+      className={cn(
+        'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono uppercase tracking-wide border border-dashed',
+        tone === 'dark'
+          ? 'text-mist border-paper/25'
+          : 'text-ink/70 border-brass-dim/60',
+      )}
     >
       <span>{meta.emoji}</span>
       <span>{meta.label}</span>
@@ -33,9 +38,9 @@ export function PlatformBadge({ platform }: { platform: SourcePlatform }) {
 // ── Visibility badge ──────────────────────────────────────────────────────────
 export function VisibilityBadge({ visibility }: { visibility: PlaceVisibility }) {
   const styles: Record<PlaceVisibility, string> = {
-    private: 'bg-neutral-100 text-neutral-600',
-    friends: 'bg-blue-50 text-blue-600',
-    public:  'bg-green-50 text-green-600',
+    private: 'bg-surface text-mist',
+    friends: 'bg-surface-2 text-brass',
+    public:  'bg-cerise/15 text-cerise',
   }
   const labels: Record<PlaceVisibility, string> = {
     private: '🔒 Privé',
@@ -69,7 +74,7 @@ export function Badge({ children, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-700',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono uppercase tracking-wide bg-surface text-mist',
         className,
       )}
     >

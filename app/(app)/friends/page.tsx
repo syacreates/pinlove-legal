@@ -111,7 +111,7 @@ export default function FriendsPage() {
           {friends.map(friend => (
             <div
               key={friend.id}
-              className="bg-white rounded-3xl shadow-card p-4 flex items-center gap-3"
+              className="bg-paper rounded-3xl shadow-card p-4 flex items-center gap-3"
             >
               <Avatar src={friend.avatar_url} alt={friend.full_name} size="md" />
               <div className="flex-1 min-w-0">

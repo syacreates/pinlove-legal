@@ -6,9 +6,10 @@ import Link from 'next/link'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { StampBadge } from '@/components/stamp/StampBadge'
+import { AuthTabs } from '@/components/stamp/AuthTabs'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
-import Image from 'next/image'
 import { ROUTES } from '@/lib/constants'
 
 export default function LoginPage() {
@@ -35,79 +36,72 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col">
-      {/* Hero top */}
-      <div className="premium-gradient px-6 pt-16 pb-12 flex flex-col items-center text-center">
-        <Image
-          src="/logo.png"
-          alt="PinLove"
-          width={72}
-          height={72}
-          className="rounded-2xl shadow-modal mb-4"
-          priority
-        />
-        <h1 className="text-2xl font-bold text-white">Connexion</h1>
-        <p className="text-white/80 text-sm mt-1">
-          Retrouve tous tes spots favoris
-        </p>
+    <div className="min-h-screen bg-petrol-soft ambient-bg flex flex-col px-6 pt-14 pb-10">
+      <div className="flex justify-center mb-8">
+        <StampBadge size="sm" animated={false} />
       </div>
 
-      {/* Form card */}
-      <div className="flex-1 px-4 -mt-6 pb-10">
-        <div className="bg-white rounded-3xl shadow-card p-6 max-w-sm mx-auto">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="toi@exemple.com"
-              autoComplete="email"
-              leftIcon={<Mail className="w-4 h-4" />}
-              required
-            />
-            <Input
-              label="Mot de passe"
-              type={showPwd ? 'text' : 'password'}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-              leftIcon={<Lock className="w-4 h-4" />}
-              rightIcon={
-                <button
-                  type="button"
-                  onClick={() => setShowPwd(v => !v)}
-                  aria-label={showPwd ? 'Masquer' : 'Afficher'}
-                  className="hover:text-neutral-600 transition-colors"
-                >
-                  {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              }
-              required
-            />
+      <div className="w-full max-w-sm mx-auto">
+        <AuthTabs active="login" className="mb-6" />
 
-            {error && (
-              <p className="text-sm text-red-500 text-center">{error}</p>
-            )}
+        <h1 className="font-display font-extrabold uppercase text-[26px] leading-tight text-paper mb-1.5">
+          Content de
+          <br />
+          te revoir
+        </h1>
+        <p className="font-mono text-[11.5px] text-mist mb-6">✦ Retrouve tous tes spots favoris</p>
 
-            <Button type="submit" loading={loading} fullWidth size="lg">
-              Se connecter
-            </Button>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="toi@exemple.com"
+            autoComplete="email"
+            leftIcon={<Mail className="w-4 h-4" />}
+            required
+          />
+          <Input
+            label="Mot de passe"
+            type={showPwd ? 'text' : 'password'}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="••••••••"
+            autoComplete="current-password"
+            leftIcon={<Lock className="w-4 h-4" />}
+            rightIcon={
+              <button
+                type="button"
+                onClick={() => setShowPwd(v => !v)}
+                aria-label={showPwd ? 'Masquer' : 'Afficher'}
+                className="hover:text-paper transition-colors"
+              >
+                {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            }
+            required
+          />
 
-            <Link
-              href={ROUTES.RESET_PWD}
-              className="text-center text-sm text-brand-500 hover:text-brand-600 font-medium"
-            >
-              Mot de passe oublié ?
-            </Link>
-          </form>
+          <Link
+            href={ROUTES.RESET_PWD}
+            className="text-right -mt-1 font-mono text-[11px] text-mist-2 hover:text-mist transition-colors"
+          >
+            Mot de passe oublié ?
+          </Link>
 
-        </div>
+          {error && (
+            <p className="text-sm text-red-400 text-center">{error}</p>
+          )}
 
-        <p className="text-center text-sm text-neutral-500 mt-6">
+          <Button type="submit" loading={loading} fullWidth size="lg">
+            Se connecter
+          </Button>
+        </form>
+
+        <p className="text-center font-mono text-[11.5px] text-mist mt-6">
           Pas encore de compte ?{' '}
-          <Link href={ROUTES.SIGNUP} className="text-brand-500 font-semibold hover:text-brand-600">
+          <Link href={ROUTES.SIGNUP} className="text-cerise font-semibold">
             Créer un compte
           </Link>
         </p>

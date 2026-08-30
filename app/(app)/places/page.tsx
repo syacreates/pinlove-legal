@@ -63,7 +63,7 @@ export default function PlacesPage() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Rechercher..."
-          className="w-full bg-white rounded-2xl shadow-card px-4 py-3 pl-11 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          className="w-full bg-paper text-ink rounded-2xl shadow-card px-4 py-3 pl-11 text-sm placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-brass/40"
         />
         {search && (
           <button
@@ -82,7 +82,7 @@ export default function PlacesPage() {
           className={`flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
             !category
               ? 'bg-brand-500 text-white'
-              : 'bg-white text-neutral-600 shadow-card'
+              : 'bg-paper text-ink/70 shadow-card'
           }`}
         >
           Tous
@@ -94,7 +94,7 @@ export default function PlacesPage() {
             className={`flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               category === c.value
                 ? 'bg-brand-500 text-white'
-                : 'bg-white text-neutral-600 shadow-card'
+                : 'bg-paper text-ink/70 shadow-card'
             }`}
           >
             {c.emoji} {c.label}

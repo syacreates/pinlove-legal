@@ -29,7 +29,7 @@ export function Card({
       onClick={onClick}
       onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
       className={cn(
-        'bg-white rounded-3xl shadow-card',
+        'bg-paper rounded-3xl shadow-card',
         paddingMap[padding],
         hoverable && 'cursor-pointer transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98]',
         onClick && 'cursor-pointer',
@@ -44,10 +44,10 @@ export function Card({
 // ── Skeleton card ─────────────────────────────────────────────────────────────
 export function CardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn('bg-white rounded-3xl shadow-card p-4 animate-pulse', className)}>
-      <div className="h-4 bg-neutral-200 rounded-full w-3/4 mb-3" />
-      <div className="h-3 bg-neutral-100 rounded-full w-1/2 mb-2" />
-      <div className="h-3 bg-neutral-100 rounded-full w-2/3" />
+    <div className={cn('bg-paper rounded-3xl shadow-card p-4 animate-pulse', className)}>
+      <div className="h-4 bg-ink/15 rounded-full w-3/4 mb-3" />
+      <div className="h-3 bg-ink/10 rounded-full w-1/2 mb-2" />
+      <div className="h-3 bg-ink/10 rounded-full w-2/3" />
     </div>
   )
 }

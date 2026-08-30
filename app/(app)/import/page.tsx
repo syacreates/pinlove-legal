@@ -158,7 +158,7 @@ export default function ImportPage() {
     <div className="screen-scroll px-4 pt-6 pb-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => router.back()} className="w-10 h-10 bg-white rounded-2xl shadow-card flex items-center justify-center">
+        <button onClick={() => router.back()} className="w-10 h-10 bg-paper rounded-2xl shadow-card flex items-center justify-center">
           <ArrowLeft className="w-5 h-5 text-neutral-600" />
         </button>
         <div>
@@ -279,7 +279,7 @@ export default function ImportPage() {
                   className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
                     category === key
                       ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-neutral-100 bg-white text-neutral-600'
+                      : 'border-brass-dim/30 bg-paper text-ink/70'
                   }`}
                 >
                   <span className="text-xl">{val.emoji}</span>
@@ -330,7 +330,7 @@ export default function ImportPage() {
                   className={`py-2 rounded-2xl text-xs font-medium border-2 transition-all ${
                     visibility === v
                       ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-neutral-100 bg-white text-neutral-600'
+                      : 'border-brass-dim/30 bg-paper text-ink/70'
                   }`}
                 >
                   {v === 'private' ? '🔒 Privé' : v === 'friends' ? '👥 Amis' : '🌍 Public'}

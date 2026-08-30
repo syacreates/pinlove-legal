@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { useAuthStore } from '@/stores/auth.store'
+import { StampBadge } from '@/components/stamp/StampBadge'
 import { ROUTES } from '@/lib/constants'
 
 /**
@@ -34,18 +34,11 @@ export default function SplashPage() {
   return (
     <div className="fixed inset-0 premium-gradient flex flex-col items-center justify-center">
       {/* Logo */}
-      <div className="flex flex-col items-center gap-4 animate-scale-in">
-        <Image
-          src="/logo.png"
-          alt="PinLove"
-          width={96}
-          height={96}
-          className="rounded-3xl shadow-modal"
-          priority
-        />
+      <div className="flex flex-col items-center gap-5 animate-scale-in">
+        <StampBadge size="lg" />
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white tracking-tight">PinLove</h1>
-          <p className="text-white/80 text-base mt-1">
+          <h1 className="font-display font-extrabold uppercase text-4xl text-paper tracking-wide">PinLove</h1>
+          <p className="font-mono text-mist text-sm mt-1.5">
             Tes lieux préférés, toujours à portée
           </p>
         </div>

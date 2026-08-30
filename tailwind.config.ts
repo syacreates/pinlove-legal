@@ -10,48 +10,67 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // PinLove brand palette
-        brand: {
-          50:  '#fff1f3',
-          100: '#ffe4e8',
-          200: '#ffccd5',
-          300: '#ffa3b3',
-          400: '#ff6b84',
-          500: '#ff3d5a',  // primary accent – CTAs, active states
-          600: '#ed1a3a',
-          700: '#c8102e',
-          800: '#a6112b',
-          900: '#8b1328',
-          950: '#4d040f',
-        },
-        neutral: {
-          50:  '#f9f9fb',
-          100: '#f2f2f7',
-          200: '#e5e5ea',
-          300: '#d1d1d6',
-          400: '#aeaeb2',
-          500: '#8e8e93',
-          600: '#636366',
-          700: '#48484a',
-          800: '#3a3a3c',
-          900: '#2c2c2e',
-          950: '#1c1c1e',
+        // PinLove — "carnet de voyage / tampon postal" palette
+        petrol: {
+          DEFAULT: '#0E2B30',
+          soft:    '#153C42',
         },
         surface: {
-          DEFAULT: '#ffffff',
-          secondary: '#f9f9fb',
-          elevated: '#ffffff',
+          DEFAULT: '#1C4B53',
+          2:       '#245861',
+        },
+        brass: {
+          DEFAULT: '#E7B34A',
+          dim:     '#B98F3B',
+        },
+        cerise: '#E63B77',
+        paper:  '#F2ECD9',
+        ink:    '#132023',
+        mist: {
+          DEFAULT: '#B9D2CD',
+          2:       '#7FA39D',
+        },
+        // brand ramp remapped — brand-500 = cerise, primary accent everywhere
+        brand: {
+          50:  '#FBE6ED',
+          100: '#F6C9DA',
+          200: '#EEA0BE',
+          300: '#E87BA5',
+          400: '#E85A8F',
+          500: '#E63B77',
+          600: '#C92D66',
+          700: '#A62254',
+          800: '#7E1A40',
+          900: '#5C132F',
+          950: '#330A1A',
+        },
+        // neutral ramp remapped — dark-mode inversion (50 = darkest bg, 900 = lightest text)
+        neutral: {
+          50:  '#153C42',
+          100: '#1C4B53',
+          200: '#245861',
+          300: '#5C7A78',
+          400: '#7FA39D',
+          500: '#B9D2CD',
+          600: '#CFE0DB',
+          700: '#DCE7E0',
+          800: '#E9E6D3',
+          900: '#F2ECD9',
+          950: '#FFFFFF',
         },
       },
       fontFamily: {
         sans: [
-          '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"',
-          '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif',
+          'var(--font-plex-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace',
+        ],
+        mono: [
+          'var(--font-plex-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace',
         ],
         display: [
-          'var(--font-poppins)',
-          '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"',
-          '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif',
+          'var(--font-stencil)', '-apple-system', 'sans-serif',
+        ],
+        hand: [
+          'var(--font-caveat)', 'cursive',
         ],
       },
       borderRadius: {
@@ -60,11 +79,11 @@ const config: Config = {
         '4xl': '2rem',
       },
       boxShadow: {
-        'card':   '0 2px 12px 0 rgba(0,0,0,0.07)',
-        'card-hover': '0 6px 24px 0 rgba(0,0,0,0.12)',
-        'bottom-nav': '0 -1px 0 0 rgba(0,0,0,0.06), 0 -4px 20px 0 rgba(0,0,0,0.05)',
-        'modal':  '0 24px 64px 0 rgba(0,0,0,0.18)',
-        'floating': '0 4px 24px 0 rgba(255,61,90,0.25)',
+        'card':   '0 2px 12px 0 rgba(0,0,0,0.28)',
+        'card-hover': '0 6px 24px 0 rgba(0,0,0,0.34)',
+        'bottom-nav': '0 -1px 0 0 rgba(0,0,0,0.2), 0 -4px 20px 0 rgba(0,0,0,0.25)',
+        'modal':  '0 24px 64px 0 rgba(0,0,0,0.5)',
+        'floating': '0 4px 24px 0 rgba(231,179,74,0.3)',
       },
       animation: {
         'fade-in':    'fadeIn 0.2s ease-out',

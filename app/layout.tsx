@@ -1,13 +1,27 @@
 import type { Metadata, Viewport } from 'next'
-import { Poppins } from 'next/font/google'
+import { Big_Shoulders_Stencil_Display, Caveat, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { ToastContainer } from '@/components/ui/Toast'
 import { AppInitializer } from '@/components/AppInitializer'
 
-const poppins = Poppins({
+const stencil = Big_Shoulders_Stencil_Display({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  variable: '--font-stencil',
+  display: 'swap',
+})
+
+const caveat = Caveat({
   subsets: ['latin'],
   weight: ['500', '600'],
-  variable: '--font-poppins',
+  variable: '--font-caveat',
+  display: 'swap',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-plex-mono',
   display: 'swap',
 })
 
@@ -45,7 +59,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#ffffff',
+  themeColor: '#0E2B30',
 }
 
 export default function RootLayout({
@@ -54,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning className={poppins.variable}>
+    <html lang="fr" suppressHydrationWarning className={`${stencil.variable} ${caveat.variable} ${plexMono.variable}`}>
       <head />
       <body>
         <AppInitializer />

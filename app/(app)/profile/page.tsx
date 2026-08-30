@@ -58,7 +58,7 @@ export default function ProfilePage() {
   return (
     <div className="screen-scroll px-4 pt-6 space-y-5">
       {/* Profile card */}
-      <div className="bg-white rounded-3xl shadow-card p-5">
+      <div className="bg-paper rounded-3xl shadow-card p-5">
         <div className="flex items-center gap-4">
           <Avatar src={user.avatar_url} alt={user.full_name} size="lg" />
           <div className="flex-1 min-w-0">
@@ -101,7 +101,7 @@ export default function ProfilePage() {
           </div>
         </Link>
       ) : (
-        <div className="bg-white rounded-3xl shadow-card p-4 flex items-center gap-3">
+        <div className="bg-paper rounded-3xl shadow-card p-4 flex items-center gap-3">
           <div className="w-10 h-10 bg-brand-50 rounded-2xl flex items-center justify-center">
             <CreditCard className="w-5 h-5 text-brand-500" />
           </div>
@@ -116,7 +116,7 @@ export default function ProfilePage() {
       )}
 
       {/* Menu items */}
-      <div className="bg-white rounded-3xl shadow-card divide-y divide-neutral-50">
+      <div className="bg-paper rounded-3xl shadow-card divide-y divide-ink/10">
         <MenuItem icon={<Shield className="w-4 h-4" />} label="Confidentialité" href="/privacy" />
         <MenuItem icon={<HelpCircle className="w-4 h-4" />} label="Aide & Support" href="#" />
         <MenuItem icon={<Bell className="w-4 h-4" />} label="Notifications" href="#" />

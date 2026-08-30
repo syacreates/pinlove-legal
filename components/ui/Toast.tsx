@@ -30,7 +30,7 @@ function ToastItem({ toast }: { toast: Toast }) {
       role="alert"
     >
       {ICONS[toast.type]}
-      <p className="text-sm font-medium text-neutral-900 flex-1 leading-snug">
+      <p className="text-sm font-mono font-medium text-ink flex-1 leading-snug">
         {toast.message}
       </p>
       <button
@@ -38,7 +38,7 @@ function ToastItem({ toast }: { toast: Toast }) {
         className="p-0.5 -mt-0.5 rounded-lg hover:bg-black/5 transition-colors flex-shrink-0"
         aria-label="Fermer"
       >
-        <X className="w-3.5 h-3.5 text-neutral-400" />
+        <X className="w-3.5 h-3.5 text-ink/40" />
       </button>
     </div>
   )

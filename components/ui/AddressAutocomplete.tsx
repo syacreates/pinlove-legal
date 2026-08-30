@@ -133,7 +133,7 @@ export function AddressAutocomplete({
             'w-full rounded-2xl bg-neutral-100 border border-transparent',
             'pl-10 pr-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
             'transition-all duration-150',
-            'focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100',
+            'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
           )}
         />
         {loading && (
@@ -144,7 +144,7 @@ export function AddressAutocomplete({
       </div>
 
       {open && suggestions.length > 0 && (
-        <ul className="absolute top-full left-0 right-0 z-50 mt-1 bg-white rounded-2xl shadow-lg border border-neutral-100 overflow-hidden">
+        <ul className="absolute top-full left-0 right-0 z-50 mt-1 bg-paper rounded-2xl shadow-lg border border-brass-dim/30 overflow-hidden">
           {suggestions.map((item, i) => {
             const addr = item.address
             const road = [addr.house_number, addr.road].filter(Boolean).join(' ')
@@ -155,14 +155,14 @@ export function AddressAutocomplete({
               <li
                 key={i}
                 onMouseDown={() => handleSelect(item)}
-                className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-neutral-50 border-b border-neutral-50 last:border-0"
+                className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-ink/5 border-b border-ink/10 last:border-0"
               >
-                <MapPin className="w-4 h-4 text-brand-400 flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-cerise flex-shrink-0 mt-0.5" />
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-neutral-900 truncate">
+                  <p className="text-sm font-medium text-ink truncate">
                     {road || item.display_name.split(',')[0]}
                   </p>
-                  <p className="text-xs text-neutral-500 truncate">
+                  <p className="text-xs text-ink/60 truncate">
                     {[postcode, city].filter(Boolean).join(' ')}
                   </p>
                 </div>

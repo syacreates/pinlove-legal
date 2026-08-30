@@ -19,7 +19,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl shadow-bottom-nav"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-petrol/90 backdrop-blur-xl border-t border-dashed border-brass/25"
       aria-label="Navigation principale"
     >
       <div className="flex items-center justify-around h-[72px] px-2 max-w-lg mx-auto pb-safe-bottom">
@@ -37,11 +37,11 @@ export function BottomNav() {
                 <div
                   className={cn(
                     'flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200',
-                    'bg-brand-500 shadow-floating active:scale-90',
+                    'bg-cerise border-2 border-dashed border-paper/40 shadow-floating active:scale-90',
                     isActive && 'scale-95',
                   )}
                 >
-                  <Icon className="w-5 h-5 text-white" />
+                  <Icon className="w-5 h-5 text-paper" />
                 </div>
               </Link>
             )
@@ -51,19 +51,19 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className="flex flex-col items-center gap-0.5 py-1 px-3 rounded-2xl transition-all duration-150 active:bg-neutral-100 min-w-[48px]"
+              className="flex flex-col items-center gap-0.5 py-1 px-3 rounded-2xl transition-all duration-150 active:bg-surface min-w-[48px]"
               aria-current={isActive ? 'page' : undefined}
             >
               <Icon
                 className={cn(
                   'w-5 h-5 transition-colors',
-                  isActive ? 'text-brand-500' : 'text-neutral-400',
+                  isActive ? 'text-brass' : 'text-mist-2',
                 )}
               />
               <span
                 className={cn(
-                  'text-[10px] font-medium transition-colors',
-                  isActive ? 'text-brand-500' : 'text-neutral-400',
+                  'text-[8.6px] font-mono uppercase tracking-wide transition-colors',
+                  isActive ? 'text-brass' : 'text-mist-2',
                 )}
               >
                 {label}

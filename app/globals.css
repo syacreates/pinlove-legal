@@ -10,12 +10,22 @@
   }
 
   body {
-    @apply bg-neutral-50 text-neutral-900 font-sans antialiased;
+    @apply bg-neutral-50 text-neutral-900 font-sans antialiased ambient-bg;
     overscroll-behavior: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-medium;
+    @apply font-display font-bold uppercase tracking-wide;
+  }
+
+  /* Legal content (Terms/Privacy) — dense body text reads poorly in
+     uppercase display stencil, keep headings in mono instead. */
+  .legal-content h1,
+  .legal-content h2 {
+    font-family: var(--font-plex-mono);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
   }
 
   /* Remove number input arrows */
@@ -48,12 +58,79 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-brand-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brass to-cerise;
   }
 
-  /* Premium gradient bg */
+  /* Ambient background wash — faint brass/cerise radial glow on petrol */
+  .ambient-bg {
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(231,179,74,.08), transparent 40%),
+      radial-gradient(circle at 90% 92%, rgba(230,59,119,.10), transparent 42%);
+    background-attachment: fixed;
+  }
+
+  /* Hero gradient bg — replaces the old coral premium-gradient */
   .premium-gradient {
-    background: linear-gradient(135deg, #ff3d5a 0%, #ff6b84 50%, #ffccd5 100%);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(231,179,74,.25), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(230,59,119,.25), transparent 50%),
+      #0E2B30;
+  }
+
+  /* ── Postal stamp motif ──────────────────────────────────────────────────── */
+  .stamp-ring {
+    @apply relative rounded-full border-2 border-dashed border-brass flex items-center justify-center;
+    animation: stamp-spin 22s linear infinite;
+  }
+
+  .stamp-core {
+    @apply flex items-center justify-center;
+    animation: stamp-spin-rev 22s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stamp-ring,
+    .stamp-core {
+      animation: none;
+    }
+  }
+
+  @keyframes stamp-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes stamp-spin-rev {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+
+  /* ── Ticket card — dashed border, train-ticket cutouts ──────────────────── */
+  .ticket-card {
+    @apply relative bg-paper text-ink rounded-2xl p-[18px];
+    border: 1.5px dashed #B98F3B;
+  }
+
+  .ticket-card::before,
+  .ticket-card::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #153C42;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .ticket-card::before { left: -9px; }
+  .ticket-card::after  { right: -9px; }
+
+  /* ── Dashed outline (chips, secondary buttons, badges) ──────────────────── */
+  .dashed-outline {
+    @apply border rounded-xl;
+    border-style: dashed;
+    border-color: rgba(242,236,217,.25);
   }
 }
 
@@ -61,13 +138,16 @@
 .leaflet-container {
   font-family: inherit !important;
   border-radius: inherit;
+  background: #153C42 !important;
 }
 
 .leaflet-popup-content-wrapper {
   border-radius: 20px !important;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4) !important;
   padding: 0 !important;
   overflow: hidden;
+  background: #F2ECD9 !important;
+  color: #132023 !important;
 }
 
 .leaflet-popup-content {
@@ -83,17 +163,27 @@
   border: none !important;
   border-radius: 16px !important;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
 }
 
 .leaflet-control-zoom a {
   border-radius: 0 !important;
-  color: #2c2c2e !important;
+  background: #1C4B53 !important;
+  color: #F2ECD9 !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   width: 40px !important;
   height: 40px !important;
   line-height: 40px !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(14,43,48,.7) !important;
+  color: #7FA39D !important;
+}
+
+.leaflet-control-attribution a {
+  color: #B9D2CD !important;
 }
 
 /* ── Utility classes ───────────────────────────────────────────────────────── */

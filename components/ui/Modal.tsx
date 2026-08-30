@@ -55,7 +55,7 @@ export function Modal({
       {/* Panel */}
       <div
         className={cn(
-          'relative z-10 bg-white w-full max-w-lg animate-slide-up',
+          'relative z-10 bg-paper w-full max-w-lg animate-slide-up border-t-2 border-dashed border-brass-dim',
           variant === 'sheet'
             ? 'rounded-t-3xl max-h-[92vh] overflow-y-auto pb-safe-bottom'
             : 'rounded-3xl mx-4 mb-4 max-h-[85vh] overflow-y-auto',
@@ -65,20 +65,20 @@ export function Modal({
         {/* Drag handle (sheet only) */}
         {variant === 'sheet' && (
           <div className="flex justify-center pt-3 pb-1">
-            <div className="w-10 h-1 rounded-full bg-neutral-200" />
+            <div className="w-10 h-1 rounded-full bg-ink/15" />
           </div>
         )}
 
         {/* Header */}
         {title && (
           <div className="flex items-center justify-between px-5 pt-3 pb-2">
-            <h2 className="text-lg font-semibold text-neutral-900">{title}</h2>
+            <h2 className="text-lg font-display font-bold uppercase text-ink">{title}</h2>
             <button
               onClick={onClose}
-              className="p-2 -mr-2 rounded-xl hover:bg-neutral-100 transition-colors"
+              className="p-2 -mr-2 rounded-xl hover:bg-ink/5 transition-colors"
               aria-label="Fermer"
             >
-              <X className="w-5 h-5 text-neutral-500" />
+              <X className="w-5 h-5 text-ink/60" />
             </button>
           </div>
         )}
