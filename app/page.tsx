@@ -22,10 +22,11 @@ export default function SplashPage() {
   const [leaving, setLeaving] = useState(false)
 
   function handleStart() {
+    // Navigue tout de suite — ne fait jamais attendre la navigation derrière
+    // l'animation, qui reste purement visuelle (elle joue pendant que la
+    // page suivante se charge, sans bloquer si un appareil est plus lent).
     setLeaving(true)
-    setTimeout(() => {
-      router.replace(user ? ROUTES.HOME : ROUTES.ONBOARDING)
-    }, 320) // Laisse l'animation de sortie du logo se terminer
+    router.replace(user ? ROUTES.HOME : ROUTES.ONBOARDING)
   }
 
   return (
