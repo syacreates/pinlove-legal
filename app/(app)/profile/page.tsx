@@ -9,6 +9,7 @@ import { PlanBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
+import { TicketCard } from '@/components/stamp/TicketCard'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
 import { usePlacesStore } from '@/stores/places.store'
@@ -63,22 +64,22 @@ export default function ProfilePage() {
           <Avatar src={user.avatar_url} alt={user.full_name} size="lg" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-bold text-neutral-900 text-lg truncate">{user.full_name}</h1>
+              <h1 className="font-bold text-ink text-lg truncate">{user.full_name}</h1>
               <PlanBadge plan={user.plan} />
             </div>
-            <p className="text-sm text-neutral-500">@{user.username}</p>
-            <p className="text-xs text-neutral-400 mt-0.5">{user.email}</p>
+            <p className="text-sm text-ink/60">@{user.username}</p>
+            <p className="text-xs text-ink/45 mt-0.5">{user.email}</p>
           </div>
           <button
             onClick={() => setEditModal(true)}
-            className="p-2 rounded-2xl hover:bg-neutral-100 transition-colors flex-shrink-0"
+            className="p-2 rounded-2xl hover:bg-ink/5 transition-colors flex-shrink-0"
           >
-            <Edit3 className="w-4 h-4 text-neutral-500" />
+            <Edit3 className="w-4 h-4 text-ink/50" />
           </button>
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-neutral-50">
+        <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-ink/10">
           <Stat label="Lieux" value={count} />
           <Stat label="Amis" value={friendsCount} />
           <Stat label="Depuis" value={new Date(user.created_at).getFullYear().toString()} />
@@ -87,18 +88,14 @@ export default function ProfilePage() {
 
       {/* Plan section */}
       {user.plan === 'free' ? (
-        <Link
-          href={ROUTES.PRICING}
-          className="block bg-gradient-to-r from-brand-500 to-brand-400 rounded-3xl p-5"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">✦</span>
-            <div className="flex-1">
-              <p className="font-bold text-white">Passer en Premium</p>
-              <p className="text-white/80 text-sm">Adresses illimitées · Partage · Paiement unique</p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-white/80" />
-          </div>
+        <Link href={ROUTES.PRICING} className="block">
+          <TicketCard
+            eyebrowLeft="✦ PREMIUM"
+            eyebrowRight="→"
+            label={<>Passer en<br />Premium</>}
+            sub="Adresses illimitées · Partage · Paiement unique"
+            pinColors={[]}
+          />
         </Link>
       ) : (
         <div className="bg-paper rounded-3xl shadow-card p-4 flex items-center gap-3">
@@ -106,9 +103,9 @@ export default function ProfilePage() {
             <CreditCard className="w-5 h-5 text-brand-500" />
           </div>
           <div className="flex-1">
-            <p className="font-semibold text-neutral-900">Plan Premium actif</p>
+            <p className="font-semibold text-ink">Plan Premium actif</p>
             {user.premium_purchased_at && (
-              <p className="text-xs text-neutral-500">Activé le {formatDate(user.premium_purchased_at)}</p>
+              <p className="text-xs text-ink/60">Activé le {formatDate(user.premium_purchased_at)}</p>
             )}
           </div>
           <PlanBadge plan="premium" />
@@ -153,7 +150,7 @@ export default function ProfilePage() {
 
       {/* Logout confirmation */}
       <Modal open={logoutModal} onClose={() => setLogoutModal(false)} title="Se déconnecter ?">
-        <p className="text-sm text-neutral-500 mb-5">
+        <p className="text-sm text-ink/60 mb-5">
           Tu seras redirigé vers l'écran de connexion.
         </p>
         <div className="flex flex-col gap-3">
@@ -172,8 +169,8 @@ export default function ProfilePage() {
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="text-center">
-      <p className="text-lg font-bold text-neutral-900">{value}</p>
-      <p className="text-xs text-neutral-500">{label}</p>
+      <p className="text-lg font-bold text-ink">{value}</p>
+      <p className="text-xs text-ink/60">{label}</p>
     </div>
   )
 }
@@ -182,13 +179,13 @@ function MenuItem({ icon, label, href }: { icon: React.ReactNode; label: string;
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 px-4 py-4 hover:bg-neutral-50 transition-colors"
+      className="flex items-center gap-3 px-4 py-4 hover:bg-ink/5 transition-colors"
     >
-      <div className="w-8 h-8 bg-neutral-100 rounded-xl flex items-center justify-center text-neutral-600">
+      <div className="w-8 h-8 bg-ink/5 rounded-xl flex items-center justify-center text-ink/70">
         {icon}
       </div>
-      <span className="flex-1 text-sm font-medium text-neutral-900">{label}</span>
-      <ChevronRight className="w-4 h-4 text-neutral-300" />
+      <span className="flex-1 text-sm font-medium text-ink">{label}</span>
+      <ChevronRight className="w-4 h-4 text-ink/30" />
     </Link>
   )
 }

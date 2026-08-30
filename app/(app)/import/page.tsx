@@ -15,6 +15,7 @@ import { mapService } from '@/services/map.service'
 import type { ImportResult, PlaceVisibility } from '@/lib/types'
 import { detectPlatformFromUrl } from '@/lib/utils'
 import { ROUTES, FREE_PLAN_LIMIT, PLACE_CATEGORIES } from '@/lib/constants'
+import { CATEGORY_ICONS } from '@/lib/category-icons'
 import { supabase } from '@/lib/supabase'
 import type { PlaceCategory } from '@/lib/types'
 
@@ -159,11 +160,11 @@ export default function ImportPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => router.back()} className="w-10 h-10 bg-paper rounded-2xl shadow-card flex items-center justify-center">
-          <ArrowLeft className="w-5 h-5 text-neutral-600" />
+          <ArrowLeft className="w-5 h-5 text-ink/70" />
         </button>
         <div>
-          <h1 className="text-xl font-bold text-neutral-900">Importer un lien</h1>
-          <p className="text-sm text-neutral-500">TikTok ou Instagram</p>
+          <h1 className="text-xl font-bold text-paper">Importer un lien</h1>
+          <p className="text-sm text-mist">TikTok ou Instagram</p>
         </div>
       </div>
 
@@ -232,7 +233,7 @@ export default function ImportPage() {
         <div className="space-y-4 animate-fade-in">
           {/* Extracted content from TikTok / Instagram */}
           {result.place_suggestion.description && (
-            <div className="bg-neutral-900 rounded-2xl p-4 space-y-2">
+            <div className="bg-ink rounded-2xl p-4 space-y-2">
               <span className="text-xs font-semibold text-white/60 uppercase tracking-wider">
                 Extrait de {result.platform === 'tiktok' ? 'TikTok' : 'Instagram'}
               </span>
@@ -255,7 +256,7 @@ export default function ImportPage() {
 
           <div className="flex items-center gap-3 p-4 rounded-2xl bg-blue-50">
             <Check className="w-5 h-5 flex-shrink-0 text-blue-500" />
-            <p className="text-sm text-neutral-700">
+            <p className="text-sm text-blue-700">
               Complète le nom, la catégorie et l'adresse du lieu ci-dessous.
             </p>
           </div>
@@ -269,23 +270,26 @@ export default function ImportPage() {
 
           {/* Category */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-neutral-700">Catégorie *</label>
+            <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Catégorie *</label>
             <div className="grid grid-cols-3 gap-2">
-              {Object.entries(PLACE_CATEGORIES).map(([key, val]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setCategory(key as PlaceCategory)}
-                  className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
-                    category === key
-                      ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-brass-dim/30 bg-paper text-ink/70'
-                  }`}
-                >
-                  <span className="text-xl">{val.emoji}</span>
-                  <span className="text-xs font-medium leading-tight text-center">{val.label}</span>
-                </button>
-              ))}
+              {Object.entries(PLACE_CATEGORIES).map(([key, val]) => {
+                const Icon = CATEGORY_ICONS[key as PlaceCategory]
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setCategory(key as PlaceCategory)}
+                    className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
+                      category === key
+                        ? 'border-brand-500 bg-brand-50 text-brand-700'
+                        : 'border-dashed border-brass-dim/40 bg-paper text-ink/70'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="text-xs font-medium leading-tight text-center">{val.label}</span>
+                  </button>
+                )
+              })}
             </div>
           </div>
 
@@ -320,7 +324,7 @@ export default function ImportPage() {
 
           {/* Visibility */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-700">Visibilité</label>
+            <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Visibilité</label>
             <div className="grid grid-cols-3 gap-2">
               {(['private', 'friends', 'public'] as const).map(v => (
                 <button
@@ -330,7 +334,7 @@ export default function ImportPage() {
                   className={`py-2 rounded-2xl text-xs font-medium border-2 transition-all ${
                     visibility === v
                       ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-brass-dim/30 bg-paper text-ink/70'
+                      : 'border-dashed border-brass-dim/40 bg-paper text-ink/70'
                   }`}
                 >
                   {v === 'private' ? '🔒 Privé' : v === 'friends' ? '👥 Amis' : '🌍 Public'}

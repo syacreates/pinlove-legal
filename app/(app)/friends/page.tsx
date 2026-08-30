@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Copy, Check, UserPlus, MapPin, ExternalLink } from 'lucide-react'
+import { Copy, Check, UserPlus, MapPin, ExternalLink, Users } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Avatar } from '@/components/ui/Avatar'
 import { PlaceCard } from '@/components/ui/PlaceCard'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PlanBadge } from '@/components/ui/Badge'
 import { Modal } from '@/components/ui/Modal'
+import { TicketCard } from '@/components/stamp/TicketCard'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
 import { friendsService } from '@/services/friends.service'
@@ -82,23 +83,25 @@ export default function FriendsPage() {
 
       {/* Premium gate hint */}
       {!isPremium && (
-        <div
-          className="bg-gradient-to-r from-brand-50 to-brand-100 border border-brand-200 rounded-3xl p-4 flex items-center gap-3 cursor-pointer"
-          onClick={() => router.push(ROUTES.PRICING)}
-        >
-          <span className="text-2xl">✨</span>
-          <div className="flex-1">
-            <p className="font-semibold text-sm text-neutral-900">Le partage, c'est premium</p>
-            <p className="text-xs text-neutral-500">Invite tes amis et partage tes spots favoris.</p>
-          </div>
-          <span className="text-xs font-semibold text-brand-500">Voir →</span>
+        <div onClick={() => router.push(ROUTES.PRICING)} className="cursor-pointer">
+          <TicketCard
+            eyebrowLeft="✦ PREMIUM"
+            eyebrowRight="→"
+            label={<>Partage<br />Premium</>}
+            sub="Invite tes amis et partage tes spots favoris"
+            pinColors={[]}
+          />
         </div>
       )}
 
       {/* Friend list */}
       {friends.length === 0 ? (
         <EmptyState
-          icon="👫"
+          icon={
+            <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-brass-dim flex items-center justify-center">
+              <Users className="w-7 h-7 text-mist-2" />
+            </div>
+          }
           title="Aucun ami pour l'instant"
           description="Invite tes amis pour partager tes spots préférés avec eux."
           action={{
@@ -116,12 +119,12 @@ export default function FriendsPage() {
               <Avatar src={friend.avatar_url} alt={friend.full_name} size="md" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-neutral-900 truncate">
+                  <span className="font-semibold text-ink truncate">
                     {friend.full_name}
                   </span>
                   <PlanBadge plan={friend.plan} />
                 </div>
-                <span className="text-xs text-neutral-400">@{friend.username}</span>
+                <span className="text-xs text-ink/45">@{friend.username}</span>
               </div>
               <button
                 onClick={() => handleViewFriendSpots(friend)}
@@ -168,7 +171,7 @@ export default function FriendsPage() {
         onClose={() => setInviteModal(false)}
         title="Inviter un ami"
       >
-        <p className="text-sm text-neutral-500 mb-4">
+        <p className="text-sm text-ink/60 mb-4">
           Partage ce lien avec un ami pour l'inviter sur PinLove. Une fois accepté, vous pourrez partager vos spots.
         </p>
         <div className="flex items-center gap-2 bg-neutral-50 rounded-2xl p-3 mb-4">

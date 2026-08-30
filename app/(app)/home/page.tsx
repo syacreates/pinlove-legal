@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { Search, MapPin, ChevronRight, Sparkles, Heart, TrendingUp } from 'lucide-react'
+import { Search, MapPin, ChevronRight, Sparkles, Heart, TrendingUp, Globe, Link2, Pin } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
 import { usePlacesStore } from '@/stores/places.store'
 import { PlaceCard } from '@/components/ui/PlaceCard'
@@ -10,7 +10,9 @@ import { FreemiumBar } from '@/components/ui/FreemiumBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { CardSkeleton } from '@/components/ui/Card'
 import { Avatar } from '@/components/ui/Avatar'
+import { TicketCard } from '@/components/stamp/TicketCard'
 import { ROUTES, FREE_PLAN_LIMIT, PLACE_CATEGORIES } from '@/lib/constants'
+import { CATEGORY_ICONS } from '@/lib/category-icons'
 import { useRouter } from 'next/navigation'
 import type { PlaceCategory } from '@/lib/types'
 
@@ -92,31 +94,46 @@ export default function HomePage() {
 
       {/* Stats row */}
       {!loading && count > 0 && (
-        <div className="grid grid-cols-3 gap-2">
-          <StatPill label="Total" value={count} icon="📍" />
-          <StatPill label="Favoris" value={favoritePlaces.length} icon="❤️" />
-          <StatPill label="Publics" value={places.filter(p => p.visibility === 'public').length} icon="🌍" />
+        <div className="grid grid-cols-3 gap-3">
+          <StatPill label="Total" value={count} Icon={Pin} />
+          <StatPill label="Favoris" value={favoritePlaces.length} Icon={Heart} />
+          <StatPill label="Publics" value={places.filter(p => p.visibility === 'public').length} Icon={Globe} />
         </div>
       )}
 
       {/* Map teaser */}
-      <Link href={ROUTES.MAP} className="block relative h-36 rounded-3xl overflow-hidden shadow-card group">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-blue-600" />
-        {/* Decorative pin markers */}
-        <div className="absolute top-4 left-8 w-3 h-3 bg-paper rounded-full shadow-md" />
-        <div className="absolute top-10 left-24 w-4 h-4 bg-brand-400 rounded-full shadow-md" />
-        <div className="absolute bottom-8 right-16 w-3 h-3 bg-white/80 rounded-full shadow-md" />
-        <div className="absolute top-5 right-10 w-4 h-4 bg-yellow-300 rounded-full shadow-md" />
-        <div className="absolute bottom-5 left-14 w-2.5 h-2.5 bg-green-300 rounded-full shadow-md" />
-        {/* Grid overlay */}
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '24px 24px' }}
+      <Link href={ROUTES.MAP} className="block relative h-36 rounded-3xl overflow-hidden shadow-card group border border-dashed border-brass/25">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 18% 26%, rgba(231,179,74,.14), transparent 42%),' +
+              'radial-gradient(circle at 84% 18%, rgba(230,59,119,.16), transparent 40%),' +
+              'radial-gradient(circle at 68% 78%, rgba(231,179,74,.12), transparent 45%),' +
+              '#153C42',
+          }}
         />
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-          <MapPin className="w-6 h-6 mb-1 drop-shadow" />
-          <p className="font-semibold text-base drop-shadow">Voir sur la carte</p>
-          <p className="text-xs text-white/80 mt-0.5">
+        {/* Dashed route lines, matching the DA's postal-route motif */}
+        <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 300 144" preserveAspectRatio="none">
+          <path d="M0 40 C60 60 90 10 150 30 S 260 70 300 55" stroke="#E7B34A" strokeWidth="1.5" strokeDasharray="3 5" fill="none" />
+          <path d="M0 110 C70 90 110 130 170 105 S 270 120 300 100" stroke="#E63B77" strokeWidth="1.5" strokeDasharray="3 5" fill="none" />
+        </svg>
+        {/* Decorative pin markers — postal-stamp dots, cerise/brass on paper ring */}
+        <div className="absolute top-6 left-10 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
+        <div className="absolute top-11 left-28 w-3 h-3 rounded-full bg-brass border-2 border-paper shadow" style={{ boxShadow: '0 0 10px 1px rgba(231,179,74,.5)' }} />
+        <div className="absolute bottom-9 right-16 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
+        <div className="absolute top-7 right-12 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
+        <div className="absolute bottom-6 left-16 w-2 h-2 rounded-full bg-surface-2 border border-brass-dim" />
+        {/* Faint dotted grid, matching the map-canvas texture */}
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{ backgroundImage: 'linear-gradient(#F2ECD9 1px, transparent 1px), linear-gradient(90deg, #F2ECD9 1px, transparent 1px)', backgroundSize: '22px 22px' }}
+        />
+        <div className="absolute inset-0 bg-petrol/10 group-hover:bg-petrol/25 transition-colors" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-paper text-center p-4">
+          <MapPin className="w-6 h-6 mb-1 text-brass" />
+          <p className="font-display font-bold uppercase text-base tracking-wide">Voir sur la carte</p>
+          <p className="text-xs font-mono text-mist mt-0.5">
             {count} lieu{count > 1 ? 'x' : ''} enregistré{count > 1 ? 's' : ''}
           </p>
         </div>
@@ -139,8 +156,8 @@ export default function HomePage() {
                   className="flex items-center gap-1.5 bg-paper text-ink rounded-2xl shadow-card px-3 py-2 text-sm hover:shadow-card-hover transition-shadow"
                 >
                   <span>{meta.emoji}</span>
-                  <span className="font-medium text-neutral-800">{meta.label}</span>
-                  <span className="text-neutral-400 text-xs">{n}</span>
+                  <span className="font-medium text-ink">{meta.label}</span>
+                  <span className="text-brass-dim text-xs">{n}</span>
                 </Link>
               )
             })}
@@ -238,20 +255,31 @@ function QuickAction({
       }`}
     >
       <span className="text-2xl">{emoji}</span>
-      <span className={`font-semibold text-sm leading-tight ${accent ? 'text-white' : 'text-neutral-900'}`}>
+      <span className={`font-semibold text-sm leading-tight ${accent ? 'text-white' : 'text-ink'}`}>
         {title}
       </span>
-      <span className={`text-xs ${accent ? 'text-white/80' : 'text-neutral-400'}`}>{sub}</span>
+      <span className={`text-xs ${accent ? 'text-white/80' : 'text-ink/50'}`}>{sub}</span>
     </Link>
   )
 }
 
-function StatPill({ label, value, icon }: { label: string; value: number; icon: string }) {
+function StatPill({
+  label, value, Icon,
+}: {
+  label: string; value: number
+  Icon: React.ComponentType<{ className?: string }>
+}) {
   return (
-    <div className="bg-paper rounded-2xl shadow-card px-3 py-2.5 text-center">
-      <p className="text-lg">{icon}</p>
-      <p className="text-base font-bold text-neutral-900 leading-none mt-0.5">{value}</p>
-      <p className="text-xs text-neutral-400 mt-0.5">{label}</p>
-    </div>
+    <TicketCard
+      className="text-center"
+      pinColors={[]}
+      label={
+        <span className="flex items-center justify-center gap-1.5">
+          <Icon className="w-4 h-4 text-brass" />
+          {value}
+        </span>
+      }
+      sub={label}
+    />
   )
 }

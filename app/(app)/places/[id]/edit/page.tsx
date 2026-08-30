@@ -12,6 +12,7 @@ import { placesService } from '@/services/places.service'
 import { mapService } from '@/services/map.service'
 import type { PlaceCategory, PlaceVisibility } from '@/lib/types'
 import { PLACE_CATEGORIES, ROUTES, VISIBILITY_OPTIONS } from '@/lib/constants'
+import { CATEGORY_ICONS } from '@/lib/category-icons'
 
 type FormData = {
   name: string
@@ -107,11 +108,11 @@ export default function EditPlacePage() {
           onClick={() => router.back()}
           className="w-10 h-10 bg-paper rounded-2xl shadow-card flex items-center justify-center"
         >
-          <ArrowLeft className="w-5 h-5 text-neutral-600" />
+          <ArrowLeft className="w-5 h-5 text-ink/70" />
         </button>
         <div>
-          <h1 className="text-xl font-bold text-neutral-900">Modifier le lieu</h1>
-          <p className="text-sm text-neutral-500">{form.name}</p>
+          <h1 className="text-xl font-bold text-paper">Modifier le lieu</h1>
+          <p className="text-sm text-mist">{form.name}</p>
         </div>
       </div>
 
@@ -128,23 +129,26 @@ export default function EditPlacePage() {
 
         {/* Category */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-neutral-700">Catégorie *</label>
+          <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Catégorie *</label>
           <div className="grid grid-cols-3 gap-2">
-            {Object.entries(PLACE_CATEGORIES).map(([key, val]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => updateForm('category', key)}
-                className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
-                  form.category === key
-                    ? 'border-brand-500 bg-brand-50 text-brand-700'
-                    : 'border-brass-dim/30 bg-paper text-ink/70 hover:border-brass-dim/60'
-                }`}
-              >
-                <span className="text-xl">{val.emoji}</span>
-                <span className="text-xs font-medium leading-tight text-center">{val.label}</span>
-              </button>
-            ))}
+            {Object.entries(PLACE_CATEGORIES).map(([key, val]) => {
+              const Icon = CATEGORY_ICONS[key as PlaceCategory]
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => updateForm('category', key)}
+                  className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
+                    form.category === key
+                      ? 'border-brand-500 bg-brand-50 text-brand-700'
+                      : 'border-dashed border-brass-dim/40 bg-paper text-ink/70 hover:border-brass-dim/70'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-xs font-medium leading-tight text-center">{val.label}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -192,7 +196,7 @@ export default function EditPlacePage() {
 
         {/* Visibility */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-neutral-700">Visibilité</label>
+          <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Visibilité</label>
           <div className="space-y-2">
             {VISIBILITY_OPTIONS.map(opt => (
               <button
@@ -208,12 +212,12 @@ export default function EditPlacePage() {
                 className={`w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all ${
                   form.visibility === opt.value
                     ? 'border-brand-500 bg-brand-50'
-                    : 'border-brass-dim/30 bg-paper text-ink hover:border-brass-dim/60'
+                    : 'border-dashed border-brass-dim/40 bg-paper text-ink hover:border-brass-dim/70'
                 }`}
               >
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-neutral-900">{opt.label}</p>
-                  <p className="text-xs text-neutral-500">{opt.description}</p>
+                  <p className="text-sm font-medium text-ink">{opt.label}</p>
+                  <p className="text-xs text-ink/60">{opt.description}</p>
                 </div>
                 {opt.value !== 'private' && user.plan === 'free' && (
                   <span className="text-xs text-brand-500 font-semibold">Premium</span>
