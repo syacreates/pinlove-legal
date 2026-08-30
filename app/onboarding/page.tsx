@@ -155,7 +155,7 @@ export default function OnboardingPage() {
       className="min-h-screen bg-petrol-soft ambient-bg flex flex-col items-center justify-between px-6 py-16 overflow-x-hidden"
     >
       {/* Top bar: logo + skip */}
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full max-w-md mx-auto flex items-center justify-between">
         <StampBadge size="sm" animated={false} />
         <button
           onClick={finish}
@@ -166,7 +166,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Slide content */}
-      <div className="flex flex-col items-center text-center gap-6 animate-fade-in w-full" key={current}>
+      <div className="flex flex-col items-center text-center gap-6 animate-fade-in w-full max-w-md mx-auto" key={current}>
         <p className="font-mono text-[10.5px] uppercase tracking-widest text-brass">{slide.eyebrow}</p>
         <h2 className="font-display font-extrabold uppercase text-[33px] leading-[0.98] text-paper">
           {slide.title}
@@ -178,7 +178,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Controls */}
-      <div className="w-full flex flex-col items-center gap-6">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-6">
         {/* Dots */}
         <div className="flex gap-2">
           {SLIDES.map((_, i) => (
