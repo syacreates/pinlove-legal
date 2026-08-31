@@ -90,7 +90,7 @@ export default function SignupPage() {
             type={showPwd ? 'text' : 'password'}
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="8 caractères min."
+            placeholder="••••••••"
             autoComplete="new-password"
             leftIcon={<Lock className="w-4 h-4" />}
             hint="Minimum 6 caractères"

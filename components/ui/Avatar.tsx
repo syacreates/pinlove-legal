@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
@@ -18,6 +21,7 @@ const SIZES = {
 
 export function Avatar({ src, alt, size = 'md', className }: AvatarProps) {
   const { px, cls } = SIZES[size]
+  const [failed, setFailed] = useState(false)
 
   const initials = alt
     .split(' ')
@@ -34,7 +38,7 @@ export function Avatar({ src, alt, size = 'md', className }: AvatarProps) {
         className,
       )}
     >
-      {src ? (
+      {src && !failed ? (
         <Image
           src={src}
           alt={alt}
@@ -42,6 +46,7 @@ export function Avatar({ src, alt, size = 'md', className }: AvatarProps) {
           height={px}
           className="object-cover w-full h-full"
           unoptimized
+          onError={() => setFailed(true)}
         />
       ) : (
         <span className="font-semibold text-white">{initials}</span>

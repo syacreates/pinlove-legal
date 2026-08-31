@@ -298,7 +298,7 @@ export default function OnboardingPage() {
 
         <div className="ticket-card w-full !p-4 text-left">
           <p className="font-mono text-[9px] text-mist-2">{step.tag}</p>
-          <p className="font-display font-extrabold uppercase text-sm text-ink mt-1">{step.title}</p>
+          <h1 className="font-display font-extrabold uppercase text-sm text-ink mt-1">{step.title}</h1>
           <p className="font-mono text-[11px] text-ink/60 mt-1 leading-relaxed">{step.body}</p>
         </div>
       </div>

@@ -1,53 +1,54 @@
 import type { Metadata } from 'next'
+import { FREE_PLAN_LIMIT } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | PinLove',
+  title: "Conditions d'utilisation",
 }
 
 export default function TermsPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 py-12 text-neutral-800 legal-content">
-      <h1 className="text-3xl font-bold mb-2">Terms of Service</h1>
-      <p className="text-sm text-neutral-500 mb-8">Last updated: March 19, 2026</p>
+      <h1 className="text-3xl font-bold mb-2">Conditions d&apos;utilisation</h1>
+      <p className="text-sm text-neutral-500 mb-8">Dernière mise à jour : 19 mars 2026</p>
 
       <section className="space-y-6 text-sm leading-relaxed">
         <div>
-          <h2 className="text-lg font-semibold mb-2">1. Acceptance</h2>
-          <p>By using PinLove you agree to these Terms. If you do not agree, do not use the service.</p>
+          <h2 className="text-lg font-semibold mb-2">1. Acceptation</h2>
+          <p>En utilisant PinLove, tu acceptes les présentes Conditions. Si tu n&apos;es pas d&apos;accord, merci de ne pas utiliser le service.</p>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">2. Description of service</h2>
-          <p>PinLove is a web application that allows registered users to save, organize, and share real-world places. Users may import place suggestions by submitting public TikTok or Instagram video URLs.</p>
+          <h2 className="text-lg font-semibold mb-2">2. Description du service</h2>
+          <p>PinLove est une application web qui permet aux utilisateurs inscrits d&apos;enregistrer, organiser et partager des lieux réels. Les utilisateurs peuvent importer des suggestions de lieux en soumettant des URL publiques de vidéos TikTok ou Instagram.</p>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">3. Acceptable use</h2>
+          <h2 className="text-lg font-semibold mb-2">3. Usage autorisé</h2>
           <ul className="list-disc pl-5 space-y-1">
-            <li>You may only submit URLs of public videos for which you have the right to request metadata.</li>
-            <li>You may not use PinLove to scrape, collect, or redistribute TikTok content in bulk.</li>
-            <li>You may not use PinLove for any illegal purpose or in violation of TikTok's Terms of Service.</li>
+            <li>Tu ne peux soumettre que des URL de vidéos publiques pour lesquelles tu as le droit de demander les métadonnées.</li>
+            <li>Tu ne peux pas utiliser PinLove pour extraire, collecter ou redistribuer du contenu TikTok en masse.</li>
+            <li>Tu ne peux pas utiliser PinLove à des fins illégales ou en violation des Conditions d&apos;utilisation de TikTok.</li>
           </ul>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">4. User content</h2>
-          <p>You retain ownership of the places and notes you save. You grant PinLove a limited license to store and display this content to provide the service.</p>
+          <h2 className="text-lg font-semibold mb-2">4. Contenu utilisateur</h2>
+          <p>Tu conserves la propriété des lieux et notes que tu enregistres. Tu accordes à PinLove une licence limitée pour stocker et afficher ce contenu afin de fournir le service.</p>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">5. Free and premium plans</h2>
-          <p>The free plan is limited to {'{FREE_PLAN_LIMIT}'} saved places. Premium access is available as a one-time purchase. Purchases are final and non-refundable except where required by law.</p>
+          <h2 className="text-lg font-semibold mb-2">5. Offres gratuite et premium</h2>
+          <p>L&apos;offre gratuite est limitée à {FREE_PLAN_LIMIT} lieux enregistrés. L&apos;accès premium est disponible via un paiement unique. Les achats sont définitifs et non remboursables, sauf disposition légale contraire.</p>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">6. Disclaimer</h2>
-          <p>PinLove is provided "as is" without warranty of any kind. We are not responsible for the accuracy of place information extracted from third-party content.</p>
+          <h2 className="text-lg font-semibold mb-2">6. Avertissement</h2>
+          <p>PinLove est fourni « tel quel », sans garantie d&apos;aucune sorte. Nous ne sommes pas responsables de l&apos;exactitude des informations de lieux extraites de contenus tiers.</p>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">7. Changes</h2>
-          <p>We may update these Terms at any time. Continued use of the service constitutes acceptance of the updated Terms.</p>
+          <h2 className="text-lg font-semibold mb-2">7. Modifications</h2>
+          <p>Nous pouvons mettre à jour ces Conditions à tout moment. La poursuite de l&apos;utilisation du service vaut acceptation des Conditions mises à jour.</p>
         </div>
 
         <div>

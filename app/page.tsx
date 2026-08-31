@@ -39,7 +39,7 @@ export default function SplashPage() {
       >
         <StampBadge size="lg" />
         <div className="text-center">
-          <h1 className="font-display font-extrabold uppercase text-4xl text-paper tracking-wide">PinLove</h1>
+          <h1 className="font-display font-extrabold uppercase text-4xl text-paper tracking-[0.06em]">PinLove</h1>
           <p className="font-mono text-mist text-sm mt-1.5">
             Tes lieux préférés, toujours à portée
           </p>

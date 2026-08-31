@@ -106,10 +106,10 @@ export default function PricingPage() {
       {/* Price card */}
       <div className="bg-paper rounded-3xl shadow-card p-6 mb-5 ring-2 ring-cerise">
         <div className="flex items-baseline gap-1 mb-1">
-          <span className="text-4xl font-bold text-neutral-900">{PREMIUM_PRICE_DISPLAY}</span>
-          <span className="text-neutral-500 text-sm">une fois</span>
+          <span className="text-4xl font-bold text-ink">{PREMIUM_PRICE_DISPLAY}</span>
+          <span className="text-ink/60 text-sm">une fois</span>
         </div>
-        <p className="text-xs text-neutral-400 mb-5">Pas d'abonnement. Pas de surprise.</p>
+        <p className="text-xs text-ink/50 mb-5">Pas d'abonnement. Pas de surprise.</p>
 
         <ul className="space-y-3 mb-6">
           {PREMIUM_FEATURES.map(f => (
@@ -118,8 +118,8 @@ export default function PricingPage() {
                 <span className="text-sm">{f.icon}</span>
               </div>
               <div>
-                <p className="text-sm font-semibold text-neutral-900">{f.label}</p>
-                <p className="text-xs text-neutral-500">{f.sub}</p>
+                <p className="text-sm font-semibold text-ink">{f.label}</p>
+                <p className="text-xs text-ink/60">{f.sub}</p>
               </div>
             </li>
           ))}
@@ -137,10 +137,10 @@ export default function PricingPage() {
         </Button>
 
         <div className="flex items-center justify-center gap-4 mt-4">
-          <span className="flex items-center gap-1 text-xs text-neutral-400">
+          <span className="flex items-center gap-1 text-xs text-ink/50">
             <Shield className="w-3 h-3" /> Paiement sécurisé Stripe
           </span>
-          <span className="flex items-center gap-1 text-xs text-neutral-400">
+          <span className="flex items-center gap-1 text-xs text-ink/50">
             <Zap className="w-3 h-3" /> Activation immédiate
           </span>
         </div>
@@ -149,9 +149,9 @@ export default function PricingPage() {
       {/* Compare plans */}
       <div className="bg-paper rounded-3xl shadow-card overflow-hidden mb-5">
         <div className="grid grid-cols-3 text-center text-xs font-semibold bg-neutral-50 py-3 px-4">
-          <span className="text-left text-neutral-500">Fonctionnalité</span>
-          <span className="text-neutral-700">Gratuit</span>
-          <span className="text-brand-500">Premium</span>
+          <span className="text-left text-mist">Fonctionnalité</span>
+          <span className="text-paper">Gratuit</span>
+          <span className="text-brass">Premium</span>
         </div>
         {[
           ['Adresses',          '5 max',  '∞ illimité'],
@@ -161,14 +161,14 @@ export default function PricingPage() {
           ['Itinéraires',       '✓',      '✓'],
         ].map(([feat, free, prem]) => (
           <div key={feat} className="grid grid-cols-3 text-center text-xs py-3 px-4 border-t border-neutral-50">
-            <span className="text-left text-neutral-600">{feat}</span>
-            <span className="text-neutral-400">{free}</span>
+            <span className="text-left text-ink/70">{feat}</span>
+            <span className="text-ink/50">{free}</span>
             <span className="text-brand-600 font-semibold">{prem}</span>
           </div>
         ))}
       </div>
 
-      <p className="text-center text-xs text-neutral-400">
+      <p className="text-center text-xs text-ink/50">
         Questions ? <a href="mailto:support@pinlove.app" className="underline">support@pinlove.app</a>
       </p>
     </div>
