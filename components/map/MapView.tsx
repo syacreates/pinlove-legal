@@ -140,10 +140,12 @@ export default function MapView({
       </MapContainer>
 
       {/* Petrol tint overlay — approxime l'ambiance "carnet de voyage" sur les
-          tuiles CartoDB sans toucher au rendu des marqueurs/popups au-dessus. */}
+          tuiles OpenStreetMap sans toucher au rendu des marqueurs/popups
+          au-dessus. Opacité réduite (22% → 10%) : la carte était trop sombre,
+          peu lisible — cf. filtre plus lumineux dans globals.css. */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: '#0E2B30', opacity: 0.22, mixBlendMode: 'color', zIndex: 11 }}
+        style={{ background: '#0E2B30', opacity: 0.10, mixBlendMode: 'color', zIndex: 11 }}
       />
     </div>
   )
