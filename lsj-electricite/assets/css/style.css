@@ -385,11 +385,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .hero-title .hl::after {
   content: "";
-  position: absolute; left: -2%; right: -2%; bottom: .06em;
-  height: .16em;
-  background: var(--blue-500);
+  position: absolute; left: -3%; right: -3%; bottom: -.14em;
+  height: .26em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'%3E%3Cpath d='M2 14 C15 4,25 20,40 10 C55 0,65 18,80 8 C95 -2,110 16,125 8 C140 0,155 14,170 8 C180 4,190 10,198 8' stroke='%232f6fed' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   z-index: -1;
-  opacity: .55;
 }
 .hero-lead {
   margin-top: 24px;
@@ -476,7 +477,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* =========================================================
    Trust bar
    ========================================================= */
-.trust-bar { background: var(--navy-950); padding: 22px 0; }
+.trust-bar { position: relative; background: var(--navy-950); padding: 22px 0 42px; }
+.trust-bar::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0 32 Q180 58 360 30 T720 32 T1080 28 T1440 34 V60 H0 Z' fill='%23fffaf1'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
 .trust-row {
   display: flex; flex-wrap: wrap; justify-content: center;
   gap: 14px 28px;
@@ -678,7 +687,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   cursor: default;
   transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-fast);
 }
-.portfolio-item:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--navy-950); }
+/* Scattered, hand-placed feel instead of a perfectly rigid grid */
+.portfolio-item:nth-child(6n+1) { transform: rotate(-2.5deg); }
+.portfolio-item:nth-child(6n+2) { transform: rotate(2deg); }
+.portfolio-item:nth-child(6n+3) { transform: rotate(-1.5deg); }
+.portfolio-item:nth-child(6n+4) { transform: rotate(3deg); }
+.portfolio-item:nth-child(6n+5) { transform: rotate(-2deg); }
+.portfolio-item:nth-child(6n+6) { transform: rotate(1.5deg); }
+.portfolio-item:hover { transform: translate(-2px, -2px) rotate(0deg); box-shadow: 5px 5px 0 var(--navy-950); }
 .portfolio-item .ph {
   position: absolute; inset: 0;
   display: grid; place-items: center;
