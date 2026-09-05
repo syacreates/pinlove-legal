@@ -38,6 +38,38 @@
     link.addEventListener('click', closeMobileNav);
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+      closeMobileNav();
+      burger.focus();
+    }
+  });
+
+  /* ---------------------------------------------------------
+     Scroll-spy: highlight the current section in the nav
+  --------------------------------------------------------- */
+  const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
+  const spySections = Array.from(navLinks)
+    .map((link) => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+
+  if (spySections.length && 'IntersectionObserver' in window) {
+    const setActive = (id) => {
+      navLinks.forEach((link) => {
+        link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+      });
+    };
+    const spyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+    spySections.forEach((section) => spyObserver.observe(section));
+  }
+
   /* ---------------------------------------------------------
      Scroll reveal (IntersectionObserver)
   --------------------------------------------------------- */
@@ -296,11 +328,43 @@
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
 
+  const fieldErrorMessage = (el) => {
+    if (el.validity.valueMissing) {
+      return el.tagName === 'SELECT' ? 'Merci de sélectionner une option.' : 'Ce champ est requis.';
+    }
+    if (el.validity.typeMismatch && el.type === 'email') return 'Adresse email invalide.';
+    if (el.validity.tooShort) return 'Ce champ est trop court.';
+    return 'Merci de vérifier ce champ.';
+  };
+
+  const validateField = (el) => {
+    const wrap = el.closest('.field');
+    if (!wrap) return true;
+    const errorEl = wrap.querySelector('.field-error');
+    const valid = el.checkValidity();
+    wrap.classList.toggle('is-invalid', !valid);
+    if (errorEl) errorEl.textContent = valid ? '' : fieldErrorMessage(el);
+    return valid;
+  };
+
   if (contactForm) {
+    const formFields = contactForm.querySelectorAll('input, select, textarea');
+    formFields.forEach((el) => {
+      el.addEventListener('blur', () => validateField(el));
+      el.addEventListener('input', () => {
+        if (el.closest('.field')?.classList.contains('is-invalid')) validateField(el);
+      });
+    });
+
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!contactForm.checkValidity()) {
-        contactForm.reportValidity();
+      let firstInvalid = null;
+      formFields.forEach((el) => {
+        const valid = validateField(el);
+        if (!valid && !firstInvalid) firstInvalid = el;
+      });
+      if (firstInvalid) {
+        firstInvalid.focus();
         return;
       }
 

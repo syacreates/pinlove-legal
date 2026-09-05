@@ -17,6 +17,7 @@
   --blue-500: #2f6fed;
   --blue-600: #1e54c6;
   --blue-100: #e8f0ff;
+  --red-500: #e4432b;
 
   --cyan-400: #5ce1ff;
   --cyan-500: #00c9ff;
@@ -237,7 +238,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   gap: 24px;
 }
 
-.brand { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; flex: none; }
 .brand-mark {
   width: 44px; height: 44px;
   border-radius: 12px;
@@ -251,22 +252,31 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .brand-text strong { display: block; font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; letter-spacing: -.01em; }
 .brand-text span { display: block; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--amber-400); font-weight: 700; margin-top: 3px; }
 
-.main-nav { display: flex; align-items: center; gap: 6px; }
+.main-nav { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; min-width: 0; }
 .main-nav a {
   color: rgba(255,255,255,.82);
   font-weight: 600;
-  font-size: .92rem;
-  padding: 10px 16px;
+  font-size: .9rem;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
   position: relative;
+  white-space: nowrap;
   transition: color var(--dur-fast), background var(--dur-fast);
 }
 .main-nav a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.main-nav a.is-active { color: #fff; }
+.main-nav a.is-active::after {
+  content: "";
+  position: absolute; left: 16px; right: 16px; bottom: 5px;
+  height: 2px; border-radius: 2px;
+  background: var(--amber-500);
+}
 
-.header-actions { display: flex; align-items: center; gap: 12px; }
+.header-actions { display: flex; align-items: center; gap: 8px; flex: none; }
 .header-call {
   display: flex; align-items: center; gap: 10px;
   color: #fff;
+  flex: none;
 }
 .header-call .ico {
   width: 38px; height: 38px; border-radius: 50%;
@@ -274,7 +284,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   display: grid; place-items: center; flex: none;
 }
 .header-call .ico svg { width: 17px; height: 17px; }
-.header-call .txt { line-height: 1.1; }
+.header-call .txt { line-height: 1.1; white-space: nowrap; }
 .header-call .txt small { display: block; font-size: .68rem; color: var(--ink-300); font-weight: 600; }
 .header-call .txt strong { font-size: .95rem; font-weight: 800; }
 
@@ -902,6 +912,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .field select { color: var(--ink-500); }
 .field select:valid { color: var(--navy-900); }
 
+.field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--red-500);
+}
+.field-error:empty { display: none; }
+.field.is-invalid input,
+.field.is-invalid textarea,
+.field.is-invalid select {
+  border-color: var(--red-500);
+}
+.field.is-invalid input:focus,
+.field.is-invalid textarea:focus,
+.field.is-invalid select:focus {
+  box-shadow: 0 0 0 4px rgba(228,67,43,.15);
+}
+
 .form-note { display: flex; align-items: center; gap: 10px; font-size: .82rem; color: var(--ink-500); margin-top: -6px; margin-bottom: 22px; }
 .form-note svg { width: 15px; height: 15px; color: var(--amber-600); flex: none; }
 
@@ -986,6 +1015,29 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .fab-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .fab-top svg { width: 18px; height: 18px; }
 
+/* Mobile sticky action bar — replaces the floating buttons on small screens
+   so there is exactly one persistent call-to-action, not two competing ones */
+.mobile-cta-bar {
+  display: none;
+  position: fixed; left: 0; right: 0; bottom: 0;
+  z-index: 950;
+  gap: 10px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 2px solid var(--navy-950);
+}
+.mobile-cta-bar-btn {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px; border-radius: var(--radius-sm);
+  font-weight: 700; font-size: .92rem;
+  border: 2px solid var(--navy-950);
+}
+.mobile-cta-bar-btn svg { width: 18px; height: 18px; flex: none; }
+.mobile-cta-bar-btn.call { background: #fff; color: var(--navy-950); }
+.mobile-cta-bar-btn.quote { background: var(--amber-500); color: var(--navy-950); box-shadow: 3px 3px 0 var(--navy-950); }
+.mobile-cta-bar-btn:active { transform: translateY(1px); }
+
 /* =========================================================
    Keyframes
    ========================================================= */
@@ -1036,6 +1088,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .cta-actions { justify-content: center; }
   .footer-bottom { flex-direction: column; text-align: center; }
   .hero-badges { justify-content: center; }
+  .float-actions { display: none; }
+  .mobile-cta-bar { display: flex; }
+  .site-footer { padding-bottom: 78px; }
 }
 
 /* Reduced motion */

@@ -34,7 +34,7 @@
       <a href="#apropos">À propos</a>
       <a href="#realisations">Réalisations</a>
       <a href="#avis">Avis</a>
-      <a href="#zone">Zone d'intervention</a>
+      <a href="#zone">Zone</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -732,16 +732,19 @@
             <div class="field">
               <input type="text" id="fullname" name="fullname" placeholder=" " required autocomplete="name">
               <label for="fullname">Nom complet</label>
+              <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
               <input type="tel" id="phone" name="phone" placeholder=" " required autocomplete="tel">
               <label for="phone">Téléphone</label>
+              <span class="field-error" aria-live="polite"></span>
             </div>
           </div>
 
           <div class="field">
             <input type="email" id="email" name="email" placeholder=" " required autocomplete="email">
             <label for="email">Adresse email</label>
+            <span class="field-error" aria-live="polite"></span>
           </div>
 
           <div class="field">
@@ -756,11 +759,13 @@
               <option value="autre">Autre demande</option>
             </select>
             <label for="service">Type de projet</label>
+            <span class="field-error" aria-live="polite"></span>
           </div>
 
           <div class="field">
             <textarea id="message" name="message" placeholder=" " required></textarea>
             <label for="message">Décrivez votre besoin</label>
+            <span class="field-error" aria-live="polite"></span>
           </div>
 
           <p class="form-note">
@@ -861,6 +866,20 @@
   </button>
   <a href="tel:+33600000000" class="fab fab-call" aria-label="Appeler LSJ Électricité">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+  </a>
+</div>
+
+<!-- =========================================================
+     MOBILE STICKY ACTION BAR
+========================================================== -->
+<div class="mobile-cta-bar">
+  <a href="tel:+33600000000" class="mobile-cta-bar-btn call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+    Appeler
+  </a>
+  <a href="#contact" class="mobile-cta-bar-btn quote">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+    Devis gratuit
   </a>
 </div>
 
