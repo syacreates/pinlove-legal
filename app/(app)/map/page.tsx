@@ -31,7 +31,7 @@ export default function MapPage() {
   const [geoError,     setGeoError]       = useState<string | null>(null)
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [filterCategory, setFilterCategory] = useState<PlaceCategory | null>(null)
-  const [showFilters,   setShowFilters]   = useState(false)
+  const [showFilters,   setShowFilters]   = useState(true)
   const [locating,      setLocating]      = useState(false)
 
   const firstName = user.full_name.split(' ')[0]
