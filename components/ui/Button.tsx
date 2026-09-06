@@ -39,11 +39,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants: Record<ButtonVariant, string> = {
       primary:   'bg-brass text-ink hover:bg-brass-dim shadow-floating',
-      secondary: 'bg-surface text-paper hover:bg-surface-2',
+      secondary: 'bg-surface text-neutral-900 hover:bg-surface-2',
       ghost:     'bg-transparent text-mist hover:bg-surface',
       danger:    'bg-red-500 text-white hover:bg-red-600',
       outline:   'border-2 border-brass text-brass bg-transparent hover:bg-brass/10',
-      dashed:    'border-2 border-dashed border-brass text-paper bg-transparent hover:bg-brass/10',
+      dashed:    'border-2 border-dashed border-brass text-neutral-900 bg-transparent hover:bg-brass/10',
     }
 
     const sizes: Record<ButtonSize, string> = {

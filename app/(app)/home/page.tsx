@@ -59,7 +59,7 @@ export default function HomePage() {
           <StampBadge size="sm" animated={false} />
           <div>
             <p className="text-sm text-mist">{greeting} 👋</p>
-            <h1 className="text-xl font-bold text-paper">{firstName}</h1>
+            <h1 className="text-xl font-bold text-neutral-900">{firstName}</h1>
           </div>
         </div>
         <Link href={ROUTES.PROFILE}>
@@ -105,8 +105,9 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Map teaser */}
-      <Link href={ROUTES.MAP} className="block relative h-36 rounded-3xl overflow-hidden shadow-card group border border-dashed border-brass/25">
+      {/* Map teaser — fixed dark illustration (mirrors the real map's dark
+          tile styling), independent of the site's light/dark theme. */}
+      <Link href={ROUTES.MAP} data-theme="dark" className="block relative h-36 rounded-3xl overflow-hidden shadow-card group border border-dashed border-brass/25">
         <div
           className="absolute inset-0"
           style={{

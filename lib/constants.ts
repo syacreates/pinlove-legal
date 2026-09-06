@@ -1,5 +1,12 @@
 import type { PlaceCategory } from './types'
 
+// ── Theme ──────────────────────────────────────────────────────────────────────
+// Kept in this plain (non "use client") module rather than lib/theme.ts so the
+// blocking init script in the root server layout can read the literal value at
+// build time — importing it from a "use client" module there would pull in a
+// client-reference proxy instead of the actual string.
+export const THEME_STORAGE_KEY = 'pinlove-theme'
+
 // ── Freemium limits ───────────────────────────────────────────────────────────
 export const FREE_PLAN_LIMIT = 5
 export const PREMIUM_PRICE_EUR = 9.99

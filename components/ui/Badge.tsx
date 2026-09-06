@@ -10,7 +10,7 @@ export function CategoryBadge({ category, tone = 'dark' }: { category: PlaceCate
       className={cn(
         'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono uppercase tracking-wide border border-dashed',
         tone === 'dark'
-          ? 'text-mist border-paper/25'
+          ? 'text-mist border-neutral-900/25'
           : 'text-ink/70 border-brass-dim/60',
       )}
     >

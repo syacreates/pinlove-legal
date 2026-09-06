@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Edit3, LogOut, ChevronRight, Shield, CreditCard, Bell, HelpCircle } from 'lucide-react'
+import { Edit3, LogOut, ChevronRight, Moon, Shield, CreditCard, Bell, HelpCircle } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { PlanBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { TicketCard } from '@/components/stamp/TicketCard'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAppStore } from '@/stores/app.store'
@@ -123,6 +124,13 @@ export default function ProfilePage() {
 
       {/* Menu items */}
       <div className="bg-paper rounded-3xl shadow-card divide-y divide-ink/10">
+        <div className="flex items-center gap-3 px-4 py-4">
+          <div className="w-8 h-8 bg-ink/5 rounded-xl flex items-center justify-center text-ink/70">
+            <Moon className="w-4 h-4" />
+          </div>
+          <span className="flex-1 text-sm font-medium text-ink">Apparence</span>
+          <ThemeToggle />
+        </div>
         <MenuItem icon={<Shield className="w-4 h-4" />} label="Confidentialité" href="/privacy" />
         <MenuItem icon={<HelpCircle className="w-4 h-4" />} label="Aide & Support" href="#" />
         <MenuItem icon={<Bell className="w-4 h-4" />} label="Notifications" href="#" />

@@ -2,6 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ──────────────────────────────────────────────────────────── *
+ * "R G B" triples consumed by tailwind.config.ts via rgb(var(--x) / <alpha>).
+ * Dark is the default (the app's original, permanent look) so nothing
+ * changes for anyone until data-theme="light" is set on <html> — see
+ * lib/theme.ts. Light isn't just dark-inverted: it's a pale "desk" chrome
+ * that the fixed cream `paper` card color sits on top of, keeping the
+ * postcard/ticket motif legible in both themes.
+ */
+:root {
+  --c-petrol:      14 43 48;
+  --c-petrol-soft: 21 60 66;
+  --c-surface:     28 75 83;
+  --c-surface-2:   36 88 97;
+  --c-mist:        185 210 205;
+  --c-mist-2:      127 163 157;
+
+  --c-neutral-50:  21 60 66;
+  --c-neutral-100: 28 75 83;
+  --c-neutral-200: 36 88 97;
+  --c-neutral-300: 92 122 120;
+  --c-neutral-400: 127 163 157;
+  --c-neutral-500: 185 210 205;
+  --c-neutral-600: 207 224 219;
+  --c-neutral-700: 220 231 224;
+  --c-neutral-800: 233 230 211;
+  --c-neutral-900: 242 236 217;
+  --c-neutral-950: 255 255 255;
+}
+
+/* Re-declared (not just the :root default) so a nested data-theme="dark"
+   element — e.g. the onboarding phone mockup — can force dark chrome for
+   its subtree even while an ancestor <html> carries data-theme="light". */
+[data-theme='dark'] {
+  --c-petrol:      14 43 48;
+  --c-petrol-soft: 21 60 66;
+  --c-surface:     28 75 83;
+  --c-surface-2:   36 88 97;
+  --c-mist:        185 210 205;
+  --c-mist-2:      127 163 157;
+
+  --c-neutral-50:  21 60 66;
+  --c-neutral-100: 28 75 83;
+  --c-neutral-200: 36 88 97;
+  --c-neutral-300: 92 122 120;
+  --c-neutral-400: 127 163 157;
+  --c-neutral-500: 185 210 205;
+  --c-neutral-600: 207 224 219;
+  --c-neutral-700: 220 231 224;
+  --c-neutral-800: 233 230 211;
+  --c-neutral-900: 242 236 217;
+  --c-neutral-950: 255 255 255;
+}
+
+[data-theme='light'] {
+  --c-petrol:      238 242 239;
+  --c-petrol-soft: 229 235 232;
+  --c-surface:     218 228 224;
+  --c-surface-2:   203 217 211;
+  --c-mist:        72 96 91;
+  --c-mist-2:      107 127 123;
+
+  --c-neutral-50:  245 248 246;
+  --c-neutral-100: 233 238 236;
+  --c-neutral-200: 216 227 224;
+  --c-neutral-300: 185 202 198;
+  --c-neutral-400: 140 162 157;
+  --c-neutral-500: 97 117 111;
+  --c-neutral-600: 72 96 91;
+  --c-neutral-700: 52 72 69;
+  --c-neutral-800: 34 50 47;
+  --c-neutral-900: 22 33 31;
+  --c-neutral-950: 11 18 17;
+}
+
 /* ── Base ──────────────────────────────────────────────────────────────────── */
 @layer base {
   html {
@@ -69,7 +143,9 @@
     background-attachment: fixed;
   }
 
-  /* Hero gradient bg — replaces the old coral premium-gradient */
+  /* Hero gradient bg — replaces the old coral premium-gradient. Fixed dark
+     brand color by design (splash screen + premium badges): stays the same
+     regardless of light/dark theme, like a launch-screen brand color. */
   .premium-gradient {
     background:
       radial-gradient(circle at 30% 20%, rgba(231,179,74,.25), transparent 50%),
@@ -138,15 +214,18 @@
 .leaflet-container {
   font-family: inherit !important;
   border-radius: inherit;
-  background: #153C42 !important;
+  background: rgb(var(--c-petrol-soft)) !important;
 }
 
 /* Tuiles OpenStreetMap standard (gratuites, sans clé, sans quota) inversées en
    CSS pour un rendu sombre — plus fiable que les tuiles CartoDB anonymes
    ("dark_nolabels"), qui se sont mises à afficher un filigrane "API KEY
    REQUIRED" en production une fois le trafic réel monté (quota anonyme
-   dépassé). Popups/contrôles restent non affectés (hors .leaflet-tile-pane). */
-.leaflet-tile-pane {
+   dépassé). Popups/contrôles restent non affectés (hors .leaflet-tile-pane).
+   En thème clair les tuiles restent dans leurs couleurs d'origine — pas
+   d'inversion nécessaire sur un fond déjà clair. */
+[data-theme='dark'] .leaflet-tile-pane,
+:root:not([data-theme]) .leaflet-tile-pane {
   filter: invert(1) hue-rotate(175deg) brightness(1.25) contrast(0.95) saturate(0.85);
 }
 
@@ -177,8 +256,8 @@
 
 .leaflet-control-zoom a {
   border-radius: 0 !important;
-  background: #1C4B53 !important;
-  color: #F2ECD9 !important;
+  background: rgb(var(--c-surface)) !important;
+  color: rgb(var(--c-neutral-900)) !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   width: 40px !important;
@@ -187,12 +266,12 @@
 }
 
 .leaflet-control-attribution {
-  background: rgba(14,43,48,.7) !important;
-  color: #7FA39D !important;
+  background: rgb(var(--c-petrol) / 0.7) !important;
+  color: rgb(var(--c-mist-2)) !important;
 }
 
 .leaflet-control-attribution a {
-  color: #B9D2CD !important;
+  color: rgb(var(--c-mist)) !important;
 }
 
 /* ── Utility classes ───────────────────────────────────────────────────────── */
@@ -214,4 +293,37 @@
   /* Hide scrollbar but allow scroll */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ── Theme toggle — circular reveal transition ───────────────────────────────
+ * Wraps the light/dark swap in a View Transition that wipes a circle out
+ * from the toggle button (see lib/theme.ts, which sets --theme-x/--theme-y
+ * to the click position). Browsers without View Transitions support just
+ * swap instantly — no fallback animation needed since these rules simply
+ * won't apply. */
+::view-transition-group(root) {
+  animation-duration: 0.6s;
+}
+
+::view-transition-new(root) {
+  clip-path: circle(0% at var(--theme-x, 100%) var(--theme-y, 0%));
+  animation: theme-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+@keyframes theme-reveal {
+  to {
+    clip-path: circle(150% at var(--theme-x, 100%) var(--theme-y, 0%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    animation: none !important;
+  }
 }

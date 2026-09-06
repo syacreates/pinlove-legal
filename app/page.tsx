@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { Button } from '@/components/ui/Button'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { ROUTES } from '@/lib/constants'
 
 /**
@@ -30,7 +31,14 @@ export default function SplashPage() {
   }
 
   return (
-    <div className="fixed inset-0 premium-gradient flex flex-col items-center justify-center px-6">
+    <>
+      {/* Sits outside the dark-scoped splash below so it uses the visitor's
+          real theme colors even though the launch screen itself stays dark. */}
+      <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)] z-10" />
+
+      {/* Splash keeps its fixed dark brand look regardless of the site's
+          light/dark theme — like a launch screen — so it's scoped to dark here. */}
+      <div data-theme="dark" className="fixed inset-0 premium-gradient flex flex-col items-center justify-center px-6">
       {/* Logo */}
       <div
         className={`flex flex-col items-center gap-5 transition-all duration-300 ${
@@ -56,6 +64,7 @@ export default function SplashPage() {
           Démarrer
         </Button>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
