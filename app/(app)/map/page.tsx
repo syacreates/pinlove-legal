@@ -98,13 +98,13 @@ export default function MapPage() {
       <div className="absolute top-4 left-0 right-0 z-30 px-4 flex items-center justify-between">
         <div className="font-mono text-[10px] uppercase tracking-wide text-mist-2">
           {greeting}
-          <span className="block font-display font-extrabold uppercase text-paper text-[19px] leading-tight tracking-wide">
+          <span className="block font-display font-extrabold uppercase text-neutral-900 text-[19px] leading-tight tracking-wide">
             {firstName} ✦
           </span>
         </div>
         <button
           onClick={() => setShowFilters(v => !v)}
-          className="w-9 h-9 rounded-[10px] bg-petrol/90 border border-dashed border-brass flex items-center justify-center text-paper flex-shrink-0"
+          className="w-9 h-9 rounded-[10px] bg-petrol/90 border border-dashed border-brass flex items-center justify-center text-neutral-900 flex-shrink-0"
           aria-label="Filtrer"
         >
           <Search className="w-4 h-4" />

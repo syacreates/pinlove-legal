@@ -155,7 +155,7 @@ export default function PlacesPage() {
                   <div className="w-7 h-7 rounded-full border border-dashed border-brass-dim flex items-center justify-center flex-shrink-0">
                     <Icon className="w-3.5 h-3.5 text-brass" />
                   </div>
-                  <h2 className="font-display font-bold uppercase text-sm text-paper">{meta.label}</h2>
+                  <h2 className="font-display font-bold uppercase text-sm text-neutral-900">{meta.label}</h2>
                   <span className="font-mono text-xs text-mist-2">{catPlaces.length}</span>
                 </div>
                 <div className="space-y-3">

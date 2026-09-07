@@ -150,7 +150,7 @@ export default function PricingPage() {
       <div className="bg-paper rounded-3xl shadow-card overflow-hidden mb-5">
         <div className="grid grid-cols-3 text-center text-xs font-semibold bg-neutral-50 py-3 px-4">
           <span className="text-left text-mist">Fonctionnalité</span>
-          <span className="text-paper">Gratuit</span>
+          <span className="text-neutral-900">Gratuit</span>
           <span className="text-brass">Premium</span>
         </div>
         {[

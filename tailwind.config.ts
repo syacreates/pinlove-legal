@@ -1,5 +1,12 @@
 import type { Config } from 'tailwindcss'
 
+// Reads a "R G B" CSS variable (see app/globals.css) so these colors can
+// flip between the light and dark themes without touching every className
+// that uses them, while still supporting Tailwind's /opacity modifiers.
+function themed(variable: string) {
+  return `rgb(var(${variable}) / <alpha-value>)`
+}
+
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,13 +18,17 @@ const config: Config = {
     extend: {
       colors: {
         // PinLove — "carnet de voyage / tampon postal" palette
+        // petrol/surface/mist are the "chrome" (backgrounds + secondary text) —
+        // theme-aware via CSS vars. brass/cerise/paper/ink stay fixed: the
+        // postal-stamp accents and the cream "paper" card material read the
+        // same in both themes.
         petrol: {
-          DEFAULT: '#0E2B30',
-          soft:    '#153C42',
+          DEFAULT: themed('--c-petrol'),
+          soft:    themed('--c-petrol-soft'),
         },
         surface: {
-          DEFAULT: '#1C4B53',
-          2:       '#245861',
+          DEFAULT: themed('--c-surface'),
+          2:       themed('--c-surface-2'),
         },
         brass: {
           DEFAULT: '#E7B34A',
@@ -27,8 +38,8 @@ const config: Config = {
         paper:  '#F2ECD9',
         ink:    '#132023',
         mist: {
-          DEFAULT: '#B9D2CD',
-          2:       '#7FA39D',
+          DEFAULT: themed('--c-mist'),
+          2:       themed('--c-mist-2'),
         },
         // brand ramp remapped — brand-500 = cerise, primary accent everywhere
         brand: {
@@ -44,19 +55,19 @@ const config: Config = {
           900: '#5C132F',
           950: '#330A1A',
         },
-        // neutral ramp remapped — dark-mode inversion (50 = darkest bg, 900 = lightest text)
+        // neutral ramp — theme-aware via CSS vars (50 = page bg, 900 = primary text)
         neutral: {
-          50:  '#153C42',
-          100: '#1C4B53',
-          200: '#245861',
-          300: '#5C7A78',
-          400: '#7FA39D',
-          500: '#B9D2CD',
-          600: '#CFE0DB',
-          700: '#DCE7E0',
-          800: '#E9E6D3',
-          900: '#F2ECD9',
-          950: '#FFFFFF',
+          50:  themed('--c-neutral-50'),
+          100: themed('--c-neutral-100'),
+          200: themed('--c-neutral-200'),
+          300: themed('--c-neutral-300'),
+          400: themed('--c-neutral-400'),
+          500: themed('--c-neutral-500'),
+          600: themed('--c-neutral-600'),
+          700: themed('--c-neutral-700'),
+          800: themed('--c-neutral-800'),
+          900: themed('--c-neutral-900'),
+          950: themed('--c-neutral-950'),
         },
       },
       fontFamily: {

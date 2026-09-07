@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Home, Map, PlusCircle, Users, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/lib/constants'
+import { ThemeToggle } from './ThemeToggle'
 
 const NAV_ITEMS = [
   { href: ROUTES.HOME,    icon: Home,       label: 'Accueil' },
@@ -22,7 +23,8 @@ export function BottomNav() {
       className="fixed bottom-0 left-0 right-0 z-40 bg-petrol/90 backdrop-blur-xl border-t border-dashed border-brass/25"
       aria-label="Navigation principale"
     >
-      <div className="flex items-center justify-around h-[72px] px-2 max-w-lg mx-auto pb-safe-bottom">
+      <div className="flex items-center h-[72px] px-2 max-w-lg mx-auto pb-safe-bottom">
+        <div className="flex-1 flex items-center justify-around min-w-0">
         {NAV_ITEMS.map(({ href, icon: Icon, label, primary }) => {
           const isActive = pathname === href
 
@@ -71,6 +73,8 @@ export function BottomNav() {
             </Link>
           )
         })}
+      </div>
+      <ThemeToggle className="ml-1 flex-shrink-0" />
       </div>
     </nav>
   )

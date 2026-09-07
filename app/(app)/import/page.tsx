@@ -163,7 +163,7 @@ export default function ImportPage() {
           <ArrowLeft className="w-5 h-5 text-ink/70" />
         </button>
         <div>
-          <h1 className="text-xl font-bold text-paper">Importer un lien</h1>
+          <h1 className="text-xl font-bold text-neutral-900">Importer un lien</h1>
           <p className="text-sm text-mist">TikTok ou Instagram</p>
         </div>
       </div>

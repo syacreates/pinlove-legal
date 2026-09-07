@@ -3,6 +3,13 @@ import { Big_Shoulders_Stencil_Display, Caveat, IBM_Plex_Mono } from 'next/font/
 import './globals.css'
 import { ToastContainer } from '@/components/ui/Toast'
 import { AppInitializer } from '@/components/AppInitializer'
+import { ThemeInit } from '@/components/ThemeInit'
+import { THEME_STORAGE_KEY } from '@/lib/constants'
+
+// Runs before hydration so the right theme paints on the very first frame —
+// no flash of the wrong theme. Falls back to system preference the first
+// time a visitor shows up, then remembers whatever they pick.
+const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var theme=(t==='light'||t==='dark')?t:((window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',theme);}catch(e){}})();`
 
 const stencil = Big_Shoulders_Stencil_Display({
   subsets: ['latin'],
@@ -69,9 +76,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning className={`${stencil.variable} ${caveat.variable} ${plexMono.variable}`}>
-      <head />
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <AppInitializer />
+        <ThemeInit />
         {children}
         <ToastContainer />
       </body>

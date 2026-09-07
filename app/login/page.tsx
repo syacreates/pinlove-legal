@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { AuthTabs } from '@/components/stamp/AuthTabs'
 import { useAuthStore } from '@/stores/auth.store'
@@ -37,6 +38,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-petrol-soft ambient-bg flex flex-col px-6 pt-14 pb-10">
+      <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)]" />
       <div className="flex justify-center mb-8">
         <StampBadge size="sm" animated={false} />
       </div>
@@ -44,7 +46,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm mx-auto">
         <AuthTabs active="login" className="mb-6" />
 
-        <h1 className="font-display font-extrabold uppercase text-[26px] leading-tight text-paper mb-1.5">
+        <h1 className="font-display font-extrabold uppercase text-[26px] leading-tight text-neutral-900 mb-1.5">
           Content de
           <br />
           te revoir
@@ -78,7 +80,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => setShowPwd(v => !v)}
                 aria-label={showPwd ? 'Masquer' : 'Afficher'}
-                className="hover:text-paper transition-colors"
+                className="hover:text-neutral-900 transition-colors"
               >
                 {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>

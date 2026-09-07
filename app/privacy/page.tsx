@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialité',
@@ -7,7 +8,10 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 py-12 text-neutral-800 legal-content">
-      <h1 className="text-3xl font-bold mb-2">Politique de confidentialité</h1>
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <h1 className="text-3xl font-bold">Politique de confidentialité</h1>
+        <ThemeToggle className="mt-1 flex-shrink-0" />
+      </div>
       <p className="text-sm text-neutral-500 mb-8">Dernière mise à jour : 19 mars 2026</p>
 
       <section className="space-y-6 text-sm leading-relaxed">

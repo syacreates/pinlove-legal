@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { Link2, MapPin, Search, Check, Navigation } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { useAuthStore } from '@/stores/auth.store'
 import { ROUTES } from '@/lib/constants'
@@ -251,16 +252,19 @@ export default function OnboardingPage() {
       <div className="w-full max-w-md mx-auto">
         <div className="flex items-center justify-between mb-5">
           <StampBadge size="sm" animated={false} />
-          <button
-            onClick={finish}
-            className="text-mist-2 text-sm font-mono uppercase tracking-wide hover:text-paper transition-colors"
-          >
-            Passer →
-          </button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              onClick={finish}
+              className="text-mist-2 text-sm font-mono uppercase tracking-wide hover:text-neutral-900 transition-colors"
+            >
+              Passer →
+            </button>
+          </div>
         </div>
         <div className="flex gap-1.5">
           {STEPS.map((_, i) => (
-            <div key={i} className="flex-1 h-[3px] rounded-full bg-paper/15 overflow-hidden">
+            <div key={i} className="flex-1 h-[3px] rounded-full bg-neutral-900/15 overflow-hidden">
               <div
                 className="h-full bg-brass transition-all"
                 style={{ width: i < current ? '100%' : i === current ? (playing ? '100%' : '0%') : '0%',
@@ -280,7 +284,9 @@ export default function OnboardingPage() {
           juste réduits via transform:scale pour tenir dans le boîtier. */}
       <div className="flex flex-col items-center gap-4 w-full max-w-md mx-auto" key={current}>
         <div className="animate-fade-in w-full max-w-[264px] mx-auto">
-          <div className="relative aspect-[390/844] bg-[#050807] rounded-[42px] p-[10px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.75)]">
+          {/* Toujours sombre : c'est une capture figée de l'app, pas du vrai
+              chrome — elle ne doit pas suivre le thème clair/sombre du site. */}
+          <div data-theme="dark" className="relative aspect-[390/844] bg-[#050807] rounded-[42px] p-[10px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.75)]">
             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-surface border border-brass/10">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[92px] h-[18px] bg-[#050807] rounded-b-[12px] z-30" />
               <div className="absolute top-0 inset-x-0 h-8 z-20 flex items-center justify-between px-5 font-mono text-[9px] font-semibold text-paper">
@@ -310,7 +316,7 @@ export default function OnboardingPage() {
             onClick={prev}
             disabled={isFirst}
             aria-label="Étape précédente"
-            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-paper disabled:opacity-25 transition-opacity"
+            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
           >
             ←
           </button>
@@ -325,7 +331,7 @@ export default function OnboardingPage() {
             onClick={() => (isLast ? undefined : goTo(current + 1))}
             disabled={isLast}
             aria-label="Étape suivante"
-            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-paper disabled:opacity-25 transition-opacity"
+            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
           >
             →
           </button>
@@ -337,7 +343,7 @@ export default function OnboardingPage() {
               key={i}
               onClick={() => goTo(i)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === current ? 'w-[18px] bg-brass' : 'w-1.5 bg-paper/22'
+                i === current ? 'w-[18px] bg-brass' : 'w-1.5 bg-neutral-900/22'
               }`}
               aria-label={`Étape ${i + 1}`}
             />
@@ -351,7 +357,7 @@ export default function OnboardingPage() {
         {isLast && !user && (
           <button
             onClick={() => router.push(ROUTES.LOGIN)}
-            className="text-mist-2 text-sm font-mono hover:text-paper transition-colors"
+            className="text-mist-2 text-sm font-mono hover:text-neutral-900 transition-colors"
           >
             J&apos;ai déjà un compte → Connexion
           </button>

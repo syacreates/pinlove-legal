@@ -129,7 +129,7 @@ export default function AddPlacePage() {
           <ArrowLeft className="w-5 h-5 text-ink/70" />
         </button>
         <div>
-          <h1 className="text-xl font-bold text-paper">Ajouter un lieu</h1>
+          <h1 className="text-xl font-bold text-neutral-900">Ajouter un lieu</h1>
           <p className="text-sm text-mist">Saisie manuelle</p>
         </div>
       </div>
