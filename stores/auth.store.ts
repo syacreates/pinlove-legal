@@ -32,13 +32,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     const user = await authService.getCurrentUser()
     set({ user, initialized: true })
 
-    // Keep in sync across tabs and on token refresh
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    // Keep in sync across tabs and on token refresh.
+    // Le callback ne doit PAS être async ni appeler Supabase directement :
+    // supabase-js le déclenche en tenant son verrou d'auth, et un appel à
+    // getSession()/une requête dedans provoque un interblocage — toutes les
+    // requêtes suivantes (comptage, enregistrement d'un lieu…) restent alors
+    // bloquées jusqu'au timeout. On diffère donc avec setTimeout(…, 0),
+    // comme le recommande la doc Supabase.
+    supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {
         set({ user: null })
       } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        const updatedUser = await authService.getCurrentUser()
-        set({ user: updatedUser })
+        setTimeout(async () => {
+          const updatedUser = await authService.getCurrentUser()
+          if (updatedUser) set({ user: updatedUser })
+        }, 0)
       }
     })
   },
