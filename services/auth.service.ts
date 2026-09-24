@@ -2,7 +2,7 @@
  * Auth Service — Supabase Auth
  */
 
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseConfigured } from '@/lib/supabase'
 import type { User } from '@/lib/types'
 import { withTimeout } from '@/lib/utils'
 
@@ -26,17 +26,35 @@ function friendlyAuthError(message: string): string {
   if (m.includes('rate limit')) {
     return 'Trop de tentatives. Réessaie dans quelques minutes.'
   }
+  // Erreurs réseau brutes du navigateur ("Load failed" sur Safari/iOS,
+  // "Failed to fetch" sur Chrome) ou délai dépassé : le serveur est injoignable.
+  if (
+    m.includes('load failed') || m.includes('failed to fetch') ||
+    m.includes('network') || m.includes('délai dépassé')
+  ) {
+    return 'Impossible de joindre le serveur PinLove. Vérifie ta connexion internet et réessaie.'
+  }
   return message
 }
 
+const CONFIG_ERROR =
+  'Configuration du serveur manquante (variables Supabase absentes). Contacte le support.'
+
+/** Délai max d'un appel d'authentification avant d'abandonner. */
+const AUTH_TIMEOUT_MS = 20_000
+
 async function fetchProfile(id: string): Promise<User | null> {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', id)
-    .single()
-  if (error || !data) return null
-  return data as User
+  try {
+    const { data, error } = await withTimeout(
+      supabase.from('users').select('*').eq('id', id).single(),
+      10_000,
+      'Profil',
+    )
+    if (error || !data) return null
+    return data as User
+  } catch {
+    return null
+  }
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -57,8 +75,19 @@ export const authService = {
     // L'email tapé/collé/auto-rempli peut porter des espaces ou une majuscule
     // initiale (clavier mobile) — sans ce nettoyage, des identifiants pourtant
     // corrects échouent silencieusement avec "Invalid login credentials".
+    if (!supabaseConfigured) return { user: null, error: CONFIG_ERROR }
     const cleanEmail = email.trim().toLowerCase()
-    const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password })
+    let res
+    try {
+      res = await withTimeout(
+        supabase.auth.signInWithPassword({ email: cleanEmail, password }),
+        AUTH_TIMEOUT_MS,
+        'Connexion',
+      )
+    } catch (e) {
+      return { user: null, error: friendlyAuthError(e instanceof Error ? e.message : String(e)) }
+    }
+    const { data, error } = res
     if (error) return { user: null, error: friendlyAuthError(error.message) }
 
     // Try fetching the profile from DB
@@ -87,13 +116,24 @@ export const authService = {
     password: string,
     fullName: string,
   ): Promise<{ user: User; error: null } | { user: null; error: string }> {
+    if (!supabaseConfigured) return { user: null, error: CONFIG_ERROR }
     const cleanEmail = email.trim().toLowerCase()
     const username = cleanEmail.split('@')[0].replace(/[^a-z0-9_]/gi, '_').toLowerCase()
-    const { data, error } = await supabase.auth.signUp({
-      email: cleanEmail,
-      password,
-      options: { data: { full_name: fullName.trim(), username } },
-    })
+    let res
+    try {
+      res = await withTimeout(
+        supabase.auth.signUp({
+          email: cleanEmail,
+          password,
+          options: { data: { full_name: fullName.trim(), username } },
+        }),
+        AUTH_TIMEOUT_MS,
+        'Inscription',
+      )
+    } catch (e) {
+      return { user: null, error: friendlyAuthError(e instanceof Error ? e.message : String(e)) }
+    }
+    const { data, error } = res
     if (error) return { user: null, error: friendlyAuthError(error.message) }
     if (!data.user) return { user: null, error: 'Erreur lors de la création du compte.' }
 
