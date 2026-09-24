@@ -98,7 +98,7 @@ export default function MapPage() {
       <div className="absolute top-4 left-0 right-0 z-30 px-4 flex items-center justify-between">
         <div className="font-mono text-xs font-bold uppercase tracking-[0.06em] text-accent">
           {greeting}
-          <span className="block font-display font-semibold text-neutral-900 text-[19px] leading-tight tracking-tight">
+          <span className="block normal-case font-display font-semibold text-neutral-900 text-[22px] leading-tight tracking-tight">
             {firstName} ✦
           </span>
         </div>
