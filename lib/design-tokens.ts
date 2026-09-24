@@ -1,4 +1,4 @@
-// PinLove — thème issu des wireframes "Rencontres".
+// PinLove — thème "Cerise" (fond crème, accent cerise).
 // Source de vérité des valeurs utilisées par tailwind.config.ts et
 // app/globals.css. À utiliser directement là où Tailwind ne passe pas
 // (styles inline, HTML des marqueurs Leaflet, SVG…).
@@ -19,7 +19,7 @@ export const colors = {
   accent: '#C8243F',     // CTA, pins actifs, sélection
   accentDark: '#9E1B31', // texte sur fond accentLight
   accentLight: '#FBEDEF',// fond d'un choix sélectionné
-  accentTag: '#F6DDE1',  // tags d'intention
+  accentTag: '#F6DDE1',  // tags / badges
 
   // Lignes & états
   line: '#D9D0C8',       // bordures de champs, chips

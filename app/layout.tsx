@@ -7,11 +7,11 @@ import { ThemeInit } from '@/components/ThemeInit'
 import { THEME_STORAGE_KEY } from '@/lib/constants'
 
 // Runs before hydration so the right theme paints on the very first frame —
-// no flash of the wrong theme. Defaults to the light "Rencontres" theme,
+// no flash of the wrong theme. Defaults to the light "Cerise" theme,
 // then remembers whatever the visitor picks.
 const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var theme=(t==='light'||t==='dark')?t:'light';document.documentElement.setAttribute('data-theme',theme);}catch(e){}})();`
 
-// Thème "Rencontres" — Fraunces pour les titres, DM Sans pour le reste
+// Thème "Cerise" — Fraunces pour les titres, DM Sans pour le reste
 // (voir lib/design-tokens.ts).
 const fraunces = Fraunces({
   subsets: ['latin'],

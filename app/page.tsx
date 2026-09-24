@@ -34,7 +34,7 @@ export default function SplashPage() {
     <>
       <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)] z-10" />
 
-      {/* Splash : fond crème du thème "Rencontres", suit le thème du site. */}
+      {/* Splash : fond crème du thème "Cerise", suit le thème du site. */}
       <div className="fixed inset-0 bg-neutral-50 flex flex-col items-center justify-center px-6">
       {/* Logo */}
       <div

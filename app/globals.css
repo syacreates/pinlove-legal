@@ -4,7 +4,7 @@
 
 /* ── Theme tokens ──────────────────────────────────────────────────────────── *
  * "R G B" triples consumed by tailwind.config.ts via rgb(var(--x) / <alpha>).
- * Thème "Rencontres" : fond crème chaud + accent cerise (voir
+ * Thème "Cerise" : fond crème chaud + accent cerise (voir
  * lib/design-tokens.ts). Le clair est le thème par défaut ; le sombre est
  * une déclinaison chaude de la même palette, activée par data-theme="dark"
  * sur <html> — see lib/theme.ts.
