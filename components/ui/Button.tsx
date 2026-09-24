@@ -30,27 +30,28 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const base = [
-      'inline-flex items-center justify-center gap-2 font-semibold font-mono uppercase tracking-wide',
-      'rounded-2xl transition-all duration-150 select-none',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-petrol-soft',
+      'inline-flex items-center justify-center gap-2 font-bold',
+      'rounded-full transition-all duration-150 select-none',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
       'disabled:opacity-50 disabled:pointer-events-none',
       'active:scale-[0.97]',
     ]
 
     const variants: Record<ButtonVariant, string> = {
-      primary:   'bg-brass text-ink hover:bg-brass-dim shadow-floating',
-      secondary: 'bg-surface text-neutral-900 hover:bg-surface-2',
+      // ui.buttonPrimary / buttonDark / buttonOutline
+      primary:   'bg-accent text-white hover:bg-accent-dark',
+      secondary: 'bg-ink text-white hover:bg-ink/90',
       ghost:     'bg-transparent text-mist hover:bg-surface',
-      danger:    'bg-red-500 text-white hover:bg-red-600',
-      outline:   'border-2 border-brass text-brass bg-transparent hover:bg-brass/10',
-      dashed:    'border-2 border-dashed border-brass text-neutral-900 bg-transparent hover:bg-brass/10',
+      danger:    'bg-red-600 text-white hover:bg-red-700',
+      outline:   'border border-line bg-surface text-neutral-900 hover:bg-surface-2',
+      dashed:    'border border-dashed border-dash text-neutral-900 bg-transparent hover:bg-surface',
     }
 
     const sizes: Record<ButtonSize, string> = {
-      sm: 'h-8  px-3 text-sm',
-      md: 'h-11 px-5 text-sm',
-      lg: 'h-13 px-6 text-base',
-      xl: 'h-14 px-8 text-base',
+      sm: 'h-9  px-3.5 text-sm',
+      md: 'h-11 px-5 text-[15px]',
+      lg: 'h-[46px] px-6 text-base',
+      xl: 'h-cta px-8 text-[17px]',
     }
 
     return (

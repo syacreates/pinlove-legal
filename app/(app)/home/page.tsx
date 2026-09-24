@@ -105,42 +105,41 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Map teaser — fixed dark illustration (mirrors the real map's dark
-          tile styling), independent of the site's light/dark theme. */}
-      <Link href={ROUTES.MAP} data-theme="dark" className="block relative h-36 rounded-3xl overflow-hidden shadow-card group border border-dashed border-brass/25">
+      {/* Map teaser — illustration statique aux couleurs de la carte du
+          thème (sol crème, eau bleu pâle, pins cerise). */}
+      <Link href={ROUTES.MAP} className="block relative h-36 rounded-card overflow-hidden shadow-card group border border-line">
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 18% 26%, rgba(231,179,74,.14), transparent 42%),' +
-              'radial-gradient(circle at 84% 18%, rgba(230,59,119,.16), transparent 40%),' +
-              'radial-gradient(circle at 68% 78%, rgba(231,179,74,.12), transparent 45%),' +
-              '#153C42',
+              'radial-gradient(ellipse 38% 55% at 88% 12%, #C9DCE6 0 60%, transparent 61%),' +
+              'radial-gradient(ellipse 30% 40% at 6% 96%, #C9DCE6 0 60%, transparent 61%),' +
+              '#ECE6E0',
           }}
         />
-        {/* Dashed route lines, matching the DA's postal-route motif */}
-        <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 300 144" preserveAspectRatio="none">
-          <path d="M0 40 C60 60 90 10 150 30 S 260 70 300 55" stroke="#E7B34A" strokeWidth="1.5" strokeDasharray="3 5" fill="none" />
-          <path d="M0 110 C70 90 110 130 170 105 S 270 120 300 100" stroke="#E63B77" strokeWidth="1.5" strokeDasharray="3 5" fill="none" />
+        {/* Routes en pointillés */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 144" preserveAspectRatio="none">
+          <path d="M0 40 C60 60 90 10 150 30 S 260 70 300 55" stroke="#FFFFFF" strokeWidth="6" fill="none" />
+          <path d="M0 110 C70 90 110 130 170 105 S 270 120 300 100" stroke="#FFFFFF" strokeWidth="6" fill="none" />
+          <path d="M0 40 C60 60 90 10 150 30 S 260 70 300 55" stroke="#B3A79E" strokeWidth="1.2" strokeDasharray="3 5" fill="none" />
         </svg>
-        {/* Decorative pin markers — postal-stamp dots, cerise/brass on paper ring */}
-        <div className="absolute top-6 left-10 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
-        <div className="absolute top-11 left-28 w-3 h-3 rounded-full bg-brass border-2 border-paper shadow" style={{ boxShadow: '0 0 10px 1px rgba(231,179,74,.5)' }} />
-        <div className="absolute bottom-9 right-16 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
-        <div className="absolute top-7 right-12 w-2.5 h-2.5 rounded-full bg-cerise border-2 border-paper shadow" />
-        <div className="absolute bottom-6 left-16 w-2 h-2 rounded-full bg-surface-2 border border-brass-dim" />
-        {/* Faint dotted grid, matching the map-canvas texture */}
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{ backgroundImage: 'linear-gradient(#F2ECD9 1px, transparent 1px), linear-gradient(90deg, #F2ECD9 1px, transparent 1px)', backgroundSize: '22px 22px' }}
-        />
-        <div className="absolute inset-0 bg-petrol/10 group-hover:bg-petrol/25 transition-colors" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-paper text-center p-4">
-          <MapPin className="w-6 h-6 mb-1 text-brass" />
-          <p className="font-display font-bold uppercase text-base tracking-wide">Voir sur la carte</p>
-          <p className="text-xs font-mono text-mist mt-0.5">
-            {count} lieu{count > 1 ? 'x' : ''} enregistré{count > 1 ? 's' : ''}
-          </p>
+        {/* Pins décoratifs */}
+        <div className="absolute top-6 left-10 w-2.5 h-2.5 rounded-full bg-ink border-2 border-paper shadow" />
+        <div className="absolute top-11 left-28 w-3.5 h-3.5 rounded-full bg-accent border-2 border-paper shadow" style={{ boxShadow: '0 0 0 5px rgba(200,36,63,.18)' }} />
+        <div className="absolute bottom-9 right-16 w-2.5 h-2.5 rounded-full bg-ink border-2 border-paper shadow" />
+        <div className="absolute top-7 right-12 w-2.5 h-2.5 rounded-full bg-ink border-2 border-paper shadow" />
+        <div className="absolute bottom-6 left-16 w-2 h-2 rounded-full bg-paper border border-dashed border-dash" />
+        <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/5 transition-colors" />
+        <div className="absolute inset-0 flex items-end p-3">
+          <div className="flex items-center gap-2.5 bg-paper rounded-2xl shadow-floating px-3.5 py-2.5">
+            <MapPin className="w-5 h-5 text-accent" />
+            <div>
+              <p className="font-bold text-[15px] leading-tight text-ink">Voir sur la carte</p>
+              <p className="text-[13px] text-muted">
+                {count} lieu{count > 1 ? 'x' : ''} enregistré{count > 1 ? 's' : ''}
+              </p>
+            </div>
+          </div>
         </div>
       </Link>
 
@@ -162,7 +161,7 @@ export default function HomePage() {
                 >
                   <span>{meta.emoji}</span>
                   <span className="font-medium text-ink">{meta.label}</span>
-                  <span className="text-brass-dim text-xs">{n}</span>
+                  <span className="text-accent-dark text-xs">{n}</span>
                 </Link>
               )
             })}
@@ -280,7 +279,7 @@ function StatPill({
       pinColors={[]}
       label={
         <span className="flex items-center justify-center gap-1.5">
-          <Icon className="w-4 h-4 text-brass" />
+          <Icon className="w-4 h-4 text-accent" />
           {value}
         </span>
       }

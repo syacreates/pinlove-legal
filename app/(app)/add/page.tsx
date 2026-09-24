@@ -161,7 +161,7 @@ export default function AddPlacePage() {
 
         {/* Category */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Catégorie *</label>
+          <label className="text-sm font-bold text-neutral-900">Catégorie *</label>
           <div className="grid grid-cols-3 gap-2">
             {Object.entries(PLACE_CATEGORIES).map(([key, val]) => {
               const Icon = CATEGORY_ICONS[key as PlaceCategory]
@@ -172,8 +172,8 @@ export default function AddPlacePage() {
                   onClick={() => updateForm('category', key)}
                   className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
                     form.category === key
-                      ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-dashed border-brass-dim/40 bg-paper text-ink/70 hover:border-brass-dim/70'
+                      ? 'border-accent bg-accent-light text-brand-700'
+                      : 'border-line bg-paper text-ink/70 hover:border-dash'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -232,7 +232,7 @@ export default function AddPlacePage() {
 
         {/* Visibility */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Visibilité</label>
+          <label className="text-sm font-bold text-neutral-900">Visibilité</label>
           <div className="space-y-2">
             {VISIBILITY_OPTIONS.map(opt => (
               <button
@@ -247,8 +247,8 @@ export default function AddPlacePage() {
                 }}
                 className={`w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all ${
                   form.visibility === opt.value
-                    ? 'border-brand-500 bg-brand-50'
-                    : 'border-dashed border-brass-dim/40 bg-paper text-ink hover:border-brass-dim/70'
+                    ? 'border-accent bg-accent-light'
+                    : 'border-line bg-paper text-ink hover:border-dash'
                 }`}
               >
                 <div className="flex-1">

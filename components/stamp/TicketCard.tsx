@@ -10,7 +10,7 @@ interface TicketCardProps {
   className?: string
 }
 
-const DEFAULT_PIN_COLORS = ['#E63B77', '#E7B34A', '#245861']
+const DEFAULT_PIN_COLORS = ['#C8243F', '#1E1A1A', '#E4DDD7']
 
 /** Train-ticket-style card with dashed border and cut-out semicircles. */
 export function TicketCard({
@@ -24,15 +24,15 @@ export function TicketCard({
   return (
     <div className={cn('ticket-card w-full', className)}>
       {(eyebrowLeft || eyebrowRight) && (
-        <div className="flex justify-between gap-2 font-mono text-[9.5px] text-mist-2 mb-2.5">
+        <div className="flex justify-between gap-2 text-xs font-bold uppercase tracking-[0.06em] text-accent mb-2.5">
           <span className="truncate flex-shrink-0">{eyebrowLeft}</span>
           <span className="truncate min-w-0">{eyebrowRight}</span>
         </div>
       )}
-      <div className="font-display font-extrabold uppercase text-[22px] leading-none text-ink">
+      <div className="font-display font-semibold text-[28px] leading-none text-ink">
         {label}
       </div>
-      {sub && <div className="font-mono text-[10px] text-brass-dim mt-1.5">{sub}</div>}
+      {sub && <div className="text-[13px] text-muted mt-1.5">{sub}</div>}
       {pinColors.length > 0 && (
         <div className="flex gap-1.5 mt-3">
           {pinColors.map((c, i) => (
@@ -41,7 +41,7 @@ export function TicketCard({
               className="w-2 h-2 rounded-sm"
               style={{
                 background: c,
-                border: i === pinColors.length - 1 ? '1px solid #B98F3B' : undefined,
+                border: i === pinColors.length - 1 ? '1px dashed #B3A79E' : undefined,
               }}
             />
           ))}

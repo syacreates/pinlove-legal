@@ -16,8 +16,8 @@ import { PLACE_CATEGORIES, ROUTES } from '@/lib/constants'
 const MapView = dynamic(() => import('@/components/map/MapView'), {
   ssr: false,
   loading: () => (
-    <div className="flex-1 bg-petrol-soft flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-brass border-t-transparent rounded-full animate-spin" />
+    <div className="flex-1 bg-neutral-50 flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
     </div>
   ),
 })
@@ -96,15 +96,15 @@ export default function MapPage() {
     <div className="fixed inset-0 flex flex-col" style={{ paddingBottom: 72 }}>
       {/* Greeting header */}
       <div className="absolute top-4 left-0 right-0 z-30 px-4 flex items-center justify-between">
-        <div className="font-mono text-[10px] uppercase tracking-wide text-mist-2">
+        <div className="font-mono text-xs font-bold uppercase tracking-[0.06em] text-accent">
           {greeting}
-          <span className="block font-display font-extrabold uppercase text-neutral-900 text-[19px] leading-tight tracking-wide">
+          <span className="block font-display font-semibold text-neutral-900 text-[19px] leading-tight tracking-tight">
             {firstName} ✦
           </span>
         </div>
         <button
           onClick={() => setShowFilters(v => !v)}
-          className="w-9 h-9 rounded-[10px] bg-petrol/90 border border-dashed border-brass flex items-center justify-center text-neutral-900 flex-shrink-0"
+          className="w-11 h-11 rounded-full bg-surface shadow-card flex items-center justify-center text-neutral-900 flex-shrink-0"
           aria-label="Filtrer"
         >
           <Search className="w-4 h-4" />
@@ -114,11 +114,11 @@ export default function MapPage() {
       {/* Filter bar */}
       {showFilters && (
         <div className="absolute top-[70px] left-0 right-0 z-30 px-4 flex gap-2 items-center animate-fade-in">
-          <div className="flex-1 flex gap-2 overflow-x-auto no-scrollbar bg-surface/90 backdrop-blur-sm rounded-2xl shadow-card p-2 border border-dashed border-brass/25">
+          <div className="flex-1 flex gap-2 overflow-x-auto no-scrollbar bg-surface rounded-2xl shadow-card p-2 border border-line">
             <button
               onClick={() => setFilterCategory(null)}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wide transition-colors ${
-                !filterCategory ? 'bg-brass text-ink' : 'text-mist hover:bg-surface-2'
+              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors ${
+                !filterCategory ? 'bg-ink text-white' : 'text-mist hover:bg-surface-2'
               }`}
             >
               Tous ({places.length})
@@ -130,8 +130,8 @@ export default function MapPage() {
                 <button
                   key={key}
                   onClick={() => setFilterCategory(filterCategory === key as PlaceCategory ? null : key as PlaceCategory)}
-                  className={`flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wide transition-colors ${
-                    filterCategory === key ? 'bg-brass text-ink' : 'text-mist hover:bg-surface-2'
+                  className={`flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors ${
+                    filterCategory === key ? 'bg-ink text-white' : 'text-mist hover:bg-surface-2'
                   }`}
                 >
                   {val.emoji} {count}
@@ -155,16 +155,16 @@ export default function MapPage() {
       <div className={`absolute right-4 z-30 transition-all ${selectedPlace ? 'bottom-[220px]' : 'bottom-[88px]'}`}>
         <button
           onClick={locateUser}
-          className={`w-12 h-12 bg-surface rounded-2xl shadow-card border border-dashed border-brass/30 flex items-center justify-center transition-all ${
+          className={`w-12 h-12 bg-surface rounded-2xl shadow-card border border-line flex items-center justify-center transition-all ${
             locating ? 'opacity-50' : 'hover:bg-surface-2'
           }`}
           aria-label="Ma position"
           disabled={locating}
         >
           {locating ? (
-            <div className="w-5 h-5 border-2 border-brass border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           ) : (
-            <Navigation className={`w-5 h-5 ${userPosition ? 'text-brass' : 'text-mist-2'}`} />
+            <Navigation className={`w-5 h-5 ${userPosition ? 'text-accent' : 'text-mist-2'}`} />
           )}
         </button>
       </div>

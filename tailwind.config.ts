@@ -17,11 +17,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // PinLove — "carnet de voyage / tampon postal" palette
-        // petrol/surface/mist are the "chrome" (backgrounds + secondary text) —
-        // theme-aware via CSS vars. brass/cerise/paper/ink stay fixed: the
-        // postal-stamp accents and the cream "paper" card material read the
-        // same in both themes.
+        // PinLove — thème "Rencontres" (fond crème chaud, accent cerise).
+        // Valeurs de référence : lib/design-tokens.ts.
+        //
+        // Les anciens noms de tokens (petrol/surface/mist/brass/paper…) sont
+        // conservés pour ne pas réécrire chaque className, mais pointent
+        // désormais vers la nouvelle palette :
+        //   petrol  → background (fond de page)     surface → cartes / barres
+        //   mist    → inkSoft / muted (texte sec.)  paper   → surface blanche
+        //   brass   → accent cerise                 ink     → texte principal
+        // Les couleurs "chrome" restent pilotées par des variables CSS pour
+        // que le mode sombre continue de fonctionner (app/globals.css).
         petrol: {
           DEFAULT: themed('--c-petrol'),
           soft:    themed('--c-petrol-soft'),
@@ -31,29 +37,47 @@ const config: Config = {
           2:       themed('--c-surface-2'),
         },
         brass: {
-          DEFAULT: '#E7B34A',
-          dim:     '#B98F3B',
+          DEFAULT: '#C8243F',
+          dim:     '#9E1B31',
         },
-        cerise: '#E63B77',
-        paper:  '#F2ECD9',
-        ink:    '#132023',
+        cerise: '#C8243F',
+        paper:  '#FFFFFF',
+        ink: {
+          DEFAULT: '#1E1A1A',
+          soft:    '#4A4341',
+        },
         mist: {
           DEFAULT: themed('--c-mist'),
           2:       themed('--c-mist-2'),
         },
-        // brand ramp remapped — brand-500 = cerise, primary accent everywhere
+        // Tokens sémantiques du thème (noms identiques à lib/design-tokens.ts)
+        background: themed('--c-petrol'),
+        accent: {
+          DEFAULT: '#C8243F',
+          dark:    '#9E1B31',
+          light:   '#FBEDEF',
+          tag:     '#F6DDE1',
+        },
+        muted:       themed('--c-mist-2'),
+        line:        themed('--c-line'),
+        divider:     themed('--c-divider'),
+        dash:        '#B3A79E',
+        placeholder: themed('--c-placeholder'),
+        success:     '#2F6B45',
+        water:       '#C9DCE6',
+        // Rampe brand recalculée autour de l'accent cerise (brand-500)
         brand: {
-          50:  '#FBE6ED',
-          100: '#F6C9DA',
-          200: '#EEA0BE',
-          300: '#E87BA5',
-          400: '#E85A8F',
-          500: '#E63B77',
-          600: '#C92D66',
-          700: '#A62254',
-          800: '#7E1A40',
-          900: '#5C132F',
-          950: '#330A1A',
+          50:  '#FBEDEF',
+          100: '#F6DDE1',
+          200: '#EDB8C1',
+          300: '#E08D9C',
+          400: '#D45A70',
+          500: '#C8243F',
+          600: '#B01F37',
+          700: '#9E1B31',
+          800: '#7A1526',
+          900: '#5A101C',
+          950: '#33090F',
         },
         // neutral ramp — theme-aware via CSS vars (50 = page bg, 900 = primary text)
         neutral: {
@@ -71,30 +95,33 @@ const config: Config = {
         },
       },
       fontFamily: {
+        // DM Sans partout (corps, labels) ; Fraunces pour les titres.
         sans: [
-          'var(--font-plex-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace',
+          'var(--font-dm-sans)', '-apple-system', 'BlinkMacSystemFont', 'sans-serif',
         ],
+        // Les anciens libellés "font-mono" passent eux aussi en DM Sans.
         mono: [
-          'var(--font-plex-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace',
+          'var(--font-dm-sans)', '-apple-system', 'BlinkMacSystemFont', 'sans-serif',
         ],
         display: [
-          'var(--font-stencil)', '-apple-system', 'sans-serif',
-        ],
-        hand: [
-          'var(--font-caveat)', 'cursive',
+          'var(--font-fraunces)', 'Georgia', 'serif',
         ],
       },
       borderRadius: {
-        '2xl': '1rem',
-        '3xl': '1.5rem',
-        '4xl': '2rem',
+        // radius du thème : sm 10 · md 12 · lg 14 · xl 16 · card 20 · pill 999
+        'xl':   '0.75rem',
+        '2xl':  '0.875rem',
+        '3xl':  '1.25rem',
+        '4xl':  '1.75rem',
+        'card': '1.25rem',
       },
       boxShadow: {
-        'card':   '0 2px 12px 0 rgba(0,0,0,0.28)',
-        'card-hover': '0 6px 24px 0 rgba(0,0,0,0.34)',
-        'bottom-nav': '0 -1px 0 0 rgba(0,0,0,0.2), 0 -4px 20px 0 rgba(0,0,0,0.25)',
-        'modal':  '0 24px 64px 0 rgba(0,0,0,0.5)',
-        'floating': '0 4px 24px 0 rgba(231,179,74,0.3)',
+        'card':       '0 1px 3px 0 rgba(30,26,26,0.06), 0 1px 2px 0 rgba(30,26,26,0.04)',
+        'card-hover': '0 6px 12px 0 rgba(30,26,26,0.12)',
+        'bottom-nav': '0 -1px 0 0 rgba(30,26,26,0.06)',
+        'modal':      '0 24px 64px 0 rgba(30,26,26,0.25)',
+        // ui.floatingCard : shadowOpacity .12, radius 12, offset y 6
+        'floating':   '0 6px 12px 0 rgba(30,26,26,0.12)',
       },
       animation: {
         'fade-in':    'fadeIn 0.2s ease-out',
@@ -123,6 +150,9 @@ const config: Config = {
       spacing: {
         'safe-bottom': 'env(safe-area-inset-bottom)',
         'nav-height': '72px',
+        'screen-pad': '20px',  // layout.screenPadding
+        'touch': '44px',       // layout.touchTarget
+        'cta': '54px',         // layout.ctaHeight
       },
     },
   },

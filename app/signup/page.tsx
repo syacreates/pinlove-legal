@@ -45,7 +45,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-petrol-soft ambient-bg flex flex-col px-6 pt-14 pb-10">
+    <div className="min-h-screen bg-neutral-50 flex flex-col px-6 pt-14 pb-10">
       <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)]" />
       <div className="flex justify-center mb-8">
         <StampBadge size="sm" animated={false} />
@@ -54,12 +54,12 @@ export default function SignupPage() {
       <div className="w-full max-w-sm mx-auto">
         <AuthTabs active="signup" className="mb-6" />
 
-        <h1 className="font-display font-extrabold uppercase text-[26px] leading-tight text-neutral-900 mb-1.5">
+        <h1 className="font-display font-semibold text-[28px] leading-tight text-neutral-900 mb-1.5">
           Bienvenue
           <br />
           à bord
         </h1>
-        <p className="font-mono text-[11.5px] text-mist mb-6">
+        <p className="font-mono text-[15px] text-mist mb-6">
           ✦ Crée ton compte pour commencer à épingler
         </p>
 
@@ -113,18 +113,18 @@ export default function SignupPage() {
             <p className="text-sm text-red-400 text-center">{error}</p>
           )}
 
-          <Button type="submit" loading={loading} fullWidth size="lg">
+          <Button type="submit" loading={loading} fullWidth size="xl">
             Créer mon compte
           </Button>
         </form>
 
-        <p className="text-center font-mono text-[10px] text-mist-2 mt-4 leading-relaxed">
+        <p className="text-center font-mono text-[13px] text-muted mt-4 leading-relaxed">
           En créant un compte, tu acceptes nos{' '}
           <a href="/terms" className="underline">Conditions d&apos;utilisation</a> et notre{' '}
           <a href="/privacy" className="underline">Politique de confidentialité</a>.
         </p>
 
-        <p className="text-center font-mono text-[11.5px] text-mist mt-6">
+        <p className="text-center font-mono text-[15px] text-mist mt-6">
           Déjà un compte ?{' '}
           <Link href={ROUTES.LOGIN} className="text-cerise font-semibold">
             Se connecter

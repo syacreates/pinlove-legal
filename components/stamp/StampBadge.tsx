@@ -33,7 +33,7 @@ export function StampBadge({
         {size === 'lg' && (
           <svg viewBox="0 0 100 100" className="absolute -inset-[17px] w-[calc(100%+34px)] h-[calc(100%+34px)]">
             <path id={ringId} d="M50,6 a44,44 0 1,1 -0.1,0" fill="none" />
-            <text fontSize="8.4" letterSpacing=".18em" fill="#E7B34A">
+            <text fontSize="8.4" letterSpacing=".18em" fill="#C8243F">
               <textPath href={`#${ringId}`} startOffset="0%">
                 {ringText}
               </textPath>
@@ -46,8 +46,8 @@ export function StampBadge({
           <path d={HEART_PATH} fill={`url(#${gradientId})`} />
           <defs>
             <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="4" y1="5" x2="48" y2="46">
-              <stop stopColor="#E7B34A" />
-              <stop offset="1" stopColor="#E63B77" />
+              <stop stopColor="#C8243F" />
+              <stop offset="1" stopColor="#9E1B31" />
             </linearGradient>
           </defs>
         </svg>

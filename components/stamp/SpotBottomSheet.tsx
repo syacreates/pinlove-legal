@@ -24,7 +24,7 @@ export function SpotBottomSheet({
   const meta = getCategoryMeta(place.category)
 
   return (
-    <div className="absolute bottom-[80px] left-4 right-4 z-30 bg-paper rounded-t-[22px] rounded-b-3xl shadow-modal p-4 pt-3 animate-slide-up border-t-2 border-dashed border-brass-dim">
+    <div className="absolute bottom-[80px] left-4 right-4 z-30 bg-paper rounded-card shadow-floating p-4 pt-3 animate-slide-up">
       <div className="w-[34px] h-1 rounded-full bg-ink/15 mx-auto mb-3" />
 
       <button
@@ -38,13 +38,13 @@ export function SpotBottomSheet({
       <div className="flex items-center gap-3">
         <div
           className="w-[52px] h-[52px] rounded-xl flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #E7B34A, #E63B77)' }}
+          style={{ background: '#E4DDD7' }}
         />
         <div className="flex-1 min-w-0">
-          <p className="font-display font-extrabold uppercase text-[17px] leading-tight text-ink truncate">
+          <p className="font-display font-semibold text-[17px] leading-tight text-ink truncate">
             {place.name}
           </p>
-          <p className="font-mono text-[10.5px] text-brass-dim truncate uppercase">
+          <p className="text-[13px] text-muted truncate">
             {meta.label} · {place.city}
           </p>
           <div className="flex items-center gap-1.5 mt-1.5">
@@ -57,19 +57,20 @@ export function SpotBottomSheet({
       <div className="flex gap-2 mt-3.5">
         <Button
           size="sm"
-          className="flex-1 !bg-ink !text-paper hover:!bg-ink/90"
+          variant="primary"
+          className="flex-1"
           leftIcon={<Navigation className="w-3.5 h-3.5" />}
           onClick={onNavigate}
         >
           Itinéraire
         </Button>
-        <Button size="sm" variant="secondary" className="flex-1" onClick={onViewDetail}>
+        <Button size="sm" variant="outline" className="flex-1" onClick={onViewDetail}>
           Détail
         </Button>
         {onToggleFavorite && (
           <button
             onClick={onToggleFavorite}
-            className="w-11 h-11 flex-shrink-0 rounded-xl border-[1.4px] border-dashed border-brass-dim flex items-center justify-center"
+            className="w-11 h-11 flex-shrink-0 rounded-full border border-line flex items-center justify-center"
             aria-label={place.is_favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           >
             <Heart className={place.is_favorite ? 'w-4 h-4 fill-cerise text-cerise' : 'w-4 h-4 text-ink/50'} />

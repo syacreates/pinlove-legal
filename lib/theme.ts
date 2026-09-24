@@ -8,8 +8,8 @@ export type Theme = 'light' | 'dark'
 const THEME_EVENT = 'pinlove:themechange'
 
 function readTheme(): Theme {
-  if (typeof document === 'undefined') return 'dark'
-  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
+  if (typeof document === 'undefined') return 'light'
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
 }
 
 function writeTheme(theme: Theme) {
@@ -29,7 +29,7 @@ function writeTheme(theme: Theme) {
  * toggles (mobile nav + desktop) stay in sync via a window event.
  */
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>('dark')
+  const [theme, setThemeState] = useState<Theme>('light')
 
   useEffect(() => {
     setThemeState(readTheme())

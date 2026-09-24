@@ -37,7 +37,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-petrol-soft ambient-bg flex flex-col px-6 pt-14 pb-10">
+    <div className="min-h-screen bg-neutral-50 flex flex-col px-6 pt-14 pb-10">
       <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)]" />
       <div className="flex justify-center mb-8">
         <StampBadge size="sm" animated={false} />
@@ -46,12 +46,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm mx-auto">
         <AuthTabs active="login" className="mb-6" />
 
-        <h1 className="font-display font-extrabold uppercase text-[26px] leading-tight text-neutral-900 mb-1.5">
+        <h1 className="font-display font-semibold text-[28px] leading-tight text-neutral-900 mb-1.5">
           Content de
           <br />
           te revoir
         </h1>
-        <p className="font-mono text-[11.5px] text-mist mb-6">✦ Retrouve tous tes spots favoris</p>
+        <p className="font-mono text-[15px] text-mist mb-6">✦ Retrouve tous tes spots favoris</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
           <Link
             href={ROUTES.RESET_PWD}
-            className="text-right -mt-1 font-mono text-[11px] text-mist-2 hover:text-mist transition-colors"
+            className="text-right -mt-1 font-mono text-sm font-bold text-accent hover:text-accent-dark transition-colors"
           >
             Mot de passe oublié ?
           </Link>
@@ -99,12 +99,12 @@ export default function LoginPage() {
             <p className="text-sm text-red-400 text-center">{error}</p>
           )}
 
-          <Button type="submit" loading={loading} fullWidth size="lg">
+          <Button type="submit" loading={loading} fullWidth size="xl">
             Se connecter
           </Button>
         </form>
 
-        <p className="text-center font-mono text-[11.5px] text-mist mt-6">
+        <p className="text-center font-mono text-[15px] text-mist mt-6">
           Pas encore de compte ?{' '}
           <Link href={ROUTES.SIGNUP} className="text-cerise font-semibold">
             Créer un compte

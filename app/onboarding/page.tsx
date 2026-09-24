@@ -23,7 +23,7 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
             <StampBadge size="sm" animated={false} />
             <div>
               <p className="font-mono text-[9px] uppercase tracking-wide text-mist-2">Bonjour 👋</p>
-              <p className="font-display font-extrabold uppercase text-base text-paper leading-none">Aïda</p>
+              <p className="font-display font-semibold text-base text-ink leading-none">Aïda</p>
             </div>
           </div>
           <div className="w-8 h-8 rounded-full bg-cerise flex items-center justify-center font-mono text-[11px] font-bold text-paper">A</div>
@@ -34,7 +34,7 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
             <p className="font-semibold text-[11px]">Importer un lien</p>
             <p className="text-[9px] opacity-75">TikTok ou Instagram</p>
           </div>
-          <div className="bg-paper rounded-2xl p-3 text-ink">
+          <div className="bg-paper border border-line rounded-2xl p-3 text-ink">
             <MapPin className="w-4 h-4 mb-1.5" />
             <p className="font-semibold text-[11px]">Ajouter manuellement</p>
             <p className="text-[9px] text-ink/50">Saisie rapide</p>
@@ -42,9 +42,9 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
         </div>
         <div className="grid grid-cols-3 gap-2">
           {[['12', 'Total'], ['4', 'Favoris'], ['2', 'Publics']].map(([v, l]) => (
-            <div key={l} className="bg-paper rounded-2xl py-2.5 text-center border border-dashed border-brass-dim">
-              <p className="font-display font-extrabold text-lg text-ink leading-none">{v}</p>
-              <p className="font-mono text-[8px] uppercase text-brass-dim mt-1">{l}</p>
+            <div key={l} className="bg-paper rounded-2xl py-2.5 text-center border border-line">
+              <p className="font-display font-semibold text-lg text-ink leading-none">{v}</p>
+              <p className="font-mono text-[8px] uppercase text-accent-dark mt-1">{l}</p>
             </div>
           ))}
         </div>
@@ -58,12 +58,12 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
     visual: (
       <div className="w-full space-y-3">
         <p className="font-mono text-[9px] uppercase tracking-wide text-mist-2">Lien du post</p>
-        <div className="flex items-center gap-2 bg-surface border border-dashed border-brass rounded-2xl px-3.5 py-3">
-          <Link2 className="w-4 h-4 text-brass flex-shrink-0" />
-          <span className="font-mono text-[11px] text-paper truncate">tiktok.com/@paris.spots/video/7291...</span>
+        <div className="flex items-center gap-2 bg-surface border border-line rounded-2xl px-3.5 py-3">
+          <Link2 className="w-4 h-4 text-accent flex-shrink-0" />
+          <span className="font-mono text-[11px] text-ink truncate">tiktok.com/@paris.spots/video/7291...</span>
         </div>
-        <div className="bg-paper rounded-2xl py-3 text-center">
-          <p className="font-mono text-[11px] font-semibold text-ink">Analyser le lien →</p>
+        <div className="bg-accent rounded-full py-3 text-center">
+          <p className="font-mono text-[11px] font-semibold text-white">Analyser le lien →</p>
         </div>
       </div>
     ),
@@ -74,8 +74,8 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
     body: 'La description et les infos du post sont récupérées automatiquement.',
     visual: (
       <div className="w-full flex flex-col items-center py-8 gap-3">
-        <div className="w-9 h-9 border-2 border-brass border-t-transparent rounded-full animate-spin" />
-        <p className="font-display font-extrabold uppercase text-base text-paper">Analyse en cours...</p>
+        <div className="w-9 h-9 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <p className="font-display font-semibold text-base text-ink">Analyse en cours...</p>
         <p className="font-mono text-[10.5px] text-mist">On extrait les infos depuis TikTok</p>
       </div>
     ),
@@ -92,19 +92,19 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
         </div>
         <div>
           <p className="font-mono text-[9px] uppercase tracking-wide text-mist-2 mb-1">Nom du lieu</p>
-          <div className="bg-surface rounded-xl px-3 py-2.5 font-mono text-[11px] text-paper">Le Bar à Vin</div>
+          <div className="bg-surface border border-line rounded-xl px-3 py-2.5 font-mono text-[11px] text-ink">Le Bar à Vin</div>
         </div>
         <div>
           <p className="font-mono text-[9px] uppercase tracking-wide text-mist-2 mb-1">Catégorie</p>
           <div className="grid grid-cols-3 gap-1.5">
-            <div className="rounded-xl py-2 text-center border border-cerise bg-[#FBE6ED] text-[#7E1A40] font-mono text-[8.5px]">Restaurant</div>
-            <div className="rounded-xl py-2 text-center border border-dashed border-brass/35 text-mist font-mono text-[8.5px]">Café</div>
-            <div className="rounded-xl py-2 text-center border border-dashed border-brass/35 text-mist font-mono text-[8.5px]">Bar</div>
+            <div className="rounded-xl py-2 text-center border-2 border-accent bg-accent-light text-accent-dark font-mono text-[8.5px]">Restaurant</div>
+            <div className="rounded-xl py-2 text-center border border-line text-mist font-mono text-[8.5px]">Café</div>
+            <div className="rounded-xl py-2 text-center border border-line text-mist font-mono text-[8.5px]">Bar</div>
           </div>
         </div>
         <div>
           <p className="font-mono text-[9px] uppercase tracking-wide text-mist-2 mb-1">Adresse</p>
-          <div className="bg-surface rounded-xl px-3 py-2.5 font-mono text-[11px] text-mist-2">56 Rue de la Roquette</div>
+          <div className="bg-surface border border-line rounded-xl px-3 py-2.5 font-mono text-[11px] text-mist-2">56 Rue de la Roquette</div>
         </div>
       </div>
     ),
@@ -115,10 +115,10 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
     body: 'Le lieu est ajouté à ton carnet de spots, prêt à être retrouvé.',
     visual: (
       <div className="w-full flex flex-col items-center py-8 gap-2">
-        <div className="w-16 h-16 rounded-full bg-green-500/15 flex items-center justify-center mb-1">
-          <Check className="w-7 h-7 text-green-400" />
+        <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mb-1">
+          <Check className="w-7 h-7 text-success" />
         </div>
-        <p className="font-display font-extrabold uppercase text-base text-paper">Lieu enregistré !</p>
+        <p className="font-display font-semibold text-base text-ink">Lieu enregistré !</p>
         <p className="font-mono text-[10.5px] text-mist">Le Bar à Vin a été ajouté à tes lieux</p>
       </div>
     ),
@@ -133,24 +133,22 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
           className="relative h-40 rounded-2xl overflow-hidden"
           style={{
             background:
-              'radial-gradient(circle at 20% 25%, rgba(231,179,74,.14), transparent 42%),' +
-              'radial-gradient(circle at 85% 20%, rgba(230,59,119,.16), transparent 40%),' +
-              'radial-gradient(circle at 65% 78%, rgba(231,179,74,.12), transparent 45%),' +
-              '#153C42',
+              'radial-gradient(ellipse 35% 50% at 90% 10%, #C9DCE6 0 60%, transparent 61%),' +
+              '#ECE6E0',
           }}
         >
-          <div className="absolute w-3 h-3 rounded-full bg-cerise border-2 border-paper" style={{ top: '28%', left: '22%' }} />
+          <div className="absolute w-3 h-3 rounded-full bg-ink border-2 border-paper" style={{ top: '28%', left: '22%' }} />
           <div
-            className="absolute w-4 h-4 rounded-full bg-brass border-2 border-paper"
-            style={{ top: '48%', left: '55%', boxShadow: '0 0 0 5px rgba(231,179,74,.28), 0 0 12px 2px rgba(231,179,74,.5)' }}
+            className="absolute w-4 h-4 rounded-full bg-accent border-2 border-paper"
+            style={{ top: '48%', left: '55%', boxShadow: '0 0 0 5px rgba(200,36,63,.2)' }}
           />
-          <div className="absolute w-3 h-3 rounded-full bg-cerise border-2 border-paper" style={{ top: '68%', left: '18%' }} />
+          <div className="absolute w-3 h-3 rounded-full bg-ink border-2 border-paper" style={{ top: '68%', left: '18%' }} />
         </div>
         <div className="bg-paper rounded-2xl -mt-4 relative mx-3 p-3 flex items-center gap-2.5 shadow-card">
-          <div className="w-10 h-10 rounded-xl flex-shrink-0" style={{ background: 'linear-gradient(135deg,#E7B34A,#E63B77)' }} />
+          <div className="w-10 h-10 rounded-xl flex-shrink-0" style={{ background: '#E4DDD7' }} />
           <div className="min-w-0">
-            <p className="font-display font-extrabold uppercase text-[13px] text-ink leading-none truncate">Le Bar à Vin</p>
-            <p className="font-mono text-[8px] uppercase text-brass-dim mt-1">Bar · Paris 11e · ♪ TikTok</p>
+            <p className="font-display font-semibold text-[13px] text-ink leading-none truncate">Le Bar à Vin</p>
+            <p className="font-mono text-[8px] uppercase text-accent-dark mt-1">Bar · Paris 11e · ♪ TikTok</p>
           </div>
         </div>
       </div>
@@ -163,17 +161,12 @@ const STEPS: { tag: string; title: string; body: string; visual: ReactNode }[] =
     visual: (
       <div className="w-full space-y-3">
         <div
-          className="h-28 rounded-2xl flex items-center justify-center"
-          style={{
-            background:
-              'radial-gradient(circle at 30% 20%, rgba(231,179,74,.3), transparent 55%),' +
-              'radial-gradient(circle at 80% 75%, rgba(230,59,119,.35), transparent 55%), #153C42',
-          }}
+          className="h-28 rounded-2xl flex items-center justify-center bg-placeholder"
         >
-          <div className="w-12 h-12 rounded-full border-2 border-dashed border-brass/55 flex items-center justify-center text-xl">🍸</div>
+          <div className="w-12 h-12 rounded-full border border-dashed border-dash flex items-center justify-center text-xl">🍸</div>
         </div>
-        <p className="font-display font-extrabold uppercase text-lg text-paper">Le Bar à Vin</p>
-        <div className="bg-ink rounded-xl py-3 flex items-center justify-center gap-2">
+        <p className="font-display font-semibold text-lg text-ink">Le Bar à Vin</p>
+        <div className="bg-ink rounded-full py-3 flex items-center justify-center gap-2">
           <Navigation className="w-3.5 h-3.5 text-paper" />
           <span className="font-mono text-[11px] font-semibold uppercase text-paper">Y aller</span>
         </div>
@@ -246,7 +239,7 @@ export default function OnboardingPage() {
     <div
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="min-h-screen bg-petrol-soft ambient-bg flex flex-col items-center justify-between px-6 py-10 overflow-x-hidden"
+      className="min-h-screen bg-neutral-50 flex flex-col items-center justify-between px-6 py-10 overflow-x-hidden"
     >
       {/* Top bar: progress + skip */}
       <div className="w-full max-w-md mx-auto">
@@ -256,7 +249,7 @@ export default function OnboardingPage() {
             <ThemeToggle />
             <button
               onClick={finish}
-              className="text-mist-2 text-sm font-mono uppercase tracking-wide hover:text-neutral-900 transition-colors"
+              className="text-accent text-sm font-bold hover:text-accent-dark transition-colors"
             >
               Passer →
             </button>
@@ -266,7 +259,7 @@ export default function OnboardingPage() {
           {STEPS.map((_, i) => (
             <div key={i} className="flex-1 h-[3px] rounded-full bg-neutral-900/15 overflow-hidden">
               <div
-                className="h-full bg-brass transition-all"
+                className="h-full bg-accent transition-all"
                 style={{ width: i < current ? '100%' : i === current ? (playing ? '100%' : '0%') : '0%',
                   transitionDuration: i === current && playing ? `${AUTO_ADVANCE_MS}ms` : '150ms',
                   transitionTimingFunction: 'linear' }}
@@ -284,12 +277,12 @@ export default function OnboardingPage() {
           juste réduits via transform:scale pour tenir dans le boîtier. */}
       <div className="flex flex-col items-center gap-4 w-full max-w-md mx-auto" key={current}>
         <div className="animate-fade-in w-full max-w-[264px] mx-auto">
-          {/* Toujours sombre : c'est une capture figée de l'app, pas du vrai
-              chrome — elle ne doit pas suivre le thème clair/sombre du site. */}
-          <div data-theme="dark" className="relative aspect-[390/844] bg-[#050807] rounded-[42px] p-[10px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.75)]">
-            <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-surface border border-brass/10">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[92px] h-[18px] bg-[#050807] rounded-b-[12px] z-30" />
-              <div className="absolute top-0 inset-x-0 h-8 z-20 flex items-center justify-between px-5 font-mono text-[9px] font-semibold text-paper">
+          {/* Toujours clair : c'est une capture figée de l'app (thème par
+              défaut), pas du vrai chrome — elle ne suit pas le thème du site. */}
+          <div data-theme="light" className="relative aspect-[390/844] bg-[#1E1A1A] rounded-[42px] p-[10px] shadow-[0_30px_70px_-20px_rgba(30,26,26,0.45)]">
+            <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-neutral-50">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[92px] h-[18px] bg-[#1E1A1A] rounded-b-[12px] z-30" />
+              <div className="absolute top-0 inset-x-0 h-8 z-20 flex items-center justify-between px-5 font-mono text-[9px] font-semibold text-ink">
                 <span>9:41</span>
                 <span>●●●●</span>
               </div>
@@ -302,10 +295,10 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <div className="ticket-card w-full !p-4 text-left">
-          <p className="font-mono text-[9px] text-mist-2">{step.tag}</p>
-          <h1 className="font-display font-extrabold uppercase text-sm text-ink mt-1">{step.title}</h1>
-          <p className="font-mono text-[11px] text-ink/60 mt-1 leading-relaxed">{step.body}</p>
+        <div className="bg-paper rounded-card shadow-card w-full p-4 text-left">
+          <p className="text-xs font-bold uppercase tracking-[0.06em] text-accent">{step.tag}</p>
+          <h1 className="font-display font-semibold text-xl text-ink mt-1">{step.title}</h1>
+          <p className="text-sm text-ink-soft mt-1 leading-relaxed">{step.body}</p>
         </div>
       </div>
 
@@ -316,14 +309,14 @@ export default function OnboardingPage() {
             onClick={prev}
             disabled={isFirst}
             aria-label="Étape précédente"
-            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
+            className="w-9 h-9 rounded-full border border-line bg-surface flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
           >
             ←
           </button>
           <button
             onClick={() => setPlaying(p => !p)}
             aria-label={playing ? 'Mettre en pause' : 'Lecture'}
-            className="w-11 h-11 rounded-full bg-brass text-ink flex items-center justify-center text-base"
+            className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center text-base"
           >
             {playing ? '❚❚' : '▶'}
           </button>
@@ -331,7 +324,7 @@ export default function OnboardingPage() {
             onClick={() => (isLast ? undefined : goTo(current + 1))}
             disabled={isLast}
             aria-label="Étape suivante"
-            className="w-9 h-9 rounded-full border border-dashed border-brass flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
+            className="w-9 h-9 rounded-full border border-line bg-surface flex items-center justify-center text-neutral-900 disabled:opacity-25 transition-opacity"
           >
             →
           </button>
@@ -343,7 +336,7 @@ export default function OnboardingPage() {
               key={i}
               onClick={() => goTo(i)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === current ? 'w-[18px] bg-brass' : 'w-1.5 bg-neutral-900/22'
+                i === current ? 'w-[18px] bg-accent' : 'w-1.5 bg-neutral-900/22'
               }`}
               aria-label={`Étape ${i + 1}`}
             />
