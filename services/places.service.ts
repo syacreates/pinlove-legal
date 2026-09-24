@@ -7,6 +7,15 @@ import type { Place, PlaceCategory, PlaceVisibility, SourcePlatform } from '@/li
 import { FREE_PLAN_LIMIT } from '@/lib/constants'
 import { withTimeout } from '@/lib/utils'
 
+/** Remplace les erreurs réseau brutes ("Load failed", délai dépassé…) par un message lisible. */
+function friendlyNetworkError(message: string): string {
+  const m = message.toLowerCase()
+  if (m.includes('load failed') || m.includes('failed to fetch') || m.includes('network') || m.includes('délai dépassé')) {
+    return "Impossible de joindre le serveur PinLove, le lieu n'a pas été enregistré. Vérifie ta connexion et réessaie."
+  }
+  return message
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface CreatePlaceInput {
@@ -153,10 +162,10 @@ export const placesService = {
         'Enregistrement du lieu',
       )
 
-      if (error) return { place: null, error: error.message }
+      if (error) return { place: null, error: friendlyNetworkError(error.message) }
       return { place: dbToPlace(data as DbPlace), error: null }
     } catch (e) {
-      return { place: null, error: e instanceof Error ? e.message : 'Erreur inattendue.' }
+      return { place: null, error: friendlyNetworkError(e instanceof Error ? e.message : 'Erreur inattendue.') }
     }
   },
 
