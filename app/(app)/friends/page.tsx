@@ -98,7 +98,7 @@ export default function FriendsPage() {
       {friends.length === 0 ? (
         <EmptyState
           icon={
-            <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-brass-dim flex items-center justify-center">
+            <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-dash flex items-center justify-center">
               <Users className="w-7 h-7 text-mist-2" />
             </div>
           }

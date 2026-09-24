@@ -118,7 +118,7 @@ export function AddressAutocomplete({
   return (
     <div ref={containerRef} className="flex flex-col gap-1.5 relative">
       {label && (
-        <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">{label}</label>
+        <label className="text-sm font-bold text-neutral-900">{label}</label>
       )}
       <div className="relative flex items-center">
         <span className="absolute left-3 text-neutral-400 pointer-events-none">
@@ -133,7 +133,7 @@ export function AddressAutocomplete({
             'w-full rounded-2xl bg-neutral-100 border border-transparent',
             'pl-10 pr-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
             'transition-all duration-150',
-            'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
+            'focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/15',
           )}
         />
         {loading && (
@@ -144,7 +144,7 @@ export function AddressAutocomplete({
       </div>
 
       {open && suggestions.length > 0 && (
-        <ul className="absolute top-full left-0 right-0 z-50 mt-1 bg-paper rounded-2xl shadow-lg border border-brass-dim/30 overflow-hidden">
+        <ul className="absolute top-full left-0 right-0 z-50 mt-1 bg-paper rounded-2xl shadow-lg border border-line overflow-hidden">
           {suggestions.map((item, i) => {
             const addr = item.address
             const road = [addr.house_number, addr.road].filter(Boolean).join(' ')

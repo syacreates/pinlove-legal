@@ -69,7 +69,7 @@ export function PlaceCard({
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-xl flex-shrink-0">{meta.emoji}</span>
-            <h3 className="font-display font-bold uppercase text-ink truncate leading-tight">
+            <h3 className="font-display font-semibold text-ink truncate leading-tight">
               {place.name}
             </h3>
           </div>

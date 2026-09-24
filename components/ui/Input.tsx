@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-[10px] font-mono uppercase tracking-wide text-mist-2"
+            className="text-sm font-bold text-neutral-900"
           >
             {label}
           </label>
@@ -33,11 +33,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              'w-full rounded-2xl bg-neutral-100 border border-transparent',
-              'px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
+              'w-full h-12 rounded-xl bg-surface border border-line',
+              'px-3 text-[15px] font-medium text-neutral-900 placeholder:text-neutral-400 placeholder:font-normal',
               'transition-all duration-150',
-              'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
-              error && 'border-red-400 bg-red-950/40 focus:border-red-400 focus:ring-red-900/40',
+              'focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/15',
+              error && 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-400/20',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className,
@@ -72,7 +72,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-[10px] font-mono uppercase tracking-wide text-mist-2">
+          <label htmlFor={inputId} className="text-sm font-bold text-neutral-900">
             {label}
           </label>
         )}
@@ -80,11 +80,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            'w-full rounded-2xl bg-neutral-100 border border-transparent',
-            'px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400',
+            'w-full rounded-xl bg-surface border border-line',
+            'px-3 py-3 text-[15px] font-medium text-neutral-900 placeholder:text-neutral-400 placeholder:font-normal',
             'transition-all duration-150 resize-none',
-            'focus:outline-none focus:bg-surface-2 focus:border-brass focus:ring-2 focus:ring-brass/20',
-            error && 'border-red-400 bg-red-950/40',
+            'focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/15',
+            error && 'border-red-400 bg-red-50',
             className,
           )}
           rows={3}

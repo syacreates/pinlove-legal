@@ -32,13 +32,10 @@ export default function SplashPage() {
 
   return (
     <>
-      {/* Sits outside the dark-scoped splash below so it uses the visitor's
-          real theme colors even though the launch screen itself stays dark. */}
       <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)] z-10" />
 
-      {/* Splash keeps its fixed dark brand look regardless of the site's
-          light/dark theme — like a launch screen — so it's scoped to dark here. */}
-      <div data-theme="dark" className="fixed inset-0 premium-gradient flex flex-col items-center justify-center px-6">
+      {/* Splash : fond crème du thème "Cerise", suit le thème du site. */}
+      <div className="fixed inset-0 bg-neutral-50 flex flex-col items-center justify-center px-6">
       {/* Logo */}
       <div
         className={`flex flex-col items-center gap-5 transition-all duration-300 ${
@@ -47,8 +44,8 @@ export default function SplashPage() {
       >
         <StampBadge size="lg" />
         <div className="text-center">
-          <h1 className="font-display font-extrabold uppercase text-4xl text-paper tracking-[0.06em]">PinLove</h1>
-          <p className="font-mono text-mist text-sm mt-1.5">
+          <h1 className="font-display font-semibold text-4xl text-neutral-900 tracking-tight">PinLove</h1>
+          <p className="text-mist text-[15px] mt-1.5">
             Tes lieux préférés, toujours à portée
           </p>
         </div>

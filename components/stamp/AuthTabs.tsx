@@ -16,7 +16,7 @@ export function AuthTabs({ active, className }: AuthTabsProps) {
   return (
     <div
       className={cn(
-        'flex bg-surface rounded-[10px] p-1 border border-dashed border-paper/20',
+        'flex bg-surface rounded-full p-1 border border-line',
         className,
       )}
     >
@@ -26,8 +26,8 @@ export function AuthTabs({ active, className }: AuthTabsProps) {
           type="button"
           onClick={() => router.push(tab === 'login' ? ROUTES.LOGIN : ROUTES.SIGNUP)}
           className={cn(
-            'flex-1 text-center py-2.5 rounded-[7px] font-mono text-[11.5px] font-semibold uppercase tracking-wide transition-colors',
-            active === tab ? 'bg-brass text-ink' : 'text-mist',
+            'flex-1 text-center h-9 rounded-full text-sm font-bold transition-colors',
+            active === tab ? 'bg-ink text-white' : 'text-mist',
           )}
         >
           {tab === 'login' ? 'Connexion' : 'Inscription'}

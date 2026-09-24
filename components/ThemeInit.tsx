@@ -5,8 +5,8 @@ import { useTheme } from '@/lib/theme'
 
 // Keeps the browser-chrome / native status bar tint in sync with the theme.
 const THEME_COLOR: Record<'light' | 'dark', string> = {
-  dark: '#0E2B30',
-  light: '#EEF2EF',
+  dark: '#171313',
+  light: '#F7F3EF',
 }
 
 export function ThemeInit() {

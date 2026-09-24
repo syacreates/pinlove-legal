@@ -8,10 +8,10 @@ export function CategoryBadge({ category, tone = 'dark' }: { category: PlaceCate
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono uppercase tracking-wide border border-dashed',
+        'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border',
         tone === 'dark'
-          ? 'text-mist border-neutral-900/25'
-          : 'text-ink/70 border-brass-dim/60',
+          ? 'text-mist border-line'
+          : 'text-ink/70 border-line',
       )}
     >
       <span>{meta.emoji}</span>
@@ -39,8 +39,8 @@ export function PlatformBadge({ platform }: { platform: SourcePlatform }) {
 export function VisibilityBadge({ visibility }: { visibility: PlaceVisibility }) {
   const styles: Record<PlaceVisibility, string> = {
     private: 'bg-surface text-mist',
-    friends: 'bg-surface-2 text-brass',
-    public:  'bg-cerise/15 text-cerise',
+    friends: 'bg-surface-2 text-accent',
+    public:  'bg-accent-tag text-accent-dark',
   }
   const labels: Record<PlaceVisibility, string> = {
     private: '🔒 Privé',
@@ -58,7 +58,7 @@ export function VisibilityBadge({ visibility }: { visibility: PlaceVisibility })
 export function PlanBadge({ plan }: { plan: 'free' | 'premium' }) {
   if (plan === 'free') return null
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-500 to-brand-400 text-white">
+    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-accent text-white">
       ✦ Premium
     </span>
   )
@@ -74,7 +74,7 @@ export function Badge({ children, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono uppercase tracking-wide bg-surface text-mist',
+        'inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-medium bg-accent-tag text-accent-dark',
         className,
       )}
     >

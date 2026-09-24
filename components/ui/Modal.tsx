@@ -55,7 +55,7 @@ export function Modal({
       {/* Panel */}
       <div
         className={cn(
-          'relative z-10 bg-paper w-full max-w-lg animate-slide-up border-t-2 border-dashed border-brass-dim',
+          'relative z-10 bg-paper w-full max-w-lg animate-slide-up border-t border-divider',
           variant === 'sheet'
             ? 'rounded-t-3xl max-h-[92vh] overflow-y-auto pb-safe-bottom'
             : 'rounded-3xl mx-4 mb-4 max-h-[85vh] overflow-y-auto',
@@ -72,7 +72,7 @@ export function Modal({
         {/* Header */}
         {title && (
           <div className="flex items-center justify-between px-5 pt-3 pb-2">
-            <h2 className="text-lg font-display font-bold uppercase text-ink">{title}</h2>
+            <h2 className="text-lg font-display font-semibold text-ink">{title}</h2>
             <button
               onClick={onClose}
               className="p-2 -mr-2 rounded-xl hover:bg-ink/5 transition-colors"

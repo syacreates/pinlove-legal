@@ -270,7 +270,7 @@ export default function ImportPage() {
 
           {/* Category */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Catégorie *</label>
+            <label className="text-sm font-bold text-neutral-900">Catégorie *</label>
             <div className="grid grid-cols-3 gap-2">
               {Object.entries(PLACE_CATEGORIES).map(([key, val]) => {
                 const Icon = CATEGORY_ICONS[key as PlaceCategory]
@@ -281,8 +281,8 @@ export default function ImportPage() {
                     onClick={() => setCategory(key as PlaceCategory)}
                     className={`flex flex-col items-center gap-1 py-3 rounded-2xl border-2 text-sm transition-all ${
                       category === key
-                        ? 'border-brand-500 bg-brand-50 text-brand-700'
-                        : 'border-dashed border-brass-dim/40 bg-paper text-ink/70'
+                        ? 'border-accent bg-accent-light text-brand-700'
+                        : 'border-line bg-paper text-ink/70'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -324,7 +324,7 @@ export default function ImportPage() {
 
           {/* Visibility */}
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase tracking-wide text-mist-2">Visibilité</label>
+            <label className="text-sm font-bold text-neutral-900">Visibilité</label>
             <div className="grid grid-cols-3 gap-2">
               {(['private', 'friends', 'public'] as const).map(v => (
                 <button
@@ -333,8 +333,8 @@ export default function ImportPage() {
                   onClick={() => setVisibility(v)}
                   className={`py-2 rounded-2xl text-xs font-medium border-2 transition-all ${
                     visibility === v
-                      ? 'border-brand-500 bg-brand-50 text-brand-700'
-                      : 'border-dashed border-brass-dim/40 bg-paper text-ink/70'
+                      ? 'border-accent bg-accent-light text-brand-700'
+                      : 'border-line bg-paper text-ink/70'
                   }`}
                 >
                   {v === 'private' ? '🔒 Privé' : v === 'friends' ? '👥 Amis' : '🌍 Public'}

@@ -34,7 +34,7 @@ export function EmptyState({
       <div className="mb-4 flex items-center justify-center animate-pulse-soft">
         {typeof icon === 'string' ? <span className="text-5xl">{icon}</span> : icon}
       </div>
-      <h3 className="text-lg font-display font-bold uppercase text-neutral-900 mb-2">{title}</h3>
+      <h3 className="text-lg font-display font-semibold text-neutral-900 mb-2">{title}</h3>
       {description && (
         <p className="text-sm text-neutral-500 max-w-xs leading-relaxed mb-6">
           {description}

@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css'
 import type { Place, Coordinates } from '@/lib/types'
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from '@/lib/constants'
 import { cn } from '@/lib/utils'
+import { colors } from '@/lib/design-tokens'
 
 // ── Fix Leaflet default icon (Next.js issue) ──────────────────────────────────
 delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -17,7 +18,7 @@ L.Icon.Default.mergeOptions({
 })
 
 // ── Postal-stamp pin marker ────────────────────────────────────────────────────
-// Solid dot pin (cerise default, brass + glow when selected), cerclé de "paper" —
+// Solid dot pin (encre par défaut, cerise + halo quand sélectionné), cerclé de blanc —
 // remplace l'ancien emoji-dans-cercle. La catégorie reste visible dans SpotBottomSheet.
 function createStampPin(isSelected = false): L.DivIcon {
   const box = isSelected ? 34 : 28
@@ -26,12 +27,12 @@ function createStampPin(isSelected = false): L.DivIcon {
     <div style="width:${box}px;height:${box}px;display:flex;align-items:center;justify-content:center;">
       <div style="
         width:${dot}px;height:${dot}px;border-radius:50%;
-        background:${isSelected ? '#E7B34A' : '#E63B77'};
-        border:2px solid #F2ECD9;
+        background:${isSelected ? colors.accent : colors.ink};
+        border:2px solid ${colors.surface};
         box-shadow:${
           isSelected
-            ? '0 0 0 5px rgba(231,179,74,.28), 0 0 14px 2px rgba(231,179,74,.5)'
-            : '0 0 0 3px rgba(230,59,119,.2)'
+            ? '0 0 0 6px rgba(200,36,63,.2), 0 4px 10px rgba(30,26,26,.25)'
+            : '0 2px 6px rgba(30,26,26,.25)'
         };
         transition: all .25s;
       "></div>
@@ -133,20 +134,12 @@ export default function MapView({
             radius={8}
             fillColor="#5DA9E0"
             fillOpacity={1}
-            color="#F2ECD9"
+            color={colors.surface}
             weight={3}
           />
         )}
       </MapContainer>
 
-      {/* Petrol tint overlay — approxime l'ambiance "carnet de voyage" sur les
-          tuiles OpenStreetMap sans toucher au rendu des marqueurs/popups
-          au-dessus. Opacité réduite (22% → 10%) : la carte était trop sombre,
-          peu lisible — cf. filtre plus lumineux dans globals.css. */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{ background: '#0E2B30', opacity: 0.10, mixBlendMode: 'color', zIndex: 11 }}
-      />
     </div>
   )
 }

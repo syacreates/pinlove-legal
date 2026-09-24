@@ -20,7 +20,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 bg-petrol/90 backdrop-blur-xl border-t border-dashed border-brass/25"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-divider"
       aria-label="Navigation principale"
     >
       <div className="flex items-center h-[72px] px-2 max-w-lg mx-auto pb-safe-bottom">
@@ -39,11 +39,11 @@ export function BottomNav() {
                 <div
                   className={cn(
                     'flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200',
-                    'bg-cerise border-2 border-dashed border-paper/40 shadow-floating active:scale-90',
+                    'bg-accent shadow-floating active:scale-90',
                     isActive && 'scale-95',
                   )}
                 >
-                  <Icon className="w-5 h-5 text-paper" />
+                  <Icon className="w-5 h-5 text-white" />
                 </div>
               </Link>
             )
@@ -59,13 +59,13 @@ export function BottomNav() {
               <Icon
                 className={cn(
                   'w-5 h-5 transition-colors',
-                  isActive ? 'text-brass' : 'text-mist-2',
+                  isActive ? 'text-accent' : 'text-muted',
                 )}
               />
               <span
                 className={cn(
-                  'text-[8.6px] font-mono uppercase tracking-wide transition-colors',
-                  isActive ? 'text-brass' : 'text-mist-2',
+                  'text-[11px] font-medium transition-colors',
+                  isActive ? 'text-accent font-bold' : 'text-muted',
                 )}
               >
                 {label}
