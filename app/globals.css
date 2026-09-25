@@ -122,18 +122,11 @@
 
   /* ── Postal stamp motif ──────────────────────────────────────────────────── */
   .stamp-ring {
-    @apply relative rounded-full border-2 border-dashed border-accent flex items-center justify-center;
     animation: stamp-spin 22s linear infinite;
   }
 
-  .stamp-core {
-    @apply flex items-center justify-center;
-    animation: stamp-spin-rev 22s linear infinite;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .stamp-ring,
-    .stamp-core {
+    .stamp-ring {
       animation: none;
     }
   }
@@ -141,11 +134,6 @@
   @keyframes stamp-spin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
-  }
-
-  @keyframes stamp-spin-rev {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(-360deg); }
   }
 
   /* ── Ticket card — dashed border, train-ticket cutouts ──────────────────── */

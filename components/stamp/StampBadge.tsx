@@ -3,47 +3,42 @@ import { cn } from '@/lib/utils'
 interface StampBadgeProps {
   size?: 'sm' | 'lg'
   animated?: boolean
-  ringText?: string
   className?: string
 }
 
 const HEART_PATH =
   'M26 46C12 37 4 28.5 4 18.5 4 11 10 5 17.5 5c4.4 0 8 2 8.5 5 .5-3 4.1-5 8.5-5C42 5 48 11 48 18.5 48 28.5 40 37 26 46Z'
 
-/** The dashed-circle "postal stamp" mark — PinLove's signature logo motif. */
+// Shared viewBox: the dashed ring (r=36, stroke 4) fills it edge to edge.
+const VIEW_BOX = '12 12 76 76'
+
+/** The dashed-circle "postal stamp" with a heart pin — PinLove's logo. */
 export function StampBadge({
   size = 'lg',
   animated = size === 'lg',
-  ringText = '✦ PIN LOVE ✦ TES SPOTS ✦ TA CARTE ',
   className,
 }: StampBadgeProps) {
   const box = size === 'lg' ? 126 : 40
-  const heartBox = size === 'lg' ? 46 : 18
   const gradientId = size === 'lg' ? 'stamp-gradient-lg' : 'stamp-gradient-sm'
-  const ringId = `stamp-ring-path-${size}`
 
   return (
     <div
       className={cn('relative flex items-center justify-center', className)}
       style={{ width: box, height: box }}
     >
-      <div
-        className={cn('stamp-ring absolute inset-0', !animated && '!animate-none')}
-      >
-        {size === 'lg' && (
-          <svg viewBox="0 0 100 100" className="absolute -inset-[17px] w-[calc(100%+34px)] h-[calc(100%+34px)]">
-            <path id={ringId} d="M50,6 a44,44 0 1,1 -0.1,0" fill="none" />
-            <text fontSize="8.4" letterSpacing=".18em" fill="#C8243F">
-              <textPath href={`#${ringId}`} startOffset="0%">
-                {ringText}
-              </textPath>
-            </text>
-          </svg>
-        )}
+      <div className={cn('stamp-ring absolute inset-0', !animated && '!animate-none')}>
+        <svg viewBox={VIEW_BOX} className="w-full h-full">
+          <circle
+            cx="50" cy="50" r="36" fill="none" stroke="#C8243F" strokeWidth="4"
+            strokeDasharray="11.9 10.72" strokeDashoffset="-5.34"
+          />
+        </svg>
       </div>
-      <div className={cn('stamp-core', !animated && '!animate-none')}>
-        <svg width={heartBox} height={heartBox} viewBox="0 0 52 52" fill="none">
-          <path d={HEART_PATH} fill={`url(#${gradientId})`} />
+      <div className="absolute inset-0">
+        <svg viewBox={VIEW_BOX} className="w-full h-full" fill="none">
+          <ellipse cx="50" cy="70.6" rx="6.2" ry="1.9" fill="#C8243F" opacity=".6" />
+          <path d="M48.7 56h2.6v13.4a1.3 1.8 0 0 1-2.6 0Z" fill="#9E1B31" />
+          <path d={HEART_PATH} transform="translate(31.8 32.3) scale(.7)" fill={`url(#${gradientId})`} />
           <defs>
             <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="4" y1="5" x2="48" y2="46">
               <stop stopColor="#C8243F" />
