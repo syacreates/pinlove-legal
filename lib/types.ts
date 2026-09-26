@@ -147,6 +147,72 @@ export interface MomentParticipant {
   created_at: string
 }
 
+/** Lieu ouvert commun à deux personnes (jamais la liste complète de l'autre). */
+export interface CommonPlace {
+  place_key: string
+  /** Nom du lieu chez moi */
+  place_name: string
+  my_why: string | null
+  their_why: string | null
+  /** Poids dans le score (rareté × bonus « pourquoi ») */
+  weight: number
+}
+
+/** Suggestion de personne : prénom et lieux communs, sans photo ni identifiant. */
+export interface PersonSuggestion {
+  first_name: string
+  intention: RencontreIntention
+  score: number
+  common_places: CommonPlace[]
+}
+
+/** Moment du fil « Moments dans tes lieux ». */
+export interface FeedMoment {
+  id: string
+  title: string
+  place_key: string
+  place_name: string
+  place_address: string | null
+  duration_min: number
+  proposed_slots: string[]
+  expires_at: string
+  payment_rule: string
+  intention: RencontreIntention
+  creator_first_name: string
+  creator_why: string | null
+  common_places: CommonPlace[]
+  score: number
+  /** Créneau que j'ai choisi, si j'ai déjà répondu */
+  my_chosen_slot: string | null
+  created_at: string
+}
+
+/** Détail d'un moment tel que renvoyé par get_moment (avant double acceptation : pas de photo). */
+export interface MomentDetail {
+  id: string
+  title: string
+  status: MomentStatus
+  place_key: string
+  place_name: string
+  place_address: string | null
+  latitude: number
+  longitude: number
+  duration_min: number
+  proposed_slots: string[]
+  scheduled_at: string | null
+  expires_at: string
+  payment_rule: string
+  intention: RencontreIntention
+  created_at: string
+  my_role: MomentRole | null
+  my_chosen_slot: string | null
+  creator_first_name: string
+  creator_why: string | null
+  common_places: CommonPlace[]
+  /** Nombre de demandes reçues (créateur uniquement) */
+  request_count: number | null
+}
+
 export interface MomentMessage {
   id: string
   moment_id: string

@@ -72,6 +72,8 @@ export const ROUTES = {
   RENCONTRES_ONBOARDING: '/rencontres/onboarding',
   RENCONTRES_LIEUX:      '/rencontres/lieux',
   RENCONTRES_REGLAGES:   '/rencontres/reglages',
+  RENCONTRES_NEW_MOMENT: '/rencontres/moments/nouveau',
+  RENCONTRES_MOMENT:     (id: string) => `/rencontres/moments/${id}`,
 } as const
 
 // ── Mode Rencontres ───────────────────────────────────────────────────────────
@@ -85,6 +87,9 @@ export const RENCONTRE_INTENTIONS: Record<
 }
 
 export const WHY_TEXT_MAX = 140
+
+export const MOMENT_TITLE_MAX = 80
+export const MOMENT_DURATIONS = [30, 60, 90, 120] as const
 
 export const RENCONTRE_PRINCIPLES = [
   { title: 'Le moment avant la personne', text: 'Tu rejoins une sortie dans un lieu, pas un profil. Pas de swipe.' },
