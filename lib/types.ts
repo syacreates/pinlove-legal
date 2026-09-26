@@ -66,10 +66,128 @@ export interface Place {
   /** Array of friend user IDs this place is explicitly shared with */
   shared_with_friend_ids: string[]
   source: ImportSource | null
+  /** Mode Rencontres : lieu « ouvert » aux rencontres (privé par défaut) */
+  rencontre_open: boolean
+  /** Pourquoi j'aime ce lieu (≤ 140 caractères) */
+  why_text: string | null
+  /** Clé de rapprochement entre utilisateurs (OpenStreetMap, ex. « osm:N123 ») */
+  place_key: string | null
   created_at: string
   updated_at: string
   /** Resolved user (joined for display) */
   user?: Pick<User, 'id' | 'username' | 'full_name' | 'avatar_url'>
+}
+
+// ── Mode Rencontres ───────────────────────────────────────────────────────────
+
+export type RencontreIntention = 'amical' | 'ouvert' | 'pro'
+
+export type MomentStatus = 'open' | 'matched' | 'confirmed' | 'done' | 'cancelled' | 'expired'
+
+export type MomentRole = 'creator' | 'guest'
+
+export type ReportStatus = 'pending' | 'reviewed' | 'dismissed'
+
+/** Profil Rencontres (table rencontre_profiles) — lisible uniquement par son propriétaire. */
+export interface RencontreProfile {
+  user_id: string
+  enabled: boolean
+  intention: RencontreIntention
+  first_name: string
+  /** Chemin dans le bucket privé « rencontre-photos » */
+  photo_path: string | null
+  reliability_score: number
+  safety_contact_name: string | null
+  safety_contact_phone: string | null
+  principles_accepted_at: string | null
+  /** Hors périmètre V1 (vérification selfie) */
+  verified_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Moment {
+  id: string
+  creator_id: string
+  source_place_id: string | null
+  place_key: string
+  place_name: string
+  place_address: string | null
+  latitude: number
+  longitude: number
+  intention: RencontreIntention
+  title: string
+  duration_min: number
+  /** 2 à 3 horodatages ISO 8601 */
+  proposed_slots: string[]
+  /** Créneau retenu après double acceptation */
+  scheduled_at: string | null
+  status: MomentStatus
+  expires_at: string
+  payment_rule: 'Chacun sa part'
+  cancelled_by: string | null
+  cancelled_at: string | null
+  shared_memory_created_at: string | null
+  /** Hors périmètre V1 (partenariats lieux) */
+  partner_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MomentParticipant {
+  moment_id: string
+  user_id: string
+  role: MomentRole
+  accepted_at: string | null
+  chosen_slot: string | null
+  confirmed_eve_at: string | null
+  checked_in_at: string | null
+  hint_text: string | null
+  wants_shared_memory: boolean
+  created_at: string
+}
+
+export interface MomentMessage {
+  id: string
+  moment_id: string
+  sender_id: string
+  body: string
+  created_at: string
+}
+
+/** Jamais lisible par to_user. */
+export interface Feedback {
+  id: string
+  moment_id: string
+  from_user: string
+  to_user: string
+  would_meet_again: boolean
+  went_well: boolean
+  report_reason: string | null
+  created_at: string
+}
+
+export interface Report {
+  id: string
+  reporter_id: string
+  reported_user_id: string
+  moment_id: string | null
+  reason: string
+  details: string | null
+  status: ReportStatus
+  reviewed_at: string | null
+  created_at: string
+}
+
+export interface AppNotification {
+  id: string
+  user_id: string
+  type: string
+  moment_id: string | null
+  payload: Record<string, unknown>
+  read_at: string | null
+  pushed_at: string | null
+  created_at: string
 }
 
 // ── Friend connection ─────────────────────────────────────────────────────────

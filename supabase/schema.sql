@@ -1,6 +1,7 @@
 -- ─────────────────────────────────────────────────────────────────────────────
 -- PinLove — Supabase schema
 -- Run in the Supabase SQL Editor or via `supabase db push`
+-- Puis, dans l'ordre, les fichiers de supabase/migrations/ (mode Rencontres…)
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- Enable UUID extension
