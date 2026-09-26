@@ -72,6 +72,9 @@ export interface Place {
   why_text: string | null
   /** Clé de rapprochement entre utilisateurs (OpenStreetMap, ex. « osm:N123 ») */
   place_key: string | null
+  /** Souvenir commun : moment d'origine et date de la rencontre */
+  memory_moment_id: string | null
+  memory_at: string | null
   created_at: string
   updated_at: string
   /** Resolved user (joined for display) */
@@ -218,6 +221,15 @@ export interface MomentDetail {
   day_window_open: boolean
   /** Chat ouvert (jour J, ou après un « revoir » mutuel) */
   chat_open: boolean
+  /** Après le début du rendez-vous : le retour peut être donné */
+  feedback_open: boolean
+  my_feedback_given: boolean
+  /** J'ai signalé l'autre dans mon retour : pas de souvenir commun proposé */
+  my_feedback_reported: boolean
+  /** Les deux veulent se revoir (jamais d'info sur un « non ») */
+  meet_again_mutual: boolean
+  my_wants_memory: boolean
+  shared_memory_created_at: string | null
   cancelled_by_me: boolean
   /** Demandes à valider (créateur, moment ouvert) */
   requests: MomentRequest[] | null
@@ -263,6 +275,7 @@ export interface MyRencontre {
   my_chosen_slot: string | null
   other_first_name: string | null
   needs_my_confirmation: boolean
+  needs_my_feedback: boolean
   request_count: number | null
   created_at: string
 }

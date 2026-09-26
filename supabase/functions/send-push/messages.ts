@@ -39,6 +39,10 @@ export function pushMessage(type: string, p: Payload): NotificationText | null {
       return { title: 'C’est dans 2 heures', body: `« ${title} » à ${place}. ${String(p.payment_rule ?? 'Chacun sa part')}. Itinéraire dans l’app.` }
     case 'moment_cancelled':
       return { title: 'Moment annulé', body: `« ${title} » à ${place} n’aura pas lieu.` }
+    case 'meet_again':
+      return { title: 'Vous pouvez vous revoir', body: `${String(p.first_name ?? 'L’autre personne')} aimerait aussi vous revoir. Le chat est ouvert.` }
+    case 'shared_memory':
+      return { title: 'Souvenir ajouté à ta carte', body: `« ${title} » à ${place} est maintenant un souvenir commun, daté sur vos deux cartes.` }
     case 'safety_check':
       return { title: 'Tout va bien ?', body: `« ${title} » est terminé. Un geste pour nous dire que tout va bien.` }
     default:

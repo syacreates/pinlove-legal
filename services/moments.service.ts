@@ -121,6 +121,28 @@ export const momentsService = {
     return { error: error ? rpcError(error.message) : null }
   },
 
+  /** Retour en 3 gestes. `mutual` : les deux veulent se revoir (seule info révélée). */
+  async submitFeedback(
+    momentId: string,
+    wouldMeetAgain: boolean,
+    wentWell: boolean,
+    reportReason: ReportReason | null,
+  ): Promise<{ mutual: boolean; error: string | null }> {
+    const { data, error } = await supabase.rpc('submit_feedback', {
+      p_moment_id: momentId,
+      p_would_meet_again: wouldMeetAgain,
+      p_went_well: wentWell,
+      p_report_reason: reportReason,
+    })
+    return { mutual: data === true, error: error ? rpcError(error.message) : null }
+  },
+
+  /** Souvenir commun : `created` quand les deux ont accepté (pin daté sur les deux cartes). */
+  async setSharedMemory(momentId: string, wants: boolean): Promise<{ created: boolean; error: string | null }> {
+    const { data, error } = await supabase.rpc('set_shared_memory', { p_moment_id: momentId, p_wants: wants })
+    return { created: data === true, error: error ? rpcError(error.message) : null }
+  },
+
   async withdrawRequest(momentId: string): Promise<{ error: string | null }> {
     const { error } = await supabase.rpc('withdraw_moment_request', { p_moment_id: momentId })
     return { error: error ? rpcError(error.message) : null }

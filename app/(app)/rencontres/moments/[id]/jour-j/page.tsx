@@ -123,7 +123,7 @@ export default function JourJPage() {
         <section className="rounded-card bg-accent-light p-4 space-y-3">
           <p className="font-display text-xl text-accent-dark">Tout va bien ?</p>
           <div className="flex gap-2">
-            <Button className="flex-1" onClick={markAllGood} leftIcon={<Check className="w-4 h-4" />}>Oui, tout va bien</Button>
+            <Button className="flex-1" onClick={() => { markAllGood(); if (!moment.my_feedback_given) router.push(ROUTES.RENCONTRES_FEEDBACK(id)) }} leftIcon={<Check className="w-4 h-4" />}>Oui, tout va bien</Button>
             <Button className="flex-1" variant="outline" onClick={() => setAlertOpen(true)}>J’ai besoin d’aide</Button>
           </div>
         </section>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { CalendarDays, CheckCircle2, Clock, MapPin, Navigation, ShieldCheck, Sun } from 'lucide-react'
+import { CalendarDays, CheckCircle2, Clock, Heart, MapPin, MessageCircle, Navigation, ShieldCheck, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { ScreenHeader } from '@/components/rencontres/RencontreUI'
@@ -112,6 +112,33 @@ export default function MomentDetailPage() {
 
       {/* L'autre personne, révélée après double acceptation */}
       {scheduled && moment.other && <OtherPerson other={moment.other} placeName={moment.place_name} />}
+
+      {/* Après : retour, revoir mutuel */}
+      {moment.feedback_open && !moment.my_feedback_given && (
+        <Button fullWidth size="lg" onClick={() => router.push(ROUTES.RENCONTRES_FEEDBACK(moment.id))}>
+          Comment ça s’est passé ?
+        </Button>
+      )}
+      {moment.meet_again_mutual && moment.other && (
+        <section className="rounded-card bg-accent-light p-4 space-y-3">
+          <p className="font-bold text-accent-dark flex items-center gap-1.5">
+            <Heart className="w-4 h-4" /> Vous pouvez vous revoir
+          </p>
+          <Button
+            fullWidth
+            variant="secondary"
+            leftIcon={<MessageCircle className="w-4 h-4" />}
+            onClick={() => router.push(ROUTES.RENCONTRES_JOUR_J(moment.id))}
+          >
+            Écrire à {moment.other.first_name}
+          </Button>
+        </section>
+      )}
+      {moment.my_feedback_given && !moment.my_feedback_reported && !moment.shared_memory_created_at && !moment.my_wants_memory && (
+        <Button fullWidth variant="outline" onClick={() => router.push(ROUTES.RENCONTRES_FEEDBACK(moment.id))}>
+          Ajouter en souvenir commun ?
+        </Button>
+      )}
 
       {/* Jour J : check-in, indice, chat, sécurité */}
       {scheduled && (isActive || moment.status === 'done') && (

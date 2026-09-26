@@ -78,6 +78,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: ['user-002', 'user-003'],
     source: {
       platform: 'instagram',
@@ -108,6 +110,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: [],
     source: {
       platform: 'tiktok',
@@ -138,6 +142,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: ['user-002', 'user-003', 'user-004'],
     source: {
       platform: 'instagram',
@@ -168,6 +174,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: ['user-002'],
     source: null,
     created_at: '2024-01-28T14:00:00Z',
@@ -192,6 +200,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: [],
     source: {
       platform: 'tiktok',
@@ -223,6 +233,8 @@ export const DEMO_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: [],
     source: null,
     created_at: '2024-02-05T18:00:00Z',
@@ -287,6 +299,8 @@ export const DEMO_FRIENDS_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: ['user-001'],
     source: {
       platform: 'instagram',
@@ -323,6 +337,8 @@ export const DEMO_FRIENDS_PLACES: Place[] = [
     rencontre_open: false,
     why_text: null,
     place_key: null,
+    memory_moment_id: null,
+    memory_at: null,
     shared_with_friend_ids: ['user-001'],
     source: {
       platform: 'tiktok',

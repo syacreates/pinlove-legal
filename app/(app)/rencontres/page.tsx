@@ -71,7 +71,8 @@ export default function RencontresPage() {
 
   // À faire : confirmer une rencontre, valider une demande reçue.
   const todo = mine.filter(r =>
-    r.needs_my_confirmation || (r.my_role === 'creator' && r.status === 'open' && (r.request_count ?? 0) > 0))
+    r.needs_my_confirmation || r.needs_my_feedback
+    || (r.my_role === 'creator' && r.status === 'open' && (r.request_count ?? 0) > 0))
 
   const openPlaces = places.filter(p => p.rencontre_open)
   const openCount  = openPlaces.length
@@ -128,13 +129,22 @@ export default function RencontresPage() {
           <ul className="space-y-2">
             {todo.map(r => (
               <li key={r.id}>
-                <Link href={ROUTES.RENCONTRES_MOMENT(r.id)} className="flex items-center gap-3 rounded-card bg-accent-light px-4 py-3">
+                <Link
+                  href={r.needs_my_feedback ? ROUTES.RENCONTRES_FEEDBACK(r.id) : ROUTES.RENCONTRES_MOMENT(r.id)}
+                  className="flex items-center gap-3 rounded-card bg-accent-light px-4 py-3"
+                >
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-accent-dark truncate">
-                      {r.needs_my_confirmation ? `Confirme « ${r.title} »` : `${r.request_count} partant·e${(r.request_count ?? 0) > 1 ? 's' : ''} pour « ${r.title} »`}
+                      {r.needs_my_confirmation
+                        ? `Confirme « ${r.title} »`
+                        : r.needs_my_feedback
+                          ? `Comment s’est passé « ${r.title} » ?`
+                          : `${r.request_count} partant·e${(r.request_count ?? 0) > 1 ? 's' : ''} pour « ${r.title} »`}
                     </p>
                     <p className="text-xs text-accent-dark/80 truncate">
-                      {r.needs_my_confirmation ? `Avec ${r.other_first_name} · ${r.place_name}` : `${r.place_name} · à valider`}
+                      {r.needs_my_confirmation || r.needs_my_feedback
+                        ? `Avec ${r.other_first_name} · ${r.place_name}`
+                        : `${r.place_name} · à valider`}
                     </p>
                   </div>
                   <ChevronRight className="w-4 h-4 text-accent flex-shrink-0" />

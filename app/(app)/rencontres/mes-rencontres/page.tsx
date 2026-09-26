@@ -32,7 +32,7 @@ function statusLabel(r: MyRencontre): { label: string; accent: boolean } {
         ? { label: 'À confirmer', accent: true }
         : { label: 'En attente de confirmation', accent: false }
     case 'confirmed': return { label: 'Confirmé', accent: false }
-    case 'done':      return { label: 'Passé', accent: false }
+    case 'done':      return r.needs_my_feedback ? { label: 'Ton retour ?', accent: true } : { label: 'Passé', accent: false }
     case 'cancelled': return { label: 'Annulé', accent: false }
     default:          return { label: r.scheduled_at ? 'Non confirmé' : 'Expiré', accent: false }
   }

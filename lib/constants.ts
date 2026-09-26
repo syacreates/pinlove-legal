@@ -76,6 +76,7 @@ export const ROUTES = {
   RENCONTRES_MOMENT:     (id: string) => `/rencontres/moments/${id}`,
   RENCONTRES_MES:        '/rencontres/mes-rencontres',
   RENCONTRES_JOUR_J:     (id: string) => `/rencontres/moments/${id}/jour-j`,
+  RENCONTRES_FEEDBACK:   (id: string) => `/rencontres/moments/${id}/feedback`,
   RENCONTRES_NOTIFS:     '/rencontres/notifications',
 } as const
 
