@@ -179,6 +179,11 @@ export default function PlaceDetailPage() {
           <div className="flex flex-wrap gap-2">
             <CategoryBadge category={place.category} />
             <VisibilityBadge visibility={place.visibility} />
+            {place.memory_at && (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-accent-tag text-accent-dark">
+                Souvenir du {formatDate(place.memory_at)}
+              </span>
+            )}
           </div>
         </div>
 

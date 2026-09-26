@@ -1,57 +1,47 @@
+import { useId } from 'react'
 import { cn } from '@/lib/utils'
 
 interface StampBadgeProps {
   size?: 'sm' | 'lg'
-  animated?: boolean
-  ringText?: string
   className?: string
 }
 
-const HEART_PATH =
-  'M26 46C12 37 4 28.5 4 18.5 4 11 10 5 17.5 5c4.4 0 8 2 8.5 5 .5-3 4.1-5 8.5-5C42 5 48 11 48 18.5 48 28.5 40 37 26 46Z'
-
-/** The dashed-circle "postal stamp" mark — PinLove's signature logo motif. */
-export function StampBadge({
-  size = 'lg',
-  animated = size === 'lg',
-  ringText = '✦ PIN LOVE ✦ TES SPOTS ✦ TA CARTE ',
-  className,
-}: StampBadgeProps) {
-  const box = size === 'lg' ? 126 : 40
-  const heartBox = size === 'lg' ? 46 : 18
-  const gradientId = size === 'lg' ? 'stamp-gradient-lg' : 'stamp-gradient-sm'
-  const ringId = `stamp-ring-path-${size}`
+/**
+ * Logo PinLove : cœur-épingle dans un cercle en pointillés.
+ * Même dessin que public/logo.svg (source des icônes et écrans de démarrage).
+ */
+export function StampBadge({ size = 'lg', className }: StampBadgeProps) {
+  const box = size === 'lg' ? 150 : 56
+  const gradientId = `pl-heart-${useId()}`
 
   return (
-    <div
-      className={cn('relative flex items-center justify-center', className)}
-      style={{ width: box, height: box }}
+    <svg
+      width={box}
+      height={box}
+      viewBox="0 0 100 100"
+      fill="none"
+      role="img"
+      aria-label="PinLove"
+      className={cn('flex-shrink-0', className)}
     >
-      <div
-        className={cn('stamp-ring absolute inset-0', !animated && '!animate-none')}
-      >
-        {size === 'lg' && (
-          <svg viewBox="0 0 100 100" className="absolute -inset-[17px] w-[calc(100%+34px)] h-[calc(100%+34px)]">
-            <path id={ringId} d="M50,6 a44,44 0 1,1 -0.1,0" fill="none" />
-            <text fontSize="8.4" letterSpacing=".18em" fill="#C8243F">
-              <textPath href={`#${ringId}`} startOffset="0%">
-                {ringText}
-              </textPath>
-            </text>
-          </svg>
-        )}
-      </div>
-      <div className={cn('stamp-core', !animated && '!animate-none')}>
-        <svg width={heartBox} height={heartBox} viewBox="0 0 52 52" fill="none">
-          <path d={HEART_PATH} fill={`url(#${gradientId})`} />
-          <defs>
-            <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="4" y1="5" x2="48" y2="46">
-              <stop stopColor="#C8243F" />
-              <stop offset="1" stopColor="#9E1B31" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-    </div>
+      <defs>
+        <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="34" y1="35" x2="66" y2="64">
+          <stop stopColor="#C8243F" />
+          <stop offset="1" stopColor="#9E1B31" />
+        </linearGradient>
+      </defs>
+      <circle
+        cx="50" cy="50" r="38"
+        stroke="#C8243F" strokeWidth="3.4"
+        strokeDasharray="11.2 8.7" strokeDashoffset="5.6"
+        transform="rotate(-90 50 50)"
+      />
+      <ellipse cx="50" cy="73.2" rx="6.6" ry="1.9" fill="#C8243F" fillOpacity=".55" />
+      <path d="M48.4 60v12a1.6 1.6 0 0 0 3.2 0V60Z" fill="#9E1B31" />
+      <path
+        d="M50 64.7C39.5 58 33.5 51.6 33.5 44.1 33.5 38.5 38 34 43.6 34c3.3 0 6 1.5 6.4 3.75C50.4 35.5 53.1 34 56.4 34 62 34 66.5 38.5 66.5 44.1 66.5 51.6 60.5 58 50 64.7Z"
+        fill={`url(#${gradientId})`}
+      />
+    </svg>
   )
 }

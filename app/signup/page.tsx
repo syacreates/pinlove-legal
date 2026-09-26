@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { StampBadge } from '@/components/stamp/StampBadge'
 import { AuthTabs } from '@/components/stamp/AuthTabs'
 import { useAuthStore } from '@/stores/auth.store'
@@ -46,9 +45,8 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col px-6 pt-14 pb-10">
-      <ThemeToggle className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+12px)]" />
       <div className="flex justify-center mb-8">
-        <StampBadge size="sm" animated={false} />
+        <StampBadge size="sm" />
       </div>
 
       <div className="w-full max-w-sm mx-auto">

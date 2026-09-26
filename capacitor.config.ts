@@ -8,6 +8,12 @@ const config: CapacitorConfig = {
     url: 'https://pinlove-legal.vercel.app',
     androidScheme: 'https',
   },
+  plugins: {
+    // Mode Rencontres : rappels (veille, H-2…) affichés même app ouverte.
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert'],
+    },
+  },
 };
 
 export default config;

@@ -1,8 +1,8 @@
 import type { Config } from 'tailwindcss'
+import { colors as tokens } from './lib/design-tokens'
 
-// Reads a "R G B" CSS variable (see app/globals.css) so these colors can
-// flip between the light and dark themes without touching every className
-// that uses them, while still supporting Tailwind's /opacity modifiers.
+// Reads a "R G B" CSS variable (see app/globals.css) while still supporting
+// Tailwind's /opacity modifiers.
 function themed(variable: string) {
   return `rgb(var(${variable}) / <alpha-value>)`
 }
@@ -37,14 +37,14 @@ const config: Config = {
           2:       themed('--c-surface-2'),
         },
         brass: {
-          DEFAULT: '#C8243F',
-          dim:     '#9E1B31',
+          DEFAULT: tokens.accent,
+          dim:     tokens.accentDark,
         },
-        cerise: '#C8243F',
-        paper:  '#FFFFFF',
+        cerise: tokens.accent,
+        paper:  tokens.surface,
         ink: {
-          DEFAULT: '#1E1A1A',
-          soft:    '#4A4341',
+          DEFAULT: tokens.ink,
+          soft:    tokens.inkSoft,
         },
         mist: {
           DEFAULT: themed('--c-mist'),
@@ -53,28 +53,32 @@ const config: Config = {
         // Tokens sémantiques du thème (noms identiques à lib/design-tokens.ts)
         background: themed('--c-petrol'),
         accent: {
-          DEFAULT: '#C8243F',
-          dark:    '#9E1B31',
-          light:   '#FBEDEF',
-          tag:     '#F6DDE1',
+          DEFAULT: tokens.accent,
+          dark:    tokens.accentDark,
+          light:   tokens.accentLight,
+          tag:     tokens.accentTag,
+          // Texte cerise lisible sur fond teinté bg-accent/10, dans les deux thèmes
+          ink:     themed('--c-accent-ink'),
         },
+        'on-accent': tokens.onAccent,
         muted:       themed('--c-mist-2'),
         line:        themed('--c-line'),
         divider:     themed('--c-divider'),
-        dash:        '#B3A79E',
+        dash:        tokens.dashed,
         placeholder: themed('--c-placeholder'),
-        success:     '#2F6B45',
-        water:       '#C9DCE6',
+        success:     tokens.success,
+        danger:      tokens.danger,
+        water:       tokens.water,
         // Rampe brand recalculée autour de l'accent cerise (brand-500)
         brand: {
-          50:  '#FBEDEF',
-          100: '#F6DDE1',
+          50:  tokens.accentLight,
+          100: tokens.accentTag,
           200: '#EDB8C1',
           300: '#E08D9C',
           400: '#D45A70',
-          500: '#C8243F',
+          500: tokens.accent,
           600: '#B01F37',
-          700: '#9E1B31',
+          700: tokens.accentDark,
           800: '#7A1526',
           900: '#5A101C',
           950: '#33090F',

@@ -40,7 +40,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variants: Record<ButtonVariant, string> = {
       // ui.buttonPrimary / buttonDark / buttonOutline
       primary:   'bg-accent text-white hover:bg-accent-dark',
-      secondary: 'bg-ink text-white hover:bg-ink/90',
+      // Thémé : foncé en clair, clair en sombre
+      secondary: 'bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90',
       ghost:     'bg-transparent text-mist hover:bg-surface',
       danger:    'bg-red-600 text-white hover:bg-red-700',
       outline:   'border border-line bg-surface text-neutral-900 hover:bg-surface-2',

@@ -32,6 +32,22 @@ export function formatDate(date: string | Date): string {
   }).format(new Date(date))
 }
 
+/** Créneau d'un moment, ex. « sam. 27 sept. · 20:00 ». */
+export function formatSlot(date: string | Date): string {
+  const d = new Date(date)
+  const day = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }).format(d)
+  const time = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' }).format(d)
+  return `${day} · ${time}`
+}
+
+/** Durée en minutes, ex. « 1 h 30 ». */
+export function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60)
+  const m = minutes % 60
+  if (!h) return `${m} min`
+  return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`
+}
+
 // ── Place helpers ─────────────────────────────────────────────────────────────
 export function getCategoryMeta(category: PlaceCategory) {
   return PLACE_CATEGORIES[category] ?? PLACE_CATEGORIES.other

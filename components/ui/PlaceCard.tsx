@@ -106,7 +106,14 @@ export function PlaceCard({
 
         {/* Footer row */}
         <div className="flex items-center justify-between gap-2">
-          <CategoryBadge category={place.category} tone="light" />
+          <div className="flex items-center gap-1.5 min-w-0">
+            <CategoryBadge category={place.category} tone="light" />
+            {place.memory_at && (
+              <span className="px-2 py-1 rounded-full text-xs font-bold bg-accent-tag text-accent-dark truncate">
+                Souvenir · {new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' }).format(new Date(place.memory_at))}
+              </span>
+            )}
+          </div>
 
           <div className="flex items-center gap-2 text-xs text-ink/45">
             {showDistance && distanceKm !== undefined && (

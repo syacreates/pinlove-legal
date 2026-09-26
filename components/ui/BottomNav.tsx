@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation'
 import { Home, Map, PlusCircle, Users, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/lib/constants'
-import { ThemeToggle } from './ThemeToggle'
 
 const NAV_ITEMS = [
   { href: ROUTES.HOME,    icon: Home,       label: 'Accueil' },
@@ -74,7 +73,6 @@ export function BottomNav() {
           )
         })}
       </div>
-      <ThemeToggle className="ml-1 flex-shrink-0" />
       </div>
     </nav>
   )

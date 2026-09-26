@@ -10,7 +10,10 @@ import { usePlacesStore } from '@/stores/places.store'
 import { useAppStore } from '@/stores/app.store'
 import { placesService } from '@/services/places.service'
 import { mapService } from '@/services/map.service'
-import type { PlaceCategory, PlaceVisibility } from '@/lib/types'
+import { rencontresService } from '@/services/rencontres.service'
+import { useRencontreStore } from '@/stores/rencontre.store'
+import { Switch, WhyTextField } from '@/components/rencontres/RencontreUI'
+import type { Place, PlaceCategory, PlaceVisibility } from '@/lib/types'
 import { PLACE_CATEGORIES, ROUTES, VISIBILITY_OPTIONS } from '@/lib/constants'
 import { CATEGORY_ICONS } from '@/lib/category-icons'
 
@@ -32,13 +35,25 @@ export default function EditPlacePage() {
   const loadPlaces  = usePlacesStore(s => s.loadPlaces)
   const addToast    = useAppStore(s => s.addToast)
 
+  const rencontreProfile     = useRencontreStore(s => s.profile)
+  const loadRencontreProfile = useRencontreStore(s => s.loadProfile)
+  const rencontreActive      = !!rencontreProfile?.enabled && !!rencontreProfile.principles_accepted_at
+
   const [form,    setForm]    = useState<FormData | null>(null)
+  const [original, setOriginal] = useState<Place | null>(null)
+  const [rencontreOpen, setRencontreOpen] = useState(false)
+  const [whyText,       setWhyText]       = useState('')
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState<string | null>(null)
+
+  useEffect(() => { loadRencontreProfile(user.id) }, [user.id, loadRencontreProfile])
 
   useEffect(() => {
     placesService.getPlace(id).then(place => {
       if (!place) { router.replace(ROUTES.PLACES); return }
+      setOriginal(place)
+      setRencontreOpen(place.rencontre_open)
+      setWhyText(place.why_text ?? '')
       setForm({
         name:        place.name,
         address:     place.address,
@@ -70,10 +85,25 @@ export default function EditPlacePage() {
     setLoading(true)
     try {
       const coords = await mapService.geocodeAddress(`${form.address}, ${form.city}`)
-      const { error: err } = await placesService.updatePlace(id, user.id, {
+      const { place: updated, error: updateError } = await placesService.updatePlace(id, user.id, {
         ...form,
         ...(coords ? { latitude: coords.lat, longitude: coords.lng } : {}),
       })
+      let err = updateError
+
+      // Mode Rencontres : ouverture du lieu et « pourquoi ». Si le lieu ouvert
+      // a changé de coordonnées, on l'identifie à nouveau sur la carte.
+      if (!err && updated && original && rencontreActive) {
+        const moved = updated.latitude !== original.latitude || updated.longitude !== original.longitude
+        const changed =
+          rencontreOpen !== original.rencontre_open ||
+          whyText.trim() !== (original.why_text ?? '') ||
+          (rencontreOpen && moved)
+        if (changed) {
+          const res = await rencontresService.setPlaceRencontre(updated, rencontreOpen, whyText, { forceResolve: moved })
+          if (res.error) err = `Lieu enregistré, mais pas son ouverture aux rencontres : ${res.error}`
+        }
+      }
 
       if (err) {
         setError(err)
@@ -226,6 +256,22 @@ export default function EditPlacePage() {
             ))}
           </div>
         </div>
+
+        {/* Mode Rencontres */}
+        {rencontreActive && (
+          <div className="flex flex-col gap-3 p-4 rounded-2xl border-2 border-line bg-surface">
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-sm font-bold text-neutral-900">Ouvert aux rencontres</p>
+                <p className="text-xs text-muted">
+                  Privé par défaut. Ouvert, il sert à croiser des personnes qui l’aiment aussi.
+                </p>
+              </div>
+              <Switch checked={rencontreOpen} onChange={setRencontreOpen} label="Ouvrir ce lieu aux rencontres" />
+            </div>
+            {rencontreOpen && <WhyTextField id="why-text" value={whyText} onChange={setWhyText} />}
+          </div>
+        )}
       </form>
 
       {error && <p className="text-sm text-red-500 text-center mt-4 mb-2 px-2">{error}</p>}

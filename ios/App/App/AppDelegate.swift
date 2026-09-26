@@ -1,5 +1,9 @@
 import UIKit
 import Capacitor
+#if canImport(FirebaseCore) && canImport(FirebaseMessaging)
+import FirebaseCore
+import FirebaseMessaging
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -8,7 +12,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        #if canImport(FirebaseCore) && canImport(FirebaseMessaging)
+        FirebaseApp.configure()
+        #endif
         return true
+    }
+
+    // ── Push (mode Rencontres) ──────────────────────────────────────────────
+    // Les pushs partent de Firebase Cloud Messaging : une fois le paquet
+    // Firebase (FirebaseMessaging) ajouté au projet, le jeton APNs est
+    // converti en jeton FCM avant d'être transmis à Capacitor. Sans Firebase,
+    // le code compile toujours et transmet le jeton APNs brut.
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        #if canImport(FirebaseCore) && canImport(FirebaseMessaging)
+        Messaging.messaging().apnsToken = deviceToken
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+            } else if let token = token {
+                NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: token)
+            }
+        }
+        #else
+        NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: deviceToken)
+        #endif
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

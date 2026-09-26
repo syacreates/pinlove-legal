@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { FREE_PLAN_LIMIT } from '@/lib/constants'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export const metadata: Metadata = {
   title: "Conditions d'utilisation",
@@ -11,7 +10,6 @@ export default function TermsPage() {
     <main className="max-w-2xl mx-auto px-6 py-12 text-neutral-800 legal-content">
       <div className="flex items-start justify-between gap-4 mb-2">
         <h1 className="text-3xl font-bold">Conditions d&apos;utilisation</h1>
-        <ThemeToggle className="mt-1 flex-shrink-0" />
       </div>
       <p className="text-sm text-neutral-500 mb-8">Dernière mise à jour : 19 mars 2026</p>
 
