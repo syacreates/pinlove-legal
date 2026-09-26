@@ -1,4 +1,4 @@
-import type { PlaceCategory } from './types'
+import type { PlaceCategory, RencontreIntention } from './types'
 
 // ── Theme ──────────────────────────────────────────────────────────────────────
 // Kept in this plain (non "use client") module rather than lib/theme.ts so the
@@ -68,7 +68,33 @@ export const ROUTES = {
   FRIENDS:    '/friends',
   PROFILE:    '/profile',
   PRICING:    '/pricing',
+  RENCONTRES:            '/rencontres',
+  RENCONTRES_ONBOARDING: '/rencontres/onboarding',
+  RENCONTRES_LIEUX:      '/rencontres/lieux',
+  RENCONTRES_REGLAGES:   '/rencontres/reglages',
 } as const
+
+// ── Mode Rencontres ───────────────────────────────────────────────────────────
+export const RENCONTRE_INTENTIONS: Record<
+  RencontreIntention,
+  { label: string; description: string }
+> = {
+  amical: { label: 'Amical',        description: 'Se faire des ami·es autour de lieux qu’on aime' },
+  ouvert: { label: 'Ouvert à plus', description: 'Une rencontre amicale… ou plus si affinités' },
+  pro:    { label: 'Pro',           description: 'Échanger, réseauter, partager un métier' },
+}
+
+export const WHY_TEXT_MAX = 140
+
+export const RENCONTRE_PRINCIPLES = [
+  { title: 'Le moment avant la personne', text: 'Tu rejoins une sortie dans un lieu, pas un profil. Pas de swipe.' },
+  { title: 'Même intention',              text: 'Amical, ouvert à plus ou pro : tu ne croises que des personnes qui cherchent la même chose.' },
+  { title: 'Révélation progressive',      text: 'D’abord vos lieux communs et pourquoi vous les aimez, puis le prénom. La photo, seulement après double acceptation.' },
+  { title: 'Pas de chat avant',           text: 'On propose des créneaux, c’est tout. Le chat s’ouvre le jour J, juste pour se retrouver.' },
+  { title: 'Lieux publics, sécurité native', text: 'Toujours dans un lieu public. Ton contact de confiance est prévenu, un bouton d’alerte reste à portée.' },
+  { title: 'Aucun rejet visible',         text: 'Un refus n’est jamais notifié. Sans réponse, un moment expire simplement.' },
+  { title: 'Tes lieux restent privés',    text: 'Privés par défaut. Seuls ceux que tu ouvres servent aux rencontres, et personne ne voit ta liste : seulement les lieux en commun.' },
+] as const
 
 // ── Demo / Paris bounding box ─────────────────────────────────────────────────
 export const DEFAULT_MAP_CENTER = { lat: 48.8566, lng: 2.3522 } // Paris

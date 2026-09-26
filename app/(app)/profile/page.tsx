@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Edit3, LogOut, ChevronRight, Moon, Shield, CreditCard, Bell, HelpCircle } from 'lucide-react'
+import { Edit3, LogOut, ChevronRight, Moon, Shield, CreditCard, Bell, HelpCircle, HeartHandshake } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { PlanBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -131,6 +131,7 @@ export default function ProfilePage() {
           <span className="flex-1 text-sm font-medium text-ink">Apparence</span>
           <ThemeToggle />
         </div>
+        <MenuItem icon={<HeartHandshake className="w-4 h-4" />} label="Rencontres" href={ROUTES.RENCONTRES} />
         <MenuItem icon={<Shield className="w-4 h-4" />} label="Confidentialité" href="/privacy" />
         <MenuItem icon={<HelpCircle className="w-4 h-4" />} label="Aide & Support" href="#" />
         <MenuItem icon={<Bell className="w-4 h-4" />} label="Notifications" href="#" />

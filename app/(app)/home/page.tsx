@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { Search, MapPin, ChevronRight, Sparkles, Heart, TrendingUp, Globe, Link2, Pin } from 'lucide-react'
+import { Search, MapPin, ChevronRight, Sparkles, Heart, TrendingUp, Globe, Link2, Pin, HeartHandshake } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
 import { usePlacesStore } from '@/stores/places.store'
 import { PlaceCard } from '@/components/ui/PlaceCard'
@@ -82,6 +82,21 @@ export default function HomePage() {
         <QuickAction emoji="🔗" title="Importer un lien" sub="TikTok ou Instagram" href={ROUTES.IMPORT} accent />
         <QuickAction emoji="📍" title="Ajouter manuellement" sub="Saisie rapide" href={ROUTES.ADD} />
       </div>
+
+      {/* Mode Rencontres (opt-in) */}
+      <Link
+        href={ROUTES.RENCONTRES}
+        className="flex items-center gap-3 bg-paper rounded-card shadow-card px-4 py-3.5 hover:shadow-card-hover transition-shadow"
+      >
+        <div className="w-10 h-10 bg-accent-light rounded-2xl flex items-center justify-center flex-shrink-0">
+          <HeartHandshake className="w-5 h-5 text-accent" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-bold text-[15px] text-ink">Rencontres</p>
+          <p className="text-[13px] text-muted">Rencontrer du monde dans vos lieux préférés</p>
+        </div>
+        <ChevronRight className="w-4 h-4 text-ink/30 flex-shrink-0" />
+      </Link>
 
       {/* Plan bar */}
       {!isPremium && <FreemiumBar count={count} />}
