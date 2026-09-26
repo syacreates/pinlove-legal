@@ -1,4 +1,4 @@
-import type { PlaceCategory, RencontreIntention } from './types'
+import type { PlaceCategory, RencontreIntention, ReportReason } from './types'
 
 // ── Theme ──────────────────────────────────────────────────────────────────────
 // Kept in this plain (non "use client") module rather than lib/theme.ts so the
@@ -75,6 +75,7 @@ export const ROUTES = {
   RENCONTRES_NEW_MOMENT: '/rencontres/moments/nouveau',
   RENCONTRES_MOMENT:     (id: string) => `/rencontres/moments/${id}`,
   RENCONTRES_MES:        '/rencontres/mes-rencontres',
+  RENCONTRES_JOUR_J:     (id: string) => `/rencontres/moments/${id}/jour-j`,
   RENCONTRES_NOTIFS:     '/rencontres/notifications',
 } as const
 
@@ -91,6 +92,18 @@ export const RENCONTRE_INTENTIONS: Record<
 export const WHY_TEXT_MAX = 140
 
 export const MOMENT_TITLE_MAX = 80
+export const REPORT_REASONS: Record<ReportReason, string> = {
+  comportement: 'Comportement déplacé',
+  harcelement:  'Harcèlement',
+  securite:     'Je ne me suis pas senti·e en sécurité',
+  absence:      'Absence sans prévenir',
+  faux_profil:  'Faux profil',
+  autre:        'Autre',
+}
+
+export const HINT_MAX = 140
+export const CHECK_IN_RADIUS_M = 150
+
 /** Annulation à moins de 12 h du début : fiabilité −10 */
 export const LATE_CANCEL_HOURS = 12
 export const MOMENT_DURATIONS = [30, 60, 90, 120] as const

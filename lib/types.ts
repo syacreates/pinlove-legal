@@ -212,6 +212,12 @@ export interface MomentDetail {
   /** Nombre de demandes reçues (créateur uniquement) */
   request_count: number | null
   my_confirmed_at: string | null
+  my_checked_in_at: string | null
+  my_hint: string | null
+  /** De H-2 à H+3 : check-in et indice possibles */
+  day_window_open: boolean
+  /** Chat ouvert (jour J, ou après un « revoir » mutuel) */
+  chat_open: boolean
   cancelled_by_me: boolean
   /** Demandes à valider (créateur, moment ouvert) */
   requests: MomentRequest[] | null
@@ -236,7 +242,12 @@ export interface MomentOther {
   reliability_score: number
   why: string | null
   confirmed: boolean
+  checked_in: boolean
+  /** Indice pour se retrouver (« veste verte, près de l'entrée ») */
+  hint: string | null
 }
+
+export type ReportReason = 'comportement' | 'absence' | 'faux_profil' | 'harcelement' | 'securite' | 'autre'
 
 /** Ligne de « Mes rencontres ». */
 export interface MyRencontre {

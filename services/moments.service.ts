@@ -8,7 +8,7 @@
 
 import { supabase } from '@/lib/supabase'
 import { withTimeout } from '@/lib/utils'
-import type { FeedMoment, MomentDetail, MyRencontre, PersonSuggestion } from '@/lib/types'
+import type { FeedMoment, MomentDetail, MyRencontre, PersonSuggestion, ReportReason } from '@/lib/types'
 
 /** Les exceptions SQL arrivent telles quelles : on garde leur message (déjà en français). */
 function rpcError(message: string): string {
@@ -92,6 +92,33 @@ export const momentsService = {
     const { data, error } = await supabase.rpc('my_rencontres')
     if (error) { console.error('[moments] my_rencontres:', error.message); return [] }
     return (data ?? []) as MyRencontre[]
+  },
+
+  /** Check-in : renvoie la distance au lieu (mètres), refusé au-delà de 150 m. */
+  async checkIn(momentId: string, lat: number, lng: number): Promise<{ distance: number | null; error: string | null }> {
+    const { data, error } = await supabase.rpc('check_in_moment', { p_moment_id: momentId, p_lat: lat, p_lng: lng })
+    return { distance: (data as number | null) ?? null, error: error ? rpcError(error.message) : null }
+  },
+
+  async setHint(momentId: string, hint: string): Promise<{ error: string | null }> {
+    const { error } = await supabase.rpc('set_moment_hint', { p_moment_id: momentId, p_hint: hint })
+    return { error: error ? rpcError(error.message) : null }
+  },
+
+  /** Signale l'autre personne du moment (ou l'auteur d'une demande, via son jeton). */
+  async report(
+    momentId: string,
+    reason: ReportReason,
+    details: string,
+    requestToken?: string,
+  ): Promise<{ error: string | null }> {
+    const { error } = await supabase.rpc('report_in_moment', {
+      p_moment_id: momentId,
+      p_reason: reason,
+      p_details: details.trim() || null,
+      p_request_token: requestToken ?? null,
+    })
+    return { error: error ? rpcError(error.message) : null }
   },
 
   async withdrawRequest(momentId: string): Promise<{ error: string | null }> {

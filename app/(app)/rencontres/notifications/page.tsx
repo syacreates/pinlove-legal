@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ScreenHeader } from '@/components/rencontres/RencontreUI'
 import { useAuthStore } from '@/stores/auth.store'
 import { notificationsService } from '@/services/notifications.service'
-import { pushMessage } from '@/supabase/functions/send-push/messages'
+import { notificationUrl, pushMessage } from '@/supabase/functions/send-push/messages'
 import { ROUTES } from '@/lib/constants'
 import { cn, timeAgo } from '@/lib/utils'
 import type { AppNotification } from '@/lib/types'
@@ -40,7 +40,7 @@ export default function NotificationsPage() {
         {shown.map(({ n, text }) => (
           <li key={n.id}>
             <Link
-              href={n.moment_id ? ROUTES.RENCONTRES_MOMENT(n.moment_id) : ROUTES.RENCONTRES}
+              href={notificationUrl(n.type, n.moment_id)}
               className={cn(
                 'block rounded-card p-4 shadow-card',
                 n.read_at ? 'bg-paper' : 'bg-accent-light',

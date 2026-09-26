@@ -10,7 +10,7 @@
 // SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY sont fournis par Supabase.
 
 import { createClient } from 'npm:@supabase/supabase-js@2'
-import { pushMessage } from './messages.ts'
+import { notificationUrl, pushMessage } from './messages.ts'
 
 interface ServiceAccount {
   project_id: string
@@ -93,7 +93,7 @@ Deno.serve(async req => {
 
   const sa = JSON.parse(Deno.env.get('FIREBASE_SERVICE_ACCOUNT') ?? '{}') as ServiceAccount
   const accessToken = await googleAccessToken(sa)
-  const url = notif.moment_id ? `/rencontres/moments/${notif.moment_id}` : '/rencontres'
+  const url = notificationUrl(notif.type, notif.moment_id)
 
   let sent = 0
   for (const { token } of devices) {

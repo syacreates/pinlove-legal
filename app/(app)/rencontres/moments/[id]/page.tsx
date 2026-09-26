@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { CalendarDays, CheckCircle2, Clock, MapPin, Navigation, ShieldCheck } from 'lucide-react'
+import { CalendarDays, CheckCircle2, Clock, MapPin, Navigation, ShieldCheck, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { ScreenHeader } from '@/components/rencontres/RencontreUI'
 import { CommonPlacesList, IntentionTag, PaymentRule } from '@/components/rencontres/MomentCards'
+import { ReportButton, ShareWithContactButton } from '@/components/rencontres/Safety'
 import { useAppStore } from '@/stores/app.store'
 import { useAuthStore } from '@/stores/auth.store'
 import { useRencontreStore } from '@/stores/rencontre.store'
@@ -112,6 +113,25 @@ export default function MomentDetailPage() {
       {/* L'autre personne, révélée après double acceptation */}
       {scheduled && moment.other && <OtherPerson other={moment.other} placeName={moment.place_name} />}
 
+      {/* Jour J : check-in, indice, chat, sécurité */}
+      {scheduled && (isActive || moment.status === 'done') && (
+        <Button
+          fullWidth
+          size="lg"
+          variant={moment.day_window_open ? 'primary' : 'outline'}
+          leftIcon={<Sun className="w-4 h-4" />}
+          onClick={() => router.push(ROUTES.RENCONTRES_JOUR_J(moment.id))}
+        >
+          {moment.day_window_open ? 'Jour J : je suis en route' : 'Jour J : check-in, indice, chat'}
+        </Button>
+      )}
+      {isActive && (
+        <section className="space-y-2">
+          <p className="text-sm text-ink-soft">Dis à quelqu’un de confiance où et avec qui tu seras :</p>
+          <ShareWithContactButton moment={moment} />
+        </section>
+      )}
+
       {/* Lieu */}
       <section className="bg-paper rounded-card shadow-card p-4 space-y-3">
         <div className="flex items-start justify-between gap-3">
@@ -201,6 +221,8 @@ export default function MomentDetailPage() {
               request={r}
               placeKey={moment.place_key}
               busy={busy}
+              onReported={load}
+              momentId={moment.id}
               onAccept={() => run(() => momentsService.acceptRequest(moment.id, r.token), `C’est calé avec ${r.first_name} !`)}
             />
           ))}
@@ -266,6 +288,15 @@ export default function MomentDetailPage() {
           Annuler ce moment
         </Button>
       )}
+
+      {/* Signalement, accessible partout */}
+      <div className="flex justify-center pt-2">
+        {scheduled && moment.other ? (
+          <ReportButton momentId={moment.id} personName={moment.other.first_name} onReported={load} />
+        ) : !isCreator ? (
+          <ReportButton momentId={moment.id} personName={moment.creator_first_name} onReported={back} />
+        ) : null}
+      </div>
 
       <Modal open={cancelOpen} onClose={() => setCancelOpen(false)} title="Annuler ce moment ?">
         <p className="text-sm text-ink-soft mb-5">
@@ -358,13 +389,17 @@ function OtherPerson({ other, placeName }: { other: MomentOther; placeName: stri
 function RequestCard({
   request,
   placeKey,
+  momentId,
   busy,
   onAccept,
+  onReported,
 }: {
   request: MomentRequest
   /** Lieu du moment : son « pourquoi » est déjà affiché */
   placeKey: string
+  momentId: string
   busy: boolean
+  onReported: () => void
   onAccept: () => void
 }) {
   return (
@@ -388,6 +423,9 @@ function RequestCard({
       <Button fullWidth loading={busy} onClick={onAccept}>
         Valider avec {request.first_name}
       </Button>
+      <div className="flex justify-center">
+        <ReportButton momentId={momentId} personName={request.first_name} requestToken={request.token} onReported={onReported} />
+      </div>
     </div>
   )
 }

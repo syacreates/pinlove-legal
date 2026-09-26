@@ -17,6 +17,12 @@ function when(iso: unknown): string {
   }).format(new Date(iso))
 }
 
+/** Écran ouvert quand on touche la notification. */
+export function notificationUrl(type: string, momentId: string | null): string {
+  if (!momentId) return '/rencontres'
+  return type === 'safety_check' ? `/rencontres/moments/${momentId}/jour-j` : `/rencontres/moments/${momentId}`
+}
+
 export function pushMessage(type: string, p: Payload): NotificationText | null {
   const title = String(p.title ?? 'Ton moment')
   const place = String(p.place_name ?? '')
@@ -33,6 +39,8 @@ export function pushMessage(type: string, p: Payload): NotificationText | null {
       return { title: 'C’est dans 2 heures', body: `« ${title} » à ${place}. ${String(p.payment_rule ?? 'Chacun sa part')}. Itinéraire dans l’app.` }
     case 'moment_cancelled':
       return { title: 'Moment annulé', body: `« ${title} » à ${place} n’aura pas lieu.` }
+    case 'safety_check':
+      return { title: 'Tout va bien ?', body: `« ${title} » est terminé. Un geste pour nous dire que tout va bien.` }
     default:
       return null
   }
