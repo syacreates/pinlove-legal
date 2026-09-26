@@ -38,7 +38,7 @@ export default function RencontresLieuxPage() {
         onBack={() => router.push(ROUTES.RENCONTRES)}
       />
 
-      <p className="text-sm text-ink-soft mb-4 px-1">
+      <p className="text-sm text-mist mb-4 px-1">
         Tes lieux sont privés par défaut. Un lieu ouvert sert uniquement à croiser des personnes qui
         l’aiment aussi. Personne ne voit ta liste : seulement les lieux que vous avez en commun, avec
         ton « pourquoi ».
@@ -87,11 +87,11 @@ function PlaceOpenRow({ place }: { place: Place }) {
   const meta = PLACE_CATEGORIES[place.category]
 
   return (
-    <li className="bg-paper rounded-card shadow-card p-4">
+    <li className="bg-surface rounded-card shadow-card p-4">
       <div className="flex items-center gap-3">
         <span className="text-xl" aria-hidden>{meta.emoji}</span>
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-ink truncate">{place.name}</p>
+          <p className="font-bold text-neutral-900 truncate">{place.name}</p>
           <p className="text-xs text-muted flex items-center gap-1">
             {place.rencontre_open
               ? <><Unlock className="w-3 h-3 text-accent" /> Ouvert · {place.city}</>

@@ -33,9 +33,9 @@ export function ScreenHeader({
           type="button"
           onClick={onBack ?? (() => router.back())}
           aria-label="Retour"
-          className="w-10 h-10 flex-shrink-0 bg-paper rounded-2xl shadow-card flex items-center justify-center"
+          className="w-10 h-10 flex-shrink-0 bg-surface rounded-2xl shadow-card flex items-center justify-center"
         >
-          <ArrowLeft className="w-5 h-5 text-ink/70" />
+          <ArrowLeft className="w-5 h-5 text-neutral-900/70" />
         </button>
       )}
       <div className="min-w-0 flex-1">
@@ -75,7 +75,7 @@ export function Switch({
     >
       <span
         className={cn(
-          'absolute top-1 left-1 w-5 h-5 rounded-full bg-paper shadow transition-transform duration-200',
+          'absolute top-1 left-1 w-5 h-5 rounded-full bg-surface shadow transition-transform duration-200',
           checked && 'translate-x-5',
         )}
       />
@@ -106,12 +106,12 @@ export function IntentionPicker({
             onClick={() => onChange(key)}
             className={cn(
               'w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left transition-all',
-              selected ? 'border-accent bg-accent-light' : 'border-line bg-paper hover:border-dash',
+              selected ? 'border-accent bg-accent/10' : 'border-line bg-surface hover:border-dash',
             )}
           >
             <div className="flex-1">
-              <p className="font-bold text-ink">{meta.label}</p>
-              <p className="text-sm text-ink-soft">{meta.description}</p>
+              <p className="font-bold text-neutral-900">{meta.label}</p>
+              <p className="text-sm text-mist">{meta.description}</p>
             </div>
             {selected && <Check className="w-5 h-5 text-accent flex-shrink-0" />}
           </button>
@@ -182,7 +182,7 @@ export function PhotoPicker({
         )}
       </button>
       <div className="text-sm">
-        <p className="font-bold text-ink">{path ? 'Changer la photo' : 'Ajouter une photo'}</p>
+        <p className="font-bold text-neutral-900">{path ? 'Changer la photo' : 'Ajouter une photo'}</p>
         <p className="text-muted">
           Révélée seulement après double acceptation d’un moment.
         </p>

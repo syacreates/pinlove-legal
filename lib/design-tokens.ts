@@ -1,7 +1,15 @@
 // PinLove — thème "Cerise" (fond crème, accent cerise).
-// Source de vérité des valeurs utilisées par tailwind.config.ts et
-// app/globals.css. À utiliser directement là où Tailwind ne passe pas
-// (styles inline, HTML des marqueurs Leaflet, SVG…).
+// Source unique des couleurs : tailwind.config.ts importe ce fichier. Les
+// couleurs qui changent en mode sombre (fond, surfaces, textes, lignes) sont
+// des variables CSS définies dans app/globals.css à partir de ces valeurs
+// (thème clair) et de leur déclinaison sombre.
+// À utiliser directement là où Tailwind ne passe pas (styles inline, HTML
+// des marqueurs Leaflet, SVG…).
+//
+// Règle pour les écrans : fond `bg-background`, cartes `bg-surface`, texte
+// `text-neutral-900`, texte secondaire `text-mist`, méta `text-muted` (tous
+// thémés). `ink` / `paper` sont fixes : à réserver aux éléments qui restent
+// clairs dans les deux thèmes.
 
 export const colors = {
   // Fond & surfaces
@@ -26,6 +34,7 @@ export const colors = {
   divider: '#E4DDD7',    // séparateurs de barres
   dashed: '#B3A79E',     // places libres, options
   success: '#2F6B45',
+  danger: '#DC2626',     // alerte, 112, suppression
   onAccent: '#FFFFFF',
   water: '#C9DCE6',
 } as const

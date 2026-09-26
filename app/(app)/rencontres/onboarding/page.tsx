@@ -116,17 +116,17 @@ export default function RencontresOnboardingPage() {
 
       {step === 'principes' && (
         <div className="space-y-3">
-          <p className="text-ink-soft">
+          <p className="text-mist">
             Un mode optionnel pour rencontrer de nouvelles personnes autour d’un moment dans un lieu que
             vous aimez tous les deux. Sans les codes des applis de dating.
           </p>
           <ol className="space-y-2">
             {RENCONTRE_PRINCIPLES.map((p, i) => (
-              <li key={p.title} className="bg-paper rounded-card shadow-card p-4 flex gap-3">
+              <li key={p.title} className="bg-surface rounded-card shadow-card p-4 flex gap-3">
                 <span className="font-display text-accent text-lg leading-none mt-0.5">{i + 1}</span>
                 <div>
-                  <p className="font-bold text-ink">{p.title}</p>
-                  <p className="text-sm text-ink-soft">{p.text}</p>
+                  <p className="font-bold text-neutral-900">{p.title}</p>
+                  <p className="text-sm text-mist">{p.text}</p>
                 </div>
               </li>
             ))}
@@ -166,13 +166,13 @@ export default function RencontresOnboardingPage() {
 
       {step === 'recap' && intention && (
         <div className="space-y-3">
-          <dl className="bg-paper rounded-card shadow-card divide-y divide-divider text-sm">
+          <dl className="bg-surface rounded-card shadow-card divide-y divide-divider text-sm">
             <RecapRow label="Intention" value={RENCONTRE_INTENTIONS[intention].label} />
             <RecapRow label="Prénom" value={firstName.trim()} />
             <RecapRow label="Photo" value={photoPath ? 'Ajoutée' : 'Aucune'} />
             <RecapRow label="Contact de confiance" value={`${contactName.trim()} · ${contactPhone.trim()}`} />
           </dl>
-          <p className="text-sm text-ink-soft px-1">
+          <p className="text-sm text-mist px-1">
             En activant, tu acceptes les principes des Rencontres. Tes lieux restent privés : tu choisis
             ensuite ceux que tu ouvres. Tu peux mettre le mode en pause à tout moment.
           </p>
@@ -198,7 +198,7 @@ function RecapRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-3">
       <dt className="text-muted">{label}</dt>
-      <dd className="font-bold text-ink text-right truncate">{value}</dd>
+      <dd className="font-bold text-neutral-900 text-right truncate">{value}</dd>
     </div>
   )
 }

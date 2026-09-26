@@ -43,14 +43,14 @@ export default function NotificationsPage() {
               href={notificationUrl(n.type, n.moment_id)}
               className={cn(
                 'block rounded-card p-4 shadow-card',
-                n.read_at ? 'bg-paper' : 'bg-accent-light',
+                n.read_at ? 'bg-surface' : 'bg-accent/10',
               )}
             >
               <div className="flex items-baseline justify-between gap-3">
-                <p className="font-bold text-ink">{text!.title}</p>
+                <p className="font-bold text-neutral-900">{text!.title}</p>
                 <p className="text-xs text-muted flex-shrink-0">{timeAgo(n.created_at)}</p>
               </div>
-              <p className="text-sm text-ink-soft mt-0.5">{text!.body}</p>
+              <p className="text-sm text-mist mt-0.5">{text!.body}</p>
             </Link>
           </li>
         ))}

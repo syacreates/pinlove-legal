@@ -52,12 +52,12 @@ export function ReportButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={cn('inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-ink', className)}
+        className={cn('inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-neutral-900', className)}
       >
         <Flag className="w-3.5 h-3.5" /> Signaler {personName}
       </button>
       <Modal open={open} onClose={() => setOpen(false)} title={`Signaler ${personName}`}>
-        <p className="text-sm text-ink-soft mb-3">
+        <p className="text-sm text-mist mb-3">
           {personName} ne sera pas prévenu·e. Vous ne vous croiserez plus sur PinLove, et l’équipe examinera le signalement.
         </p>
         <div className="space-y-2 mb-3" role="radiogroup" aria-label="Motif">
@@ -70,7 +70,7 @@ export function ReportButton({
               onClick={() => setReason(key)}
               className={cn(
                 'w-full text-left px-3 py-2.5 rounded-xl border-2 text-sm font-medium',
-                reason === key ? 'border-accent bg-accent-light text-ink' : 'border-line bg-paper text-ink-soft',
+                reason === key ? 'border-accent bg-accent/10 text-neutral-900' : 'border-line bg-surface text-mist',
               )}
             >
               {REPORT_REASONS[key]}
@@ -122,7 +122,7 @@ export function ShareWithContactButton({ moment }: { moment: MomentDetail }) {
       {phone ? (
         <a
           href={smsUrl(phone, text)}
-          className="flex-1 inline-flex items-center justify-center gap-2 h-11 rounded-full bg-ink text-white text-sm font-bold"
+          className="flex-1 inline-flex items-center justify-center gap-2 h-11 rounded-full bg-neutral-900 text-neutral-50 text-sm font-bold"
         >
           <Send className="w-4 h-4" /> Prévenir {name ?? 'mon contact'}
         </a>
@@ -133,7 +133,7 @@ export function ShareWithContactButton({ moment }: { moment: MomentDetail }) {
         type="button"
         onClick={shareElsewhere}
         aria-label="Partager autrement"
-        className="w-11 h-11 flex-shrink-0 rounded-full border border-line flex items-center justify-center text-ink"
+        className="w-11 h-11 flex-shrink-0 rounded-full border border-line flex items-center justify-center text-neutral-900"
       >
         <Share2 className="w-4 h-4" />
       </button>
@@ -150,7 +150,7 @@ export function AlertButton({ moment, className }: { moment: MomentDetail; class
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={cn('inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-ink', className)}
+        className={cn('inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-neutral-900', className)}
       >
         <LifeBuoy className="w-3.5 h-3.5" /> Besoin d’aide ?
       </button>
@@ -189,7 +189,7 @@ export function AlertSheet({ moment, open, onClose }: { moment: MomentDetail; op
         </Button>
         <a
           href="tel:112"
-          className="w-full inline-flex items-center justify-center gap-2 h-[46px] rounded-full bg-red-600 text-white font-bold"
+          className="w-full inline-flex items-center justify-center gap-2 h-[46px] rounded-full bg-danger text-on-accent font-bold"
         >
           <Phone className="w-4 h-4" /> Appeler le 112
         </a>

@@ -115,13 +115,13 @@ export default function JourJPage() {
       />
 
       {cancelled && (
-        <div className="rounded-card bg-neutral-100 p-4 text-sm text-ink-soft">Ce moment n’aura pas lieu.</div>
+        <div className="rounded-card bg-neutral-100 p-4 text-sm text-mist">Ce moment n’aura pas lieu.</div>
       )}
 
       {/* Tout va bien ? */}
       {showCheck && (
-        <section className="rounded-card bg-accent-light p-4 space-y-3">
-          <p className="font-display text-xl text-accent-dark">Tout va bien ?</p>
+        <section className="rounded-card bg-accent/10 p-4 space-y-3">
+          <p className="font-display text-xl text-accent-ink">Tout va bien ?</p>
           <div className="flex gap-2">
             <Button className="flex-1" onClick={() => { markAllGood(); if (!moment.my_feedback_given) router.push(ROUTES.RENCONTRES_FEEDBACK(id)) }} leftIcon={<Check className="w-4 h-4" />}>Oui, tout va bien</Button>
             <Button className="flex-1" variant="outline" onClick={() => setAlertOpen(true)}>J’ai besoin d’aide</Button>
@@ -130,9 +130,9 @@ export default function JourJPage() {
       )}
 
       {/* Rendez-vous */}
-      <section className="bg-paper rounded-card shadow-card p-4 space-y-3">
+      <section className="bg-surface rounded-card shadow-card p-4 space-y-3">
         <div>
-          <p className="font-bold text-ink flex items-center gap-1.5">
+          <p className="font-bold text-neutral-900 flex items-center gap-1.5">
             <MapPin className="w-4 h-4 text-accent" /> {moment.place_name}
           </p>
           <p className="text-sm text-muted">{formatSlot(moment.scheduled_at)}{moment.place_address ? ` · ${moment.place_address}` : ''}</p>
@@ -171,9 +171,9 @@ export default function JourJPage() {
 
       {/* Indices */}
       <section className="space-y-2">
-        <h2 className="text-lg text-ink">Pour se retrouver</h2>
+        <h2 className="text-lg text-neutral-900">Pour se retrouver</h2>
         {other?.hint && (
-          <p className="rounded-2xl bg-accent-light px-3 py-2.5 text-sm text-accent-dark">
+          <p className="rounded-2xl bg-accent/10 px-3 py-2.5 text-sm text-accent-ink">
             <span className="font-bold">{otherName} :</span> « {other.hint} »
           </p>
         )}
@@ -202,7 +202,7 @@ export default function JourJPage() {
 
       {/* Sécurité */}
       <section className="space-y-3 rounded-card border border-dashed border-dash p-4">
-        <h2 className="text-lg text-ink">Sécurité</h2>
+        <h2 className="text-lg text-neutral-900">Sécurité</h2>
         <ShareWithContactButton moment={moment} />
         <div className="flex items-center justify-between">
           <AlertButton moment={moment} />
@@ -217,9 +217,9 @@ export default function JourJPage() {
 
 function ArrivalTile({ label, arrived }: { label: string; arrived: boolean }) {
   return (
-    <div className={cn('rounded-card p-3 text-center', arrived ? 'bg-accent-light' : 'bg-paper shadow-card')}>
-      <p className="text-sm font-bold text-ink truncate">{label}</p>
-      <p className={cn('text-xs mt-0.5', arrived ? 'text-accent-dark font-bold' : 'text-muted')}>
+    <div className={cn('rounded-card p-3 text-center', arrived ? 'bg-accent/10' : 'bg-surface shadow-card')}>
+      <p className="text-sm font-bold text-neutral-900 truncate">{label}</p>
+      <p className={cn('text-xs mt-0.5', arrived ? 'text-accent-ink font-bold' : 'text-muted')}>
         {arrived ? 'Arrivé·e ✓' : 'Pas encore arrivé·e'}
       </p>
     </div>
@@ -257,8 +257,8 @@ function Chat({ moment, userId, otherName }: { moment: MomentDetail; userId: str
 
   return (
     <section className="space-y-2">
-      <h2 className="text-lg text-ink">Chat</h2>
-      <div className="bg-paper rounded-card shadow-card p-3 space-y-2 max-h-80 overflow-y-auto">
+      <h2 className="text-lg text-neutral-900">Chat</h2>
+      <div className="bg-surface rounded-card shadow-card p-3 space-y-2 max-h-80 overflow-y-auto">
         {messages.length === 0 && (
           <p className="text-sm text-muted text-center py-4">
             {moment.chat_open ? `Juste pour se retrouver avec ${otherName}.` : 'Aucun message.'}
@@ -268,9 +268,9 @@ function Chat({ moment, userId, otherName }: { moment: MomentDetail; userId: str
           const mine = m.sender_id === userId
           return (
             <div key={m.id} className={cn('flex', mine ? 'justify-end' : 'justify-start')}>
-              <div className={cn('max-w-[80%] rounded-2xl px-3 py-2 text-sm', mine ? 'bg-accent text-white' : 'bg-neutral-100 text-ink')}>
+              <div className={cn('max-w-[80%] rounded-2xl px-3 py-2 text-sm', mine ? 'bg-accent text-on-accent' : 'bg-neutral-100 text-neutral-900')}>
                 <p>{m.body}</p>
-                <p className={cn('text-[10px] mt-0.5', mine ? 'text-white/70' : 'text-muted')}>{time(m.created_at)}</p>
+                <p className={cn('text-[10px] mt-0.5', mine ? 'text-on-accent/70' : 'text-muted')}>{time(m.created_at)}</p>
               </div>
             </div>
           )
@@ -290,7 +290,7 @@ function Chat({ moment, userId, otherName }: { moment: MomentDetail; userId: str
             type="submit"
             disabled={sending || !text.trim()}
             aria-label="Envoyer"
-            className="w-11 h-11 flex-shrink-0 rounded-full bg-accent text-white flex items-center justify-center disabled:opacity-50"
+            className="w-11 h-11 flex-shrink-0 rounded-full bg-accent text-on-accent flex items-center justify-center disabled:opacity-50"
           >
             <SendHorizontal className="w-4 h-4" />
           </button>

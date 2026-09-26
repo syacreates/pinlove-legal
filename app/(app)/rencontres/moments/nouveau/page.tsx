@@ -111,12 +111,12 @@ function NewMomentForm() {
                 onClick={() => setPlaceId(p.id)}
                 className={cn(
                   'w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all',
-                  placeId === p.id ? 'border-accent bg-accent-light' : 'border-line bg-paper hover:border-dash',
+                  placeId === p.id ? 'border-accent bg-accent/10' : 'border-line bg-surface hover:border-dash',
                 )}
               >
                 <span className="text-xl" aria-hidden>{PLACE_CATEGORIES[p.category].emoji}</span>
                 <div className="min-w-0">
-                  <p className="font-bold text-ink truncate">{p.name}</p>
+                  <p className="font-bold text-neutral-900 truncate">{p.name}</p>
                   <p className="text-xs text-muted truncate">{p.address}, {p.city}</p>
                 </div>
               </button>
@@ -148,7 +148,7 @@ function NewMomentForm() {
               aria-pressed={duration === d}
               className={cn(
                 'flex-1 h-11 rounded-full border text-sm font-bold transition-all',
-                duration === d ? 'border-accent bg-accent-light text-accent-dark' : 'border-line bg-paper text-ink-soft',
+                duration === d ? 'border-accent bg-accent/10 text-accent-ink' : 'border-line bg-surface text-mist',
               )}
             >
               {formatDuration(d)}
@@ -178,7 +178,7 @@ function NewMomentForm() {
                   type="button"
                   aria-label="Retirer ce créneau"
                   onClick={() => setSlots(s => s.slice(0, 2))}
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-muted hover:bg-ink/5"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-muted hover:bg-neutral-900/5"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -197,8 +197,8 @@ function NewMomentForm() {
         )}
       </section>
 
-      <div className="rounded-card bg-paper shadow-card p-4 space-y-1">
-        <PaymentRule rule="Chacun sa part" className="text-sm text-ink-soft" />
+      <div className="rounded-card bg-surface shadow-card p-4 space-y-1">
+        <PaymentRule rule="Chacun sa part" className="text-sm text-mist" />
         <p className="text-xs text-muted">
           Visible 48 h par les personnes de même intention qui ont ce lieu ouvert. Sans réponse, il
           expire simplement.

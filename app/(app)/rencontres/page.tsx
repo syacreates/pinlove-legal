@@ -92,11 +92,11 @@ export default function RencontresPage() {
           <Link
             href={ROUTES.RENCONTRES_NOTIFS}
             aria-label={unread ? `Notifications (${unread} non lues)` : 'Notifications'}
-            className="relative w-10 h-10 flex-shrink-0 bg-paper rounded-2xl shadow-card flex items-center justify-center"
+            className="relative w-10 h-10 flex-shrink-0 bg-surface rounded-2xl shadow-card flex items-center justify-center"
           >
-            <Bell className="w-5 h-5 text-ink/70" />
+            <Bell className="w-5 h-5 text-neutral-900/70" />
             {unread > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-accent text-on-accent text-[11px] font-bold flex items-center justify-center">
                 {unread > 9 ? '9+' : unread}
               </span>
             )}
@@ -105,13 +105,13 @@ export default function RencontresPage() {
       />
 
       {!profile.enabled && (
-        <div className="bg-accent-light rounded-card p-4 text-sm text-accent-dark">
+        <div className="bg-accent/10 rounded-card p-4 text-sm text-accent-ink">
           Le mode Rencontres est en pause : personne ne te voit. Tu peux le réactiver dans les réglages.
         </div>
       )}
 
       {profile.enabled && openCount === 0 && (
-        <div className="bg-accent-light rounded-card p-4 text-sm text-accent-dark">
+        <div className="bg-accent/10 rounded-card p-4 text-sm text-accent-ink">
           Ouvre au moins un de tes lieux pour croiser des personnes qui l’aiment aussi.
         </div>
       )}
@@ -125,23 +125,23 @@ export default function RencontresPage() {
       {/* À faire */}
       {active && todo.length > 0 && (
         <section>
-          <h2 className="text-lg text-ink mb-2">À faire</h2>
+          <h2 className="text-lg text-neutral-900 mb-2">À faire</h2>
           <ul className="space-y-2">
             {todo.map(r => (
               <li key={r.id}>
                 <Link
                   href={r.needs_my_feedback ? ROUTES.RENCONTRES_FEEDBACK(r.id) : ROUTES.RENCONTRES_MOMENT(r.id)}
-                  className="flex items-center gap-3 rounded-card bg-accent-light px-4 py-3"
+                  className="flex items-center gap-3 rounded-card bg-accent/10 px-4 py-3"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-accent-dark truncate">
+                    <p className="font-bold text-accent-ink truncate">
                       {r.needs_my_confirmation
                         ? `Confirme « ${r.title} »`
                         : r.needs_my_feedback
                           ? `Comment s’est passé « ${r.title} » ?`
                           : `${r.request_count} partant·e${(r.request_count ?? 0) > 1 ? 's' : ''} pour « ${r.title} »`}
                     </p>
-                    <p className="text-xs text-accent-dark/80 truncate">
+                    <p className="text-xs text-accent-ink/80 truncate">
                       {r.needs_my_confirmation || r.needs_my_feedback
                         ? `Avec ${r.other_first_name} · ${r.place_name}`
                         : `${r.place_name} · à valider`}
@@ -158,7 +158,7 @@ export default function RencontresPage() {
       {/* Fil */}
       {active && (
         <section>
-          <h2 className="text-lg text-ink mb-2">Moments dans tes lieux</h2>
+          <h2 className="text-lg text-neutral-900 mb-2">Moments dans tes lieux</h2>
           {feed === null ? (
             <div className="space-y-3"><CardSkeleton /><CardSkeleton /></div>
           ) : feed.length === 0 ? (
@@ -176,7 +176,7 @@ export default function RencontresPage() {
       {/* Suggestions de personnes */}
       {active && suggestions.length > 0 && (
         <section>
-          <h2 className="text-lg text-ink">Ils aiment tes lieux</h2>
+          <h2 className="text-lg text-neutral-900">Ils aiment tes lieux</h2>
           <p className="text-sm text-muted mb-2">Même intention que toi, au moins un lieu en commun.</p>
           <div className="flex gap-3 overflow-x-auto -mx-4 px-4 pb-2 snap-x">
             {suggestions.map((s, i) => (
@@ -188,7 +188,7 @@ export default function RencontresPage() {
         </section>
       )}
 
-      <div className="bg-paper rounded-card shadow-card divide-y divide-divider">
+      <div className="bg-surface rounded-card shadow-card divide-y divide-divider">
         <HubLink
           href={ROUTES.RENCONTRES_MES}
           icon={<CalendarHeart className="w-4 h-4" />}
@@ -223,13 +223,13 @@ function HubLink({
   detail?: string
 }) {
   return (
-    <Link href={href} className="flex items-center gap-3 px-4 py-4 hover:bg-ink/5 transition-colors">
-      <div className="w-8 h-8 bg-accent-light rounded-xl flex items-center justify-center text-accent">
+    <Link href={href} className="flex items-center gap-3 px-4 py-4 hover:bg-neutral-900/5 transition-colors">
+      <div className="w-8 h-8 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
         {icon}
       </div>
-      <span className="flex-1 text-sm font-bold text-ink">{label}</span>
+      <span className="flex-1 text-sm font-bold text-neutral-900">{label}</span>
       {detail && <span className="text-xs text-muted">{detail}</span>}
-      <ChevronRight className="w-4 h-4 text-ink/30" />
+      <ChevronRight className="w-4 h-4 text-neutral-900/30" />
     </Link>
   )
 }

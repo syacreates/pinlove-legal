@@ -111,9 +111,9 @@ function SettingsForm({ profile }: { profile: RencontreProfile }) {
     <div className="screen-scroll px-4 pt-6 space-y-6">
       <ScreenHeader title="Réglages Rencontres" onBack={() => router.push(ROUTES.RENCONTRES)} />
 
-      <section className="bg-paper rounded-card shadow-card p-4 flex items-center gap-3">
+      <section className="bg-surface rounded-card shadow-card p-4 flex items-center gap-3">
         <div className="flex-1">
-          <p className="font-bold text-ink">Mode Rencontres</p>
+          <p className="font-bold text-neutral-900">Mode Rencontres</p>
           <p className="text-sm text-muted">
             {profile.enabled
               ? 'Actif : tu peux croiser des personnes dans tes lieux ouverts.'
@@ -128,26 +128,26 @@ function SettingsForm({ profile }: { profile: RencontreProfile }) {
         />
       </section>
 
-      <section className="bg-paper rounded-card shadow-card p-4 flex items-center justify-between">
+      <section className="bg-surface rounded-card shadow-card p-4 flex items-center justify-between">
         <div>
-          <p className="font-bold text-ink">Fiabilité</p>
+          <p className="font-bold text-neutral-900">Fiabilité</p>
           <p className="text-sm text-muted">Baisse de 10 points en cas d’annulation moins de 12 h avant.</p>
         </div>
         <p className="font-display text-2xl text-accent">{profile.reliability_score}</p>
       </section>
 
       <section>
-        <h2 className="text-lg text-ink mb-3">Intention</h2>
+        <h2 className="text-lg text-neutral-900 mb-3">Intention</h2>
         <IntentionPicker value={intention} onChange={setIntention} />
         {intention !== profile.intention && (
-          <p className="text-xs text-accent-dark mt-2 px-1">
+          <p className="text-xs text-accent-ink mt-2 px-1">
             Le changement s’applique aux prochains moments ; ceux déjà proposés gardent leur intention.
           </p>
         )}
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg text-ink">Toi</h2>
+        <h2 className="text-lg text-neutral-900">Toi</h2>
         <Input
           id="first-name"
           label="Prénom"
@@ -164,7 +164,7 @@ function SettingsForm({ profile }: { profile: RencontreProfile }) {
       </section>
 
       <section>
-        <h2 className="text-lg text-ink mb-3">Contact de confiance</h2>
+        <h2 className="text-lg text-neutral-900 mb-3">Contact de confiance</h2>
         <SafetyContactFields
           name={contactName}
           phone={contactPhone}

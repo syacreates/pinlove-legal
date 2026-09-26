@@ -259,11 +259,11 @@ export default function EditPlacePage() {
 
         {/* Mode Rencontres */}
         {rencontreActive && (
-          <div className="flex flex-col gap-3 p-4 rounded-2xl border-2 border-line bg-paper">
+          <div className="flex flex-col gap-3 p-4 rounded-2xl border-2 border-line bg-surface">
             <div className="flex items-center gap-3">
               <div className="flex-1">
-                <p className="text-sm font-bold text-ink">Ouvert aux rencontres</p>
-                <p className="text-xs text-ink/60">
+                <p className="text-sm font-bold text-neutral-900">Ouvert aux rencontres</p>
+                <p className="text-xs text-muted">
                   Privé par défaut. Ouvert, il sert à croiser des personnes qui l’aiment aussi.
                 </p>
               </div>

@@ -10,7 +10,7 @@ import type { CommonPlace, FeedMoment, PersonSuggestion, RencontreIntention } fr
 
 export function IntentionTag({ intention }: { intention: RencontreIntention }) {
   return (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-accent-tag text-accent-dark">
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-accent/15 text-accent-ink">
       {RENCONTRE_INTENTIONS[intention].label}
     </span>
   )
@@ -41,16 +41,16 @@ export function CommonPlacesList({
     <ul className="space-y-2">
       {shown.map(p => (
         <li key={p.place_key} className="rounded-2xl bg-neutral-100 p-3 text-sm">
-          <p className="font-bold text-ink flex items-center gap-1.5">
+          <p className="font-bold text-neutral-900 flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-accent" /> {p.place_name}
           </p>
           {p.their_why && (
-            <p className="text-ink-soft mt-1">
+            <p className="text-mist mt-1">
               <span className="text-muted">{theirName} : </span>« {p.their_why} »
             </p>
           )}
           {p.my_why && (
-            <p className="text-ink-soft mt-0.5">
+            <p className="text-mist mt-0.5">
               <span className="text-muted">Toi : </span>« {p.my_why} »
             </p>
           )}
@@ -67,12 +67,12 @@ export function MomentCard({ moment }: { moment: FeedMoment }) {
   return (
     <Link
       href={ROUTES.RENCONTRES_MOMENT(moment.id)}
-      className="block bg-paper rounded-card shadow-card p-4 hover:shadow-card-hover transition-shadow"
+      className="block bg-surface rounded-card shadow-card p-4 hover:shadow-card-hover transition-shadow"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-lg text-ink leading-snug">{moment.title}</h3>
-          <p className="text-sm text-ink-soft flex items-center gap-1.5 mt-0.5">
+          <h3 className="text-lg text-neutral-900 leading-snug">{moment.title}</h3>
+          <p className="text-sm text-mist flex items-center gap-1.5 mt-0.5">
             <MapPin className="w-3.5 h-3.5 text-accent flex-shrink-0" />
             <span className="truncate">{moment.place_name}</span>
           </p>
@@ -81,14 +81,14 @@ export function MomentCard({ moment }: { moment: FeedMoment }) {
       </div>
 
       {moment.creator_why && (
-        <p className="text-sm text-ink-soft mt-3">
-          <span className="font-bold text-ink">{moment.creator_first_name}</span> aime ce lieu pour
+        <p className="text-sm text-mist mt-3">
+          <span className="font-bold text-neutral-900">{moment.creator_first_name}</span> aime ce lieu pour
           « {moment.creator_why} »
         </p>
       )}
       {!moment.creator_why && (
-        <p className="text-sm text-ink-soft mt-3">
-          Proposé par <span className="font-bold text-ink">{moment.creator_first_name}</span>
+        <p className="text-sm text-mist mt-3">
+          Proposé par <span className="font-bold text-neutral-900">{moment.creator_first_name}</span>
         </p>
       )}
 
@@ -99,8 +99,8 @@ export function MomentCard({ moment }: { moment: FeedMoment }) {
             className={cn(
               'px-2.5 py-1 rounded-full text-xs font-medium border',
               moment.my_chosen_slot && new Date(slot).getTime() === new Date(moment.my_chosen_slot).getTime()
-                ? 'border-accent bg-accent-light text-accent-dark'
-                : 'border-line text-ink-soft',
+                ? 'border-accent bg-accent/10 text-accent-ink'
+                : 'border-line text-mist',
             )}
           >
             {formatSlot(slot)}
@@ -137,13 +137,13 @@ export function SuggestionCard({
 }) {
   const best = suggestion.common_places[0]
   return (
-    <div className="bg-paper rounded-card shadow-card p-4 w-[280px] flex-shrink-0 flex flex-col">
+    <div className="bg-surface rounded-card shadow-card p-4 w-[280px] flex-shrink-0 flex flex-col">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-display text-lg flex items-center justify-center" aria-hidden>
+        <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-display text-lg flex items-center justify-center" aria-hidden>
           {suggestion.first_name.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0">
-          <p className="font-bold text-ink truncate">{suggestion.first_name}</p>
+          <p className="font-bold text-neutral-900 truncate">{suggestion.first_name}</p>
           <p className="text-xs text-muted">
             {suggestion.common_places.length} lieu{suggestion.common_places.length > 1 ? 'x' : ''} en commun
           </p>

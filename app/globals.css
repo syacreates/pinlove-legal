@@ -20,6 +20,7 @@
   --c-line:        217 208 200; /* line        #D9D0C8 */
   --c-divider:     228 221 215; /* divider     #E4DDD7 */
   --c-placeholder: 228 221 215; /* placeholder #E4DDD7 */
+  --c-accent-ink:  158 27 49;   /* texte cerise sur fond teinté (accentDark #9E1B31) */
 
   --c-neutral-50:  247 243 239;
   --c-neutral-100: 240 234 228;
@@ -46,6 +47,7 @@
   --c-line:        70 62 60;
   --c-divider:     56 49 48;
   --c-placeholder: 56 49 48;
+  --c-accent-ink:  242 167 180;
 
   --c-neutral-50:  31 26 26;
   --c-neutral-100: 41 35 34;

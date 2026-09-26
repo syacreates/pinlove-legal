@@ -116,7 +116,7 @@ export default function FeedbackPage() {
 function Question({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-3">
-      <h2 className="font-display text-2xl text-ink">{title}</h2>
+      <h2 className="font-display text-2xl text-neutral-900">{title}</h2>
       {children}
     </section>
   )
@@ -128,7 +128,7 @@ function Choice({ label, onClick, disabled }: { label: string; onClick: () => vo
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="w-full h-14 rounded-2xl border-2 border-line bg-paper text-left px-4 font-bold text-ink hover:border-accent active:bg-accent-light disabled:opacity-50"
+      className="w-full h-14 rounded-2xl border-2 border-line bg-surface text-left px-4 font-bold text-neutral-900 hover:border-accent active:bg-accent/10 disabled:opacity-50"
     >
       {label}
     </button>
@@ -171,24 +171,24 @@ function DoneStep({
   return (
     <div className="space-y-5">
       {mutual ? (
-        <section className="rounded-card bg-accent-light p-5 text-center space-y-3">
+        <section className="rounded-card bg-accent/10 p-5 text-center space-y-3">
           <Heart className="w-8 h-8 text-accent mx-auto" />
-          <p className="font-display text-2xl text-accent-dark">Vous pouvez vous revoir</p>
-          <p className="text-sm text-accent-dark">{name} aimerait aussi vous revoir. Le chat est ouvert.</p>
+          <p className="font-display text-2xl text-accent-ink">Vous pouvez vous revoir</p>
+          <p className="text-sm text-accent-ink">{name} aimerait aussi vous revoir. Le chat est ouvert.</p>
           <Button onClick={() => router.push(ROUTES.RENCONTRES_JOUR_J(moment.id))}>Écrire à {name}</Button>
         </section>
       ) : (
-        <section className="rounded-card bg-paper shadow-card p-5 text-center">
-          <p className="font-display text-2xl text-ink">Merci !</p>
+        <section className="rounded-card bg-surface shadow-card p-5 text-center">
+          <p className="font-display text-2xl text-neutral-900">Merci !</p>
           <p className="text-sm text-muted mt-1">Ton retour nous aide à faire de belles rencontres.</p>
         </section>
       )}
 
       {/* Souvenir commun (pas après un signalement) */}
       {moment.my_feedback_reported ? null : moment.shared_memory_created_at ? (
-        <section className="rounded-card border border-line bg-paper p-4 flex items-center gap-3">
+        <section className="rounded-card border border-line bg-surface p-4 flex items-center gap-3">
           <MapPin className="w-5 h-5 text-accent" />
-          <p className="text-sm text-ink">« {moment.title} » est un souvenir commun, daté sur vos deux cartes.</p>
+          <p className="text-sm text-neutral-900">« {moment.title} » est un souvenir commun, daté sur vos deux cartes.</p>
         </section>
       ) : moment.my_wants_memory ? (
         <p className="text-sm text-muted text-center">
@@ -196,7 +196,7 @@ function DoneStep({
         </p>
       ) : !declined && (
         <section className="rounded-card border border-dashed border-dash p-4 space-y-3">
-          <p className="font-bold text-ink">Ajouter en souvenir commun ?</p>
+          <p className="font-bold text-neutral-900">Ajouter en souvenir commun ?</p>
           <p className="text-sm text-muted">
             Si vous acceptez tous les deux, un pin daté « {moment.place_name} » apparaît sur vos deux cartes (privé).
             Sinon, rien n’est dit à personne.

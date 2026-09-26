@@ -64,7 +64,7 @@ export default function MesRencontresPage() {
             onClick={() => setTab(key)}
             className={cn(
               'h-10 rounded-full text-sm font-bold transition-all',
-              tab === key ? 'bg-paper shadow-card text-ink' : 'text-muted',
+              tab === key ? 'bg-surface shadow-card text-neutral-900' : 'text-muted',
             )}
           >
             {label}
@@ -79,22 +79,22 @@ export default function MesRencontresPage() {
           {tab === 'upcoming' ? 'Rien de prévu pour l’instant. Jette un œil aux moments dans tes lieux !' : 'Pas encore de rencontre passée.'}
         </div>
       ) : (
-        <ul className="bg-paper rounded-card shadow-card divide-y divide-divider">
+        <ul className="bg-surface rounded-card shadow-card divide-y divide-divider">
           {shown.map(r => {
             const status = statusLabel(r)
             return (
               <li key={r.id}>
-                <Link href={ROUTES.RENCONTRES_MOMENT(r.id)} className="flex items-center gap-3 px-4 py-3.5 hover:bg-ink/5">
+                <Link href={ROUTES.RENCONTRES_MOMENT(r.id)} className="flex items-center gap-3 px-4 py-3.5 hover:bg-neutral-900/5">
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-ink truncate">
-                      {r.title}{r.other_first_name && <span className="font-normal text-ink-soft"> · avec {r.other_first_name}</span>}
+                    <p className="font-bold text-neutral-900 truncate">
+                      {r.title}{r.other_first_name && <span className="font-normal text-mist"> · avec {r.other_first_name}</span>}
                     </p>
                     <p className="text-xs text-muted truncate">
                       {r.place_name} · {r.scheduled_at ? formatSlot(r.scheduled_at) : formatSlot(r.my_chosen_slot ?? r.proposed_slots[0])}
                     </p>
-                    <p className={cn('text-xs font-bold mt-1', status.accent ? 'text-accent' : 'text-ink-soft')}>{status.label}</p>
+                    <p className={cn('text-xs font-bold mt-1', status.accent ? 'text-accent' : 'text-mist')}>{status.label}</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-ink/30 flex-shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-neutral-900/30 flex-shrink-0" />
                 </Link>
               </li>
             )

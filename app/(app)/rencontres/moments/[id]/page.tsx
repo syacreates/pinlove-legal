@@ -84,7 +84,7 @@ export default function MomentDetailPage() {
       <div className="screen-scroll px-4 pt-6">
         <ScreenHeader title="Moment" onBack={back} />
         <div className="rounded-card border border-dashed border-dash p-6 text-center">
-          <p className="font-bold text-ink">Ce moment n’est plus disponible.</p>
+          <p className="font-bold text-neutral-900">Ce moment n’est plus disponible.</p>
           <p className="text-sm text-muted mt-1">D’autres moments t’attendent dans tes lieux.</p>
           <Button className="mt-4" onClick={back}>Voir les moments</Button>
         </div>
@@ -120,8 +120,8 @@ export default function MomentDetailPage() {
         </Button>
       )}
       {moment.meet_again_mutual && moment.other && (
-        <section className="rounded-card bg-accent-light p-4 space-y-3">
-          <p className="font-bold text-accent-dark flex items-center gap-1.5">
+        <section className="rounded-card bg-accent/10 p-4 space-y-3">
+          <p className="font-bold text-accent-ink flex items-center gap-1.5">
             <Heart className="w-4 h-4" /> Vous pouvez vous revoir
           </p>
           <Button
@@ -154,16 +154,16 @@ export default function MomentDetailPage() {
       )}
       {isActive && (
         <section className="space-y-2">
-          <p className="text-sm text-ink-soft">Dis à quelqu’un de confiance où et avec qui tu seras :</p>
+          <p className="text-sm text-mist">Dis à quelqu’un de confiance où et avec qui tu seras :</p>
           <ShareWithContactButton moment={moment} />
         </section>
       )}
 
       {/* Lieu */}
-      <section className="bg-paper rounded-card shadow-card p-4 space-y-3">
+      <section className="bg-surface rounded-card shadow-card p-4 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="font-bold text-ink flex items-center gap-1.5">
+            <p className="font-bold text-neutral-900 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-accent flex-shrink-0" /> {moment.place_name}
             </p>
             {moment.place_address && <p className="text-sm text-muted mt-0.5">{moment.place_address}</p>}
@@ -171,7 +171,7 @@ export default function MomentDetailPage() {
           <IntentionTag intention={moment.intention} />
         </div>
         <div className="flex items-center justify-between gap-3">
-          <p className="text-sm text-ink-soft flex items-center gap-1.5">
+          <p className="text-sm text-mist flex items-center gap-1.5">
             <Clock className="w-4 h-4" /> {formatDuration(moment.duration_min)}
           </p>
           <PaymentRule rule={moment.payment_rule} className="text-sm" />
@@ -181,7 +181,7 @@ export default function MomentDetailPage() {
             href={directions}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 h-11 rounded-full border border-line text-sm font-bold text-ink hover:bg-surface-2"
+            className="flex items-center justify-center gap-2 h-11 rounded-full border border-line text-sm font-bold text-neutral-900 hover:bg-surface-2"
           >
             <Navigation className="w-4 h-4 text-accent" /> Itinéraire
           </a>
@@ -191,10 +191,10 @@ export default function MomentDetailPage() {
       {/* Pourquoi ce lieu (avant double acceptation) */}
       {!isCreator && !scheduled && (moment.creator_why || moment.common_places.length > 0) && (
         <section className="space-y-2">
-          <h2 className="text-lg text-ink">Ce qui vous rapproche</h2>
+          <h2 className="text-lg text-neutral-900">Ce qui vous rapproche</h2>
           {moment.creator_why && (
-            <p className="text-ink-soft">
-              <span className="font-bold text-ink">{moment.creator_first_name}</span> aime {moment.place_name} pour
+            <p className="text-mist">
+              <span className="font-bold text-neutral-900">{moment.creator_first_name}</span> aime {moment.place_name} pour
               « {moment.creator_why} »
             </p>
           )}
@@ -205,7 +205,7 @@ export default function MomentDetailPage() {
       {/* Créneaux (tant que rien n'est calé) */}
       {!scheduled && (
         <section>
-          <h2 className="text-lg text-ink mb-2">
+          <h2 className="text-lg text-neutral-900 mb-2">
             {isCreator || !isOpen ? 'Créneaux proposés' : requested ? 'Ton créneau' : 'Choisis un créneau'}
           </h2>
           <div className="space-y-2" role={!isCreator && isOpen ? 'radiogroup' : undefined}>
@@ -222,13 +222,13 @@ export default function MomentDetailPage() {
                   onClick={() => setSlot(s)}
                   className={cn(
                     'w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all',
-                    selected ? 'border-accent bg-accent-light' : 'border-line bg-paper',
+                    selected ? 'border-accent bg-accent/10' : 'border-line bg-surface',
                     selectable ? 'hover:border-dash' : 'cursor-default',
                     !isCreator && isOpen && !future(s) && 'opacity-50',
                   )}
                 >
                   <CalendarDays className={cn('w-4 h-4', selected ? 'text-accent' : 'text-muted')} />
-                  <span className="font-bold text-ink capitalize">{formatSlot(s)}</span>
+                  <span className="font-bold text-neutral-900 capitalize">{formatSlot(s)}</span>
                 </button>
               )
             })}
@@ -239,7 +239,7 @@ export default function MomentDetailPage() {
       {/* Créateur : demandes à valider */}
       {isCreator && isOpen && (
         <section className="space-y-3">
-          <h2 className="text-lg text-ink">
+          <h2 className="text-lg text-neutral-900">
             {moment.requests?.length ? 'Qui est partant·e ?' : 'En attente de réponses'}
           </h2>
           {moment.requests?.map(r => (
@@ -326,7 +326,7 @@ export default function MomentDetailPage() {
       </div>
 
       <Modal open={cancelOpen} onClose={() => setCancelOpen(false)} title="Annuler ce moment ?">
-        <p className="text-sm text-ink-soft mb-5">
+        <p className="text-sm text-mist mb-5">
           {isActive
             ? lateCancel
               ? `C’est dans moins de 12 h : ${moment.other?.first_name ?? 'l’autre personne'} sera prévenu·e et ta fiabilité baissera de 10 points.`
@@ -370,7 +370,7 @@ function StatusBanner({ moment }: { moment: MomentDetail }) {
         return { title: when, text: 'Ce moment n’a pas été confirmé des deux côtés.' }
     }
   })()
-  const tone = moment.status === 'cancelled' || moment.status === 'expired' ? 'bg-neutral-100 text-ink-soft' : 'bg-accent-light text-accent-dark'
+  const tone = moment.status === 'cancelled' || moment.status === 'expired' ? 'bg-neutral-100 text-mist' : 'bg-accent/10 text-accent-ink'
   return (
     <div className={cn('rounded-card p-4', tone)}>
       <p className="font-bold">{content.title}</p>
@@ -391,7 +391,7 @@ function OtherPerson({ other, placeName }: { other: MomentOther; placeName: stri
   }, [other.photo_path])
 
   return (
-    <section className="bg-paper rounded-card shadow-card p-4 flex gap-4">
+    <section className="bg-surface rounded-card shadow-card p-4 flex gap-4">
       <div className="w-24 h-24 flex-shrink-0 rounded-card overflow-hidden bg-placeholder flex items-center justify-center">
         {photoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -401,12 +401,12 @@ function OtherPerson({ other, placeName }: { other: MomentOther; placeName: stri
         )}
       </div>
       <div className="min-w-0 space-y-1">
-        <p className="font-display text-xl text-ink">{other.first_name}</p>
+        <p className="font-display text-xl text-neutral-900">{other.first_name}</p>
         <p className="text-xs text-muted flex items-center gap-1">
           <ShieldCheck className="w-3.5 h-3.5 text-success" /> Fiabilité {other.reliability_score}
         </p>
         {other.why && (
-          <p className="text-sm text-ink-soft">Aime {placeName} pour « {other.why} »</p>
+          <p className="text-sm text-mist">Aime {placeName} pour « {other.why} »</p>
         )}
       </div>
     </section>
@@ -430,22 +430,22 @@ function RequestCard({
   onAccept: () => void
 }) {
   return (
-    <div className="bg-paper rounded-card shadow-card p-4 space-y-3">
+    <div className="bg-surface rounded-card shadow-card p-4 space-y-3">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-display text-lg flex items-center justify-center" aria-hidden>
+        <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-display text-lg flex items-center justify-center" aria-hidden>
           {request.first_name.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-ink">{request.first_name}</p>
+          <p className="font-bold text-neutral-900">{request.first_name}</p>
           <p className="text-xs text-muted flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-success" /> Fiabilité {request.reliability_score}
           </p>
         </div>
       </div>
-      <p className="text-sm font-bold text-ink flex items-center gap-1.5">
+      <p className="text-sm font-bold text-neutral-900 flex items-center gap-1.5">
         <CalendarDays className="w-4 h-4 text-accent" /> {formatSlot(request.chosen_slot)}
       </p>
-      {request.why && <p className="text-sm text-ink-soft">Aime ce lieu pour « {request.why} »</p>}
+      {request.why && <p className="text-sm text-mist">Aime ce lieu pour « {request.why} »</p>}
       <CommonPlacesList places={request.common_places} theirName={request.first_name} exclude={placeKey} />
       <Button fullWidth loading={busy} onClick={onAccept}>
         Valider avec {request.first_name}
