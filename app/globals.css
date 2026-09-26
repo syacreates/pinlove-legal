@@ -5,9 +5,7 @@
 /* ── Theme tokens ──────────────────────────────────────────────────────────── *
  * "R G B" triples consumed by tailwind.config.ts via rgb(var(--x) / <alpha>).
  * Thème "Cerise" : fond crème chaud + accent cerise (voir
- * lib/design-tokens.ts). Le clair est le thème par défaut ; le sombre est
- * une déclinaison chaude de la même palette, activée par data-theme="dark"
- * sur <html> — see lib/theme.ts.
+ * lib/design-tokens.ts). Thème unique (clair).
  */
 :root,
 [data-theme='light'] {
@@ -33,33 +31,6 @@
   --c-neutral-800: 43 38 38;
   --c-neutral-900: 30 26 26;
   --c-neutral-950: 15 12 12;
-}
-
-/* Re-declared on any element so a nested data-theme="dark" subtree — e.g.
-   the onboarding phone mockup — can force dark chrome locally. */
-[data-theme='dark'] {
-  --c-petrol:      23 19 19;
-  --c-petrol-soft: 31 26 26;
-  --c-surface:     41 35 34;
-  --c-surface-2:   52 45 44;
-  --c-mist:        214 205 199;
-  --c-mist-2:      163 152 146;
-  --c-line:        70 62 60;
-  --c-divider:     56 49 48;
-  --c-placeholder: 56 49 48;
-  --c-accent-ink:  242 167 180;
-
-  --c-neutral-50:  31 26 26;
-  --c-neutral-100: 41 35 34;
-  --c-neutral-200: 52 45 44;
-  --c-neutral-300: 82 73 70;
-  --c-neutral-400: 128 118 113;
-  --c-neutral-500: 163 152 146;
-  --c-neutral-600: 196 187 181;
-  --c-neutral-700: 214 205 199;
-  --c-neutral-800: 232 225 220;
-  --c-neutral-900: 247 243 239;
-  --c-neutral-950: 255 255 255;
 }
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
@@ -122,34 +93,6 @@
     background: linear-gradient(160deg, #C8243F 0%, #9E1B31 100%);
   }
 
-  /* ── Postal stamp motif ──────────────────────────────────────────────────── */
-  .stamp-ring {
-    @apply relative rounded-full border-2 border-dashed border-accent flex items-center justify-center;
-    animation: stamp-spin 22s linear infinite;
-  }
-
-  .stamp-core {
-    @apply flex items-center justify-center;
-    animation: stamp-spin-rev 22s linear infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .stamp-ring,
-    .stamp-core {
-      animation: none;
-    }
-  }
-
-  @keyframes stamp-spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  @keyframes stamp-spin-rev {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(-360deg); }
-  }
-
   /* ── Ticket card — dashed border, train-ticket cutouts ──────────────────── */
   .ticket-card {
     @apply relative bg-paper text-ink rounded-card p-4;
@@ -186,20 +129,10 @@
   background: rgb(var(--c-petrol-soft)) !important;
 }
 
-/* Tuiles OpenStreetMap standard (gratuites, sans clé, sans quota) inversées en
-   CSS pour un rendu sombre — plus fiable que les tuiles CartoDB anonymes
-   ("dark_nolabels"), qui se sont mises à afficher un filigrane "API KEY
-   REQUIRED" en production une fois le trafic réel monté (quota anonyme
-   dépassé). Popups/contrôles restent non affectés (hors .leaflet-tile-pane).
-   En thème clair les tuiles restent dans leurs couleurs d'origine — pas
-   d'inversion nécessaire sur un fond déjà clair. */
-/* Thème clair : léger virage chaud pour s'accorder au fond crème. */
+/* Tuiles OpenStreetMap standard (gratuites, sans clé, sans quota) : léger
+   virage chaud pour s'accorder au fond crème. */
 .leaflet-tile-pane {
   filter: sepia(0.12) saturate(0.85);
-}
-
-[data-theme='dark'] .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(175deg) brightness(1.25) contrast(0.95) saturate(0.85);
 }
 
 .leaflet-popup-content-wrapper {
@@ -268,35 +201,3 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-/* ── Theme toggle — circular reveal transition ───────────────────────────────
- * Wraps the light/dark swap in a View Transition that wipes a circle out
- * from the toggle button (see lib/theme.ts, which sets --theme-x/--theme-y
- * to the click position). Browsers without View Transitions support just
- * swap instantly — no fallback animation needed since these rules simply
- * won't apply. */
-::view-transition-group(root) {
-  animation-duration: 0.6s;
-}
-
-::view-transition-new(root) {
-  clip-path: circle(0% at var(--theme-x, 100%) var(--theme-y, 0%));
-  animation: theme-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-::view-transition-old(root) {
-  animation: none;
-}
-
-@keyframes theme-reveal {
-  to {
-    clip-path: circle(150% at var(--theme-x, 100%) var(--theme-y, 0%));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(root),
-  ::view-transition-new(root),
-  ::view-transition-old(root) {
-    animation: none !important;
-  }
-}

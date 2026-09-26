@@ -56,7 +56,7 @@ export default function HomePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <StampBadge size="sm" animated={false} />
+          <StampBadge size="sm" />
           <div>
             <p className="text-sm text-mist">{greeting} 👋</p>
             <h1 className="text-xl font-bold text-neutral-900">{firstName}</h1>

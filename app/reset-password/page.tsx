@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { Mail, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { authService } from '@/services/auth.service'
 import { ROUTES } from '@/lib/constants'
 
@@ -51,7 +50,6 @@ export default function ResetPasswordPage() {
           <Link href={ROUTES.LOGIN} className="flex items-center gap-1.5 text-neutral-600 text-sm">
             <ArrowLeft className="w-4 h-4" /> Retour
           </Link>
-          <ThemeToggle />
         </div>
 
         <div className="text-4xl mb-4">🔑</div>

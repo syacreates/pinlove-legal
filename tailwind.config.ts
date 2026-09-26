@@ -1,9 +1,8 @@
 import type { Config } from 'tailwindcss'
 import { colors as tokens } from './lib/design-tokens'
 
-// Reads a "R G B" CSS variable (see app/globals.css) so these colors can
-// flip between the light and dark themes without touching every className
-// that uses them, while still supporting Tailwind's /opacity modifiers.
+// Reads a "R G B" CSS variable (see app/globals.css) while still supporting
+// Tailwind's /opacity modifiers.
 function themed(variable: string) {
   return `rgb(var(${variable}) / <alpha-value>)`
 }
