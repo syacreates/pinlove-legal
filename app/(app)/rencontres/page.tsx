@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChevronRight, MapPin, Plus, Settings } from 'lucide-react'
+import { Bell, CalendarHeart, ChevronRight, MapPin, Plus, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { CardSkeleton } from '@/components/ui/Card'
 import { ScreenHeader } from '@/components/rencontres/RencontreUI'
@@ -12,9 +12,9 @@ import { useAuthStore } from '@/stores/auth.store'
 import { usePlacesStore } from '@/stores/places.store'
 import { useRencontreStore } from '@/stores/rencontre.store'
 import { momentsService } from '@/services/moments.service'
+import { notificationsService } from '@/services/notifications.service'
 import { RENCONTRE_INTENTIONS, ROUTES } from '@/lib/constants'
-import { formatSlot } from '@/lib/utils'
-import type { FeedMoment, Moment, PersonSuggestion } from '@/lib/types'
+import type { FeedMoment, MyRencontre, PersonSuggestion } from '@/lib/types'
 
 export default function RencontresPage() {
   const router      = useRouter()
@@ -26,7 +26,8 @@ export default function RencontresPage() {
 
   const [feed,        setFeed]        = useState<FeedMoment[] | null>(null)
   const [suggestions, setSuggestions] = useState<PersonSuggestion[]>([])
-  const [mine,        setMine]        = useState<Moment[]>([])
+  const [mine,        setMine]        = useState<MyRencontre[]>([])
+  const [unread,      setUnread]      = useState(0)
 
   useEffect(() => { loadProfile(user.id) }, [user.id, loadProfile])
 
@@ -42,7 +43,7 @@ export default function RencontresPage() {
     const [f, s, m] = await Promise.all([
       momentsService.getFeed(),
       momentsService.getSuggestions(),
-      momentsService.getMyOpenMoments(user.id),
+      momentsService.getMyRencontres(),
     ])
     setFeed(f)
     setSuggestions(s)
@@ -51,6 +52,15 @@ export default function RencontresPage() {
 
   useEffect(() => { if (active) loadFeed() }, [active, loadFeed])
 
+  // Badge de notifications, mis à jour en temps réel.
+  useEffect(() => {
+    notificationsService.unreadCount(user.id).then(setUnread)
+    return notificationsService.subscribe(user.id, () => {
+      setUnread(n => n + 1)
+      loadFeed()
+    })
+  }, [user.id, loadFeed])
+
   if (!loaded || !profile || !profile.principles_accepted_at) {
     return (
       <div className="screen-scroll flex items-center justify-center">
@@ -58,6 +68,10 @@ export default function RencontresPage() {
       </div>
     )
   }
+
+  // À faire : confirmer une rencontre, valider une demande reçue.
+  const todo = mine.filter(r =>
+    r.needs_my_confirmation || (r.my_role === 'creator' && r.status === 'open' && (r.request_count ?? 0) > 0))
 
   const openPlaces = places.filter(p => p.rencontre_open)
   const openCount  = openPlaces.length
@@ -73,6 +87,20 @@ export default function RencontresPage() {
         title="Rencontres"
         subtitle={`${profile.first_name} · ${RENCONTRE_INTENTIONS[profile.intention].label}`}
         back={false}
+        action={
+          <Link
+            href={ROUTES.RENCONTRES_NOTIFS}
+            aria-label={unread ? `Notifications (${unread} non lues)` : 'Notifications'}
+            className="relative w-10 h-10 flex-shrink-0 bg-paper rounded-2xl shadow-card flex items-center justify-center"
+          >
+            <Bell className="w-5 h-5 text-ink/70" />
+            {unread > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center">
+                {unread > 9 ? '9+' : unread}
+              </span>
+            )}
+          </Link>
+        }
       />
 
       {!profile.enabled && (
@@ -93,21 +121,23 @@ export default function RencontresPage() {
         </Button>
       )}
 
-      {/* Mes propositions en attente */}
-      {active && mine.length > 0 && (
+      {/* À faire */}
+      {active && todo.length > 0 && (
         <section>
-          <h2 className="text-lg text-ink mb-2">Tes propositions</h2>
-          <ul className="bg-paper rounded-card shadow-card divide-y divide-divider">
-            {mine.map(m => (
-              <li key={m.id}>
-                <Link href={ROUTES.RENCONTRES_MOMENT(m.id)} className="flex items-center gap-3 px-4 py-3 hover:bg-ink/5">
+          <h2 className="text-lg text-ink mb-2">À faire</h2>
+          <ul className="space-y-2">
+            {todo.map(r => (
+              <li key={r.id}>
+                <Link href={ROUTES.RENCONTRES_MOMENT(r.id)} className="flex items-center gap-3 rounded-card bg-accent-light px-4 py-3">
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-ink truncate">{m.title}</p>
-                    <p className="text-xs text-muted truncate">
-                      {m.place_name} · {m.proposed_slots.map(formatSlot).join(' / ')}
+                    <p className="font-bold text-accent-dark truncate">
+                      {r.needs_my_confirmation ? `Confirme « ${r.title} »` : `${r.request_count} partant·e${(r.request_count ?? 0) > 1 ? 's' : ''} pour « ${r.title} »`}
+                    </p>
+                    <p className="text-xs text-accent-dark/80 truncate">
+                      {r.needs_my_confirmation ? `Avec ${r.other_first_name} · ${r.place_name}` : `${r.place_name} · à valider`}
                     </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-ink/30 flex-shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-accent flex-shrink-0" />
                 </Link>
               </li>
             ))}
@@ -149,6 +179,12 @@ export default function RencontresPage() {
       )}
 
       <div className="bg-paper rounded-card shadow-card divide-y divide-divider">
+        <HubLink
+          href={ROUTES.RENCONTRES_MES}
+          icon={<CalendarHeart className="w-4 h-4" />}
+          label="Mes rencontres"
+          detail={mine.length ? String(mine.filter(r => ['open', 'matched', 'confirmed'].includes(r.status)).length) : undefined}
+        />
         <HubLink
           href={ROUTES.RENCONTRES_LIEUX}
           icon={<MapPin className="w-4 h-4" />}

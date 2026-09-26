@@ -2,27 +2,35 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { CalendarDays, Clock, MapPin } from 'lucide-react'
+import { CalendarDays, CheckCircle2, Clock, MapPin, Navigation, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { Modal } from '@/components/ui/Modal'
 import { ScreenHeader } from '@/components/rencontres/RencontreUI'
 import { CommonPlacesList, IntentionTag, PaymentRule } from '@/components/rencontres/MomentCards'
 import { useAppStore } from '@/stores/app.store'
+import { useAuthStore } from '@/stores/auth.store'
+import { useRencontreStore } from '@/stores/rencontre.store'
 import { momentsService } from '@/services/moments.service'
-import { ROUTES } from '@/lib/constants'
+import { rencontresService } from '@/services/rencontres.service'
+import { mapService } from '@/services/map.service'
+import { LATE_CANCEL_HOURS, ROUTES } from '@/lib/constants'
 import { cn, formatDuration, formatSlot } from '@/lib/utils'
-import type { MomentDetail } from '@/lib/types'
+import type { MomentDetail, MomentOther, MomentRequest } from '@/lib/types'
 
 const sameInstant = (a: string | null, b: string | null) =>
   !!a && !!b && new Date(a).getTime() === new Date(b).getTime()
 
 export default function MomentDetailPage() {
-  const { id }   = useParams<{ id: string }>()
-  const router   = useRouter()
-  const addToast = useAppStore(s => s.addToast)
+  const { id }      = useParams<{ id: string }>()
+  const router      = useRouter()
+  const addToast    = useAppStore(s => s.addToast)
+  const user        = useAuthStore(s => s.user)!
+  const loadProfile = useRencontreStore(s => s.loadProfile)
 
-  const [moment,  setMoment]  = useState<MomentDetail | null | undefined>(undefined)
-  const [slot,    setSlot]    = useState<string | null>(null)
-  const [busy,    setBusy]    = useState(false)
+  const [moment,     setMoment]     = useState<MomentDetail | null | undefined>(undefined)
+  const [slot,       setSlot]       = useState<string | null>(null)
+  const [busy,       setBusy]       = useState(false)
+  const [cancelOpen, setCancelOpen] = useState(false)
 
   const load = useCallback(async () => {
     const m = await momentsService.getMoment(id)
@@ -32,23 +40,28 @@ export default function MomentDetailPage() {
 
   useEffect(() => { load() }, [load])
 
-  async function handleRequest() {
-    if (!slot) { addToast({ type: 'error', message: 'Choisis un créneau.' }); return }
+  async function run(action: () => Promise<{ error: string | null }>, success: string) {
     setBusy(true)
-    const { error } = await momentsService.requestSlot(id, slot)
+    const { error } = await action()
     setBusy(false)
-    if (error) { addToast({ type: 'error', message: error }); return }
-    addToast({ type: 'success', message: 'C’est envoyé ! Tu seras prévenu·e si le moment est confirmé.' })
-    load()
+    if (error) { addToast({ type: 'error', message: error }); return false }
+    addToast({ type: 'success', message: success })
+    await load()
+    return true
   }
 
-  async function handleWithdraw() {
+  async function handleCancel() {
     setBusy(true)
-    const { error } = await momentsService.withdrawRequest(id)
+    const { penalized, error } = await momentsService.cancel(id)
     setBusy(false)
+    setCancelOpen(false)
     if (error) { addToast({ type: 'error', message: error }); return }
-    addToast({ type: 'info', message: 'Ta demande est retirée.' })
-    load()
+    addToast({
+      type: 'info',
+      message: penalized ? 'Moment annulé. Moins de 12 h avant : ta fiabilité baisse de 10 points.' : 'Moment annulé.',
+    })
+    if (penalized) loadProfile(user.id)
+    await load()
   }
 
   const back = () => router.push(ROUTES.RENCONTRES)
@@ -61,8 +74,11 @@ export default function MomentDetailPage() {
     )
   }
 
-  // Introuvable, expiré, annulé : on ne dit jamais pourquoi (aucun rejet visible).
-  if (moment === null || (moment.my_role !== 'creator' && ['expired', 'cancelled'].includes(moment.status))) {
+  const isCreator = moment?.my_role === 'creator'
+  const scheduled = !!moment?.scheduled_at
+
+  // Introuvable, ou demande restée sans suite : on ne dit jamais pourquoi.
+  if (moment === null || (!isCreator && !scheduled && ['expired', 'cancelled'].includes(moment.status))) {
     return (
       <div className="screen-scroll px-4 pt-6">
         <ScreenHeader title="Moment" onBack={back} />
@@ -75,14 +91,26 @@ export default function MomentDetailPage() {
     )
   }
 
-  const isCreator = moment.my_role === 'creator'
   const isOpen    = moment.status === 'open'
+  const isActive  = moment.status === 'matched' || moment.status === 'confirmed'
   const requested = !!moment.my_chosen_slot
   const future    = (s: string) => new Date(s).getTime() > Date.now() + 3600_000
+  const lateCancel = scheduled && new Date(moment.scheduled_at!).getTime() - Date.now() < LATE_CANCEL_HOURS * 3600_000
+  const directions = mapService.buildDirectionsUrl({ lat: moment.latitude, lng: moment.longitude }, moment.place_name)
+
+  const subtitle = scheduled && moment.other
+    ? `Avec ${moment.other.first_name}`
+    : isCreator ? 'Ta proposition' : `Proposé par ${moment.creator_first_name}`
 
   return (
     <div className="screen-scroll px-4 pt-6 space-y-5">
-      <ScreenHeader title={moment.title} subtitle={isCreator ? 'Ta proposition' : `Proposé par ${moment.creator_first_name}`} onBack={back} />
+      <ScreenHeader title={moment.title} subtitle={subtitle} onBack={back} />
+
+      {/* Statut d'un moment calé */}
+      {scheduled && <StatusBanner moment={moment} />}
+
+      {/* L'autre personne, révélée après double acceptation */}
+      {scheduled && moment.other && <OtherPerson other={moment.other} placeName={moment.place_name} />}
 
       {/* Lieu */}
       <section className="bg-paper rounded-card shadow-card p-4 space-y-3">
@@ -101,10 +129,20 @@ export default function MomentDetailPage() {
           </p>
           <PaymentRule rule={moment.payment_rule} className="text-sm" />
         </div>
+        {isActive && (
+          <a
+            href={directions}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 h-11 rounded-full border border-line text-sm font-bold text-ink hover:bg-surface-2"
+          >
+            <Navigation className="w-4 h-4 text-accent" /> Itinéraire
+          </a>
+        )}
       </section>
 
-      {/* Pourquoi ce lieu */}
-      {!isCreator && (moment.creator_why || moment.common_places.length > 0) && (
+      {/* Pourquoi ce lieu (avant double acceptation) */}
+      {!isCreator && !scheduled && (moment.creator_why || moment.common_places.length > 0) && (
         <section className="space-y-2">
           <h2 className="text-lg text-ink">Ce qui vous rapproche</h2>
           {moment.creator_why && (
@@ -117,53 +155,69 @@ export default function MomentDetailPage() {
         </section>
       )}
 
-      {/* Créneaux */}
-      <section>
-        <h2 className="text-lg text-ink mb-2">
-          {isCreator || !isOpen ? 'Créneaux proposés' : requested ? 'Ton créneau' : 'Choisis un créneau'}
-        </h2>
-        <div className="space-y-2" role={!isCreator && isOpen ? 'radiogroup' : undefined}>
-          {moment.proposed_slots.map(s => {
-            const selectable = !isCreator && isOpen && future(s)
-            const selected = sameInstant(slot, s)
-            return (
-              <button
-                key={s}
-                type="button"
-                role={!isCreator && isOpen ? 'radio' : undefined}
-                aria-checked={!isCreator && isOpen ? selected : undefined}
-                disabled={!selectable}
-                onClick={() => setSlot(s)}
-                className={cn(
-                  'w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all',
-                  selected ? 'border-accent bg-accent-light' : 'border-line bg-paper',
-                  selectable ? 'hover:border-dash' : 'cursor-default',
-                  !isCreator && isOpen && !future(s) && 'opacity-50',
-                )}
-              >
-                <CalendarDays className={cn('w-4 h-4', selected ? 'text-accent' : 'text-muted')} />
-                <span className="font-bold text-ink capitalize">{formatSlot(s)}</span>
-              </button>
-            )
-          })}
-        </div>
-      </section>
+      {/* Créneaux (tant que rien n'est calé) */}
+      {!scheduled && (
+        <section>
+          <h2 className="text-lg text-ink mb-2">
+            {isCreator || !isOpen ? 'Créneaux proposés' : requested ? 'Ton créneau' : 'Choisis un créneau'}
+          </h2>
+          <div className="space-y-2" role={!isCreator && isOpen ? 'radiogroup' : undefined}>
+            {moment.proposed_slots.map(s => {
+              const selectable = !isCreator && isOpen && future(s)
+              const selected = sameInstant(slot, s)
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  role={!isCreator && isOpen ? 'radio' : undefined}
+                  aria-checked={!isCreator && isOpen ? selected : undefined}
+                  disabled={!selectable}
+                  onClick={() => setSlot(s)}
+                  className={cn(
+                    'w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all',
+                    selected ? 'border-accent bg-accent-light' : 'border-line bg-paper',
+                    selectable ? 'hover:border-dash' : 'cursor-default',
+                    !isCreator && isOpen && !future(s) && 'opacity-50',
+                  )}
+                >
+                  <CalendarDays className={cn('w-4 h-4', selected ? 'text-accent' : 'text-muted')} />
+                  <span className="font-bold text-ink capitalize">{formatSlot(s)}</span>
+                </button>
+              )
+            })}
+          </div>
+        </section>
+      )}
 
-      {/* Actions */}
+      {/* Créateur : demandes à valider */}
       {isCreator && isOpen && (
-        <section className="rounded-card bg-paper shadow-card p-4 text-sm text-ink-soft space-y-1">
-          <p className="font-bold text-ink">
-            {moment.request_count
-              ? `${moment.request_count} personne${moment.request_count > 1 ? 's' : ''} partante${moment.request_count > 1 ? 's' : ''}`
-              : 'En attente de réponses'}
+        <section className="space-y-3">
+          <h2 className="text-lg text-ink">
+            {moment.requests?.length ? 'Qui est partant·e ?' : 'En attente de réponses'}
+          </h2>
+          {moment.requests?.map(r => (
+            <RequestCard
+              key={r.token}
+              request={r}
+              placeKey={moment.place_key}
+              busy={busy}
+              onAccept={() => run(() => momentsService.acceptRequest(moment.id, r.token), `C’est calé avec ${r.first_name} !`)}
+            />
+          ))}
+          <p className="text-sm text-muted">
+            Visible jusqu’au {formatSlot(moment.expires_at)} par les personnes de même intention qui aiment ce lieu.
+            {moment.requests?.length ? ' Les autres demandes disparaîtront simplement, sans notification.' : ' Sans réponse, il expire simplement.'}
           </p>
-          <p>Visible jusqu’au {formatSlot(moment.expires_at)} par les personnes de même intention qui aiment ce lieu. Sans réponse, il expire simplement.</p>
         </section>
       )}
       {isCreator && moment.status === 'expired' && (
         <p className="text-sm text-muted text-center">Ce moment a expiré. Tu peux en proposer un nouveau quand tu veux.</p>
       )}
+      {isCreator && !scheduled && moment.status === 'cancelled' && (
+        <p className="text-sm text-muted text-center">Tu as annulé ce moment.</p>
+      )}
 
+      {/* Invité : demande */}
       {!isCreator && isOpen && (
         <div className="space-y-2">
           <Button
@@ -171,7 +225,7 @@ export default function MomentDetailPage() {
             size="xl"
             loading={busy}
             disabled={!slot || sameInstant(slot, moment.my_chosen_slot)}
-            onClick={handleRequest}
+            onClick={() => slot && run(() => momentsService.requestSlot(id, slot), 'C’est envoyé ! Tu seras prévenu·e si le moment est calé.')}
           >
             {requested ? 'Changer de créneau' : 'Je suis partant·e'}
           </Button>
@@ -180,7 +234,7 @@ export default function MomentDetailPage() {
               <p className="text-sm text-muted text-center">
                 {moment.creator_first_name} doit valider. Sans réponse, le moment expirera simplement le {formatSlot(moment.expires_at)}.
               </p>
-              <Button fullWidth variant="ghost" disabled={busy} onClick={handleWithdraw}>
+              <Button fullWidth variant="ghost" disabled={busy} onClick={() => run(() => momentsService.withdrawRequest(id), 'Ta demande est retirée.')}>
                 Retirer ma demande
               </Button>
             </>
@@ -192,6 +246,148 @@ export default function MomentDetailPage() {
           )}
         </div>
       )}
+
+      {/* Moment calé : confirmation */}
+      {moment.status === 'matched' && !moment.my_confirmed_at && (
+        <Button
+          fullWidth
+          size="xl"
+          loading={busy}
+          leftIcon={<CheckCircle2 className="w-5 h-5" />}
+          onClick={() => run(() => momentsService.confirm(id), 'Merci ! Ta présence est confirmée.')}
+        >
+          Toujours partant·e : je confirme
+        </Button>
+      )}
+
+      {/* Annulation */}
+      {(isActive || (isCreator && isOpen)) && (
+        <Button fullWidth variant="ghost" disabled={busy} onClick={() => setCancelOpen(true)}>
+          Annuler ce moment
+        </Button>
+      )}
+
+      <Modal open={cancelOpen} onClose={() => setCancelOpen(false)} title="Annuler ce moment ?">
+        <p className="text-sm text-ink-soft mb-5">
+          {isActive
+            ? lateCancel
+              ? `C’est dans moins de 12 h : ${moment.other?.first_name ?? 'l’autre personne'} sera prévenu·e et ta fiabilité baissera de 10 points.`
+              : `${moment.other?.first_name ?? 'L’autre personne'} sera prévenu·e. Plus de 12 h avant : aucune conséquence sur ta fiabilité.`
+            : 'Le moment disparaîtra du fil. Les personnes intéressées ne seront pas notifiées.'}
+        </p>
+        <div className="flex flex-col gap-3">
+          <Button variant="danger" fullWidth loading={busy} onClick={handleCancel}>
+            Oui, annuler
+          </Button>
+          <Button variant="ghost" fullWidth onClick={() => setCancelOpen(false)}>
+            Garder le moment
+          </Button>
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+// ── Sous-composants ──────────────────────────────────────────────────────────
+
+function StatusBanner({ moment }: { moment: MomentDetail }) {
+  const when = formatSlot(moment.scheduled_at!)
+  const other = moment.other?.first_name ?? 'L’autre personne'
+  const content = (() => {
+    switch (moment.status) {
+      case 'matched':
+        return {
+          title: `C’est calé : ${when}`,
+          text: moment.my_confirmed_at
+            ? moment.other?.confirmed ? 'Vous avez confirmé tous les deux.' : `Tu as confirmé. En attente de la confirmation de ${other}.`
+            : 'La veille à 18 h, on vous demandera « Toujours partant·e ? ». Tu peux déjà confirmer.',
+        }
+      case 'confirmed':
+        return { title: `Confirmé : ${when}`, text: 'Vous êtes tous les deux partants. Rappel 2 h avant, avec l’itinéraire.' }
+      case 'done':
+        return { title: `Rencontre du ${when}`, text: 'C’est passé. On espère que c’était un bon moment.' }
+      case 'cancelled':
+        return { title: 'Moment annulé', text: moment.cancelled_by_me ? 'Tu as annulé ce moment.' : 'Ce moment n’aura pas lieu.' }
+      default:
+        return { title: when, text: 'Ce moment n’a pas été confirmé des deux côtés.' }
+    }
+  })()
+  const tone = moment.status === 'cancelled' || moment.status === 'expired' ? 'bg-neutral-100 text-ink-soft' : 'bg-accent-light text-accent-dark'
+  return (
+    <div className={cn('rounded-card p-4', tone)}>
+      <p className="font-bold">{content.title}</p>
+      <p className="text-sm mt-0.5">{content.text}</p>
+    </div>
+  )
+}
+
+function OtherPerson({ other, placeName }: { other: MomentOther; placeName: string }) {
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    if (other.photo_path) {
+      rencontresService.getPhotoUrl(other.photo_path).then(u => { if (!cancelled) setPhotoUrl(u) })
+    }
+    return () => { cancelled = true }
+  }, [other.photo_path])
+
+  return (
+    <section className="bg-paper rounded-card shadow-card p-4 flex gap-4">
+      <div className="w-24 h-24 flex-shrink-0 rounded-card overflow-hidden bg-placeholder flex items-center justify-center">
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl} alt={`Photo de ${other.first_name}`} className="w-full h-full object-cover" />
+        ) : (
+          <span className="font-display text-3xl text-accent">{other.first_name.charAt(0).toUpperCase()}</span>
+        )}
+      </div>
+      <div className="min-w-0 space-y-1">
+        <p className="font-display text-xl text-ink">{other.first_name}</p>
+        <p className="text-xs text-muted flex items-center gap-1">
+          <ShieldCheck className="w-3.5 h-3.5 text-success" /> Fiabilité {other.reliability_score}
+        </p>
+        {other.why && (
+          <p className="text-sm text-ink-soft">Aime {placeName} pour « {other.why} »</p>
+        )}
+      </div>
+    </section>
+  )
+}
+
+function RequestCard({
+  request,
+  placeKey,
+  busy,
+  onAccept,
+}: {
+  request: MomentRequest
+  /** Lieu du moment : son « pourquoi » est déjà affiché */
+  placeKey: string
+  busy: boolean
+  onAccept: () => void
+}) {
+  return (
+    <div className="bg-paper rounded-card shadow-card p-4 space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-display text-lg flex items-center justify-center" aria-hidden>
+          {request.first_name.charAt(0).toUpperCase()}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-bold text-ink">{request.first_name}</p>
+          <p className="text-xs text-muted flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-success" /> Fiabilité {request.reliability_score}
+          </p>
+        </div>
+      </div>
+      <p className="text-sm font-bold text-ink flex items-center gap-1.5">
+        <CalendarDays className="w-4 h-4 text-accent" /> {formatSlot(request.chosen_slot)}
+      </p>
+      {request.why && <p className="text-sm text-ink-soft">Aime ce lieu pour « {request.why} »</p>}
+      <CommonPlacesList places={request.common_places} theirName={request.first_name} exclude={placeKey} />
+      <Button fullWidth loading={busy} onClick={onAccept}>
+        Valider avec {request.first_name}
+      </Button>
     </div>
   )
 }

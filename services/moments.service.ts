@@ -8,7 +8,7 @@
 
 import { supabase } from '@/lib/supabase'
 import { withTimeout } from '@/lib/utils'
-import type { FeedMoment, Moment, MomentDetail, PersonSuggestion } from '@/lib/types'
+import type { FeedMoment, MomentDetail, MyRencontre, PersonSuggestion } from '@/lib/types'
 
 /** Les exceptions SQL arrivent telles quelles : on garde leur message (déjà en français). */
 function rpcError(message: string): string {
@@ -40,19 +40,6 @@ export const momentsService = {
     return (data ?? []) as FeedMoment[]
   },
 
-  /** Mes propositions encore ouvertes (lisibles directement : j'en suis le créateur). */
-  async getMyOpenMoments(userId: string): Promise<Moment[]> {
-    const { data, error } = await supabase
-      .from('moments')
-      .select('*')
-      .eq('creator_id', userId)
-      .eq('status', 'open')
-      .gt('expires_at', new Date().toISOString())
-      .order('created_at', { ascending: false })
-    if (error) { console.error('[moments] mine:', error.message); return [] }
-    return (data ?? []) as Moment[]
-  },
-
   async getMoment(id: string): Promise<MomentDetail | null> {
     const { data, error } = await supabase.rpc('get_moment', { p_moment_id: id })
     if (error) { console.error('[moments] get:', error.message); return null }
@@ -81,6 +68,30 @@ export const momentsService = {
   async requestSlot(momentId: string, slot: string): Promise<{ error: string | null }> {
     const { error } = await supabase.rpc('request_moment_slot', { p_moment_id: momentId, p_slot: slot })
     return { error: error ? rpcError(error.message) : null }
+  },
+
+  /** Double acceptation : le créateur valide une demande (jeton opaque). */
+  async acceptRequest(momentId: string, token: string): Promise<{ error: string | null }> {
+    const { error } = await supabase.rpc('accept_moment_request', { p_moment_id: momentId, p_token: token })
+    return { error: error ? rpcError(error.message) : null }
+  },
+
+  /** « Toujours partant·e ? » */
+  async confirm(momentId: string): Promise<{ error: string | null }> {
+    const { error } = await supabase.rpc('confirm_moment', { p_moment_id: momentId })
+    return { error: error ? rpcError(error.message) : null }
+  },
+
+  /** Annule ; `penalized` : annulation à moins de 12 h (fiabilité −10). */
+  async cancel(momentId: string): Promise<{ penalized: boolean; error: string | null }> {
+    const { data, error } = await supabase.rpc('cancel_moment', { p_moment_id: momentId })
+    return { penalized: data === true, error: error ? rpcError(error.message) : null }
+  },
+
+  async getMyRencontres(): Promise<MyRencontre[]> {
+    const { data, error } = await supabase.rpc('my_rencontres')
+    if (error) { console.error('[moments] my_rencontres:', error.message); return [] }
+    return (data ?? []) as MyRencontre[]
   },
 
   async withdrawRequest(momentId: string): Promise<{ error: string | null }> {

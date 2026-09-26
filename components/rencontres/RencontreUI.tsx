@@ -16,11 +16,14 @@ export function ScreenHeader({
   subtitle,
   onBack,
   back = true,
+  action,
 }: {
   title: string
   subtitle?: string
   onBack?: () => void
   back?: boolean
+  /** Élément affiché à droite (ex. cloche de notifications) */
+  action?: React.ReactNode
 }) {
   const router = useRouter()
   return (
@@ -35,10 +38,11 @@ export function ScreenHeader({
           <ArrowLeft className="w-5 h-5 text-ink/70" />
         </button>
       )}
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <h1 className="text-2xl text-neutral-900 leading-tight">{title}</h1>
         {subtitle && <p className="text-sm text-muted">{subtitle}</p>}
       </div>
+      {action}
     </div>
   )
 }

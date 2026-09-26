@@ -74,6 +74,8 @@ export const ROUTES = {
   RENCONTRES_REGLAGES:   '/rencontres/reglages',
   RENCONTRES_NEW_MOMENT: '/rencontres/moments/nouveau',
   RENCONTRES_MOMENT:     (id: string) => `/rencontres/moments/${id}`,
+  RENCONTRES_MES:        '/rencontres/mes-rencontres',
+  RENCONTRES_NOTIFS:     '/rencontres/notifications',
 } as const
 
 // ── Mode Rencontres ───────────────────────────────────────────────────────────
@@ -89,6 +91,8 @@ export const RENCONTRE_INTENTIONS: Record<
 export const WHY_TEXT_MAX = 140
 
 export const MOMENT_TITLE_MAX = 80
+/** Annulation à moins de 12 h du début : fiabilité −10 */
+export const LATE_CANCEL_HOURS = 12
 export const MOMENT_DURATIONS = [30, 60, 90, 120] as const
 
 export const RENCONTRE_PRINCIPLES = [

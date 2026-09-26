@@ -211,6 +211,49 @@ export interface MomentDetail {
   common_places: CommonPlace[]
   /** Nombre de demandes reçues (créateur uniquement) */
   request_count: number | null
+  my_confirmed_at: string | null
+  cancelled_by_me: boolean
+  /** Demandes à valider (créateur, moment ouvert) */
+  requests: MomentRequest[] | null
+  /** L'autre personne, révélée après double acceptation */
+  other: MomentOther | null
+}
+
+/** Demande reçue par le créateur : jeton opaque, jamais l'identifiant ni la photo. */
+export interface MomentRequest {
+  token: string
+  first_name: string
+  chosen_slot: string
+  reliability_score: number
+  why: string | null
+  common_places: CommonPlace[]
+}
+
+export interface MomentOther {
+  first_name: string
+  /** Chemin dans le bucket privé : URL signée via rencontresService.getPhotoUrl */
+  photo_path: string | null
+  reliability_score: number
+  why: string | null
+  confirmed: boolean
+}
+
+/** Ligne de « Mes rencontres ». */
+export interface MyRencontre {
+  id: string
+  title: string
+  place_name: string
+  status: MomentStatus
+  scheduled_at: string | null
+  proposed_slots: string[]
+  expires_at: string
+  duration_min: number
+  my_role: MomentRole
+  my_chosen_slot: string | null
+  other_first_name: string | null
+  needs_my_confirmation: boolean
+  request_count: number | null
+  created_at: string
 }
 
 export interface MomentMessage {
